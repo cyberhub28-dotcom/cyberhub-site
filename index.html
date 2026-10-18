@@ -3,141 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberHub Software, LLC | iOS apps and website redesigns in Dayton, Ohio</title>
-<meta name="description" content="CyberHub Software, LLC is an independent software company in Dayton, Ohio. We make iOS apps, including Dinner Agent and DriveReel, and rebuild outdated small-business websites for a one-time price.">
-<meta name="theme-color" content="#0b1020">
-<meta property="og:title" content="CyberHub Software, LLC">
-<meta property="og:description" content="iOS apps and one-time website redesigns from Dayton, Ohio.">
-<meta property="og:url" content="https://cyberhubsoftware.com/">
-<meta property="og:type" content="website">
+<title>CyberHub Software, LLC | Website redesigns and iOS apps in Dayton, Ohio</title>
+<meta name="description" content="CyberHub Software, LLC rebuilds outdated small-business websites in Dayton, Ohio into fast, phone-first sites for one flat price from $450. You own the domain and hosting, with a 30-day fix window and no monthly fees. Makers of the Dinner Agent and DriveReel iOS apps.">
+<meta name="theme-color" content="#0b0b10">
 <link rel="canonical" href="https://cyberhubsoftware.com/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M42 22a14 14 0 1 0 0 20' stroke='white' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
-<style>
-  :root{
-    --bg:#0b1020; --bg2:#111832; --surface:#ffffff; --soft:#f5f7fb; --text:#0f172a; --muted:#5b6478;
-    --line:#e4e8f0; --accent:#2563eb; --accent2:#06b6d4; --ink:#e7ecf7; --ink-muted:#a8b3cc;
-    --radius:18px; --max:1120px;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--surface);line-height:1.6;-webkit-font-smoothing:antialiased}
-  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
-  .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:#fff;padding:8px 12px;border-radius:8px;z-index:10}
-
-  /* Nav */
-  .nav{position:sticky;top:0;z-index:5;background:rgba(11,16,32,.85);backdrop-filter:saturate(160%) blur(10px);-webkit-backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
-  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;letter-spacing:-.01em}
-  .brand:hover{text-decoration:none}
-  .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center}
-  .nav ul{list-style:none;display:flex;gap:26px;margin:0;padding:0}
-  .nav ul a{color:var(--ink-muted);font-size:.95rem;font-weight:500} .nav ul a:hover{color:#fff;text-decoration:none}
-  .nav .cta-sm{color:#fff;background:var(--accent);padding:8px 14px;border-radius:999px;font-size:.9rem;font-weight:600}
-  .nav .cta-sm:hover{text-decoration:none;background:#1d4ed8}
-  @media (max-width:760px){.nav ul{display:none}}
-
-  /* Hero */
-  .hero{position:relative;overflow:hidden;background:radial-gradient(1200px 500px at 85% -10%,rgba(6,182,212,.28),transparent 60%),radial-gradient(900px 500px at -10% 20%,rgba(37,99,235,.35),transparent 60%),var(--bg);color:var(--ink)}
-  .hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,#000 30%,transparent);-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent);pointer-events:none}
-  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-top:92px;padding-bottom:104px}
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#9fe7f5;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);padding:6px 12px;border-radius:999px}
-  .dot{width:7px;height:7px;border-radius:50%;background:#22d3ee;box-shadow:0 0 10px #22d3ee}
-  h1{font-size:clamp(2.3rem,5.4vw,3.9rem);line-height:1.05;letter-spacing:-.03em;margin:20px 0 18px;color:#fff}
-  .grad{background:linear-gradient(90deg,#60a5fa,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p.lead{font-size:1.15rem;color:var(--ink-muted);max-width:560px;margin:0 0 30px}
-  .btns{display:flex;flex-wrap:wrap;gap:12px}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;font-weight:600;font-size:1rem;transition:transform .15s,background .15s}
-  .btn:hover{text-decoration:none;transform:translateY(-1px)}
-  .btn-primary{background:var(--accent);color:#fff} .btn-primary:hover{background:#1d4ed8}
-  .btn-ghost{color:#fff;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.04)} .btn-ghost:hover{background:rgba(255,255,255,.1)}
-  .meta{display:flex;flex-wrap:wrap;gap:22px;margin-top:34px;color:var(--ink-muted);font-size:.92rem}
-  .meta b{color:#fff;font-weight:600}
-
-  /* Hero visual */
-  .stack{position:relative;height:380px}
-  .panel{position:absolute;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 60px rgba(0,0,0,.35);backdrop-filter:blur(6px)}
-  .browser{inset:0 40px 70px 0;padding:14px}
-  .bar{display:flex;gap:6px;margin-bottom:14px}.bar i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25)}
-  .sk{height:12px;border-radius:6px;background:rgba(255,255,255,.14);margin-bottom:10px}
-  .sk.h{height:26px;width:70%;background:linear-gradient(90deg,rgba(96,165,250,.7),rgba(34,211,238,.6))}
-  .sk.w60{width:60%}.sk.w80{width:80%}.sk.w40{width:40%}
-  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}.tiles div{height:70px;border-radius:12px;background:rgba(255,255,255,.08)}
-  .phone{width:150px;height:270px;right:0;bottom:0;padding:12px;border-radius:28px;background:linear-gradient(180deg,#1a2347,#0f1630)}
-  .phone .notch{width:54px;height:6px;border-radius:6px;background:rgba(255,255,255,.2);margin:2px auto 14px}
-  .phone .app{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px;border-radius:12px;background:rgba(255,255,255,.07);font-size:.72rem;color:#dbe4f7}
-  .phone .ic{width:26px;height:26px;border-radius:8px;flex:none}
-  @media (max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-top:64px;padding-bottom:72px}.stack{display:none}}
-
-  /* Sections */
-  section{padding:88px 0}
-  .soft{background:var(--soft)}
-  .kicker{color:var(--accent);font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px}
-  h2{font-size:clamp(1.8rem,3.4vw,2.5rem);letter-spacing:-.02em;line-height:1.15;margin:0 0 14px}
-  .sub{color:var(--muted);font-size:1.08rem;max-width:640px;margin:0 0 44px}
-
-  /* Apps */
-  .apps{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:box-shadow .2s,transform .2s}
-  .card:hover{box-shadow:0 18px 40px rgba(15,23,42,.08);transform:translateY(-2px)}
-  .app-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-  .app-icon{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;flex:none}
-  .ai-dinner{background:linear-gradient(135deg,#f97316,#ef4444)} .ai-reel{background:linear-gradient(135deg,#6366f1,#06b6d4)}
-  .card h3{margin:0;font-size:1.3rem;letter-spacing:-.01em}
-  .tag{display:inline-block;font-size:.75rem;font-weight:600;color:var(--muted);background:var(--soft);border:1px solid var(--line);padding:2px 9px;border-radius:999px;margin-top:4px}
-  .card p{color:var(--muted);margin:0 0 18px}
-  .links{display:flex;flex-wrap:wrap;gap:8px}
-  .links a{font-size:.9rem;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line);color:var(--text)}
-  .links a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
-  @media (max-width:760px){.apps{grid-template-columns:1fr}}
-
-  /* Pricing */
-  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
-  .tier{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px}
-  .tier.pop{border:2px solid var(--accent);box-shadow:0 24px 50px rgba(37,99,235,.14);position:relative}
-  .badge{position:absolute;top:-13px;left:28px;background:var(--accent);color:#fff;font-size:.75rem;font-weight:700;padding:4px 11px;border-radius:999px;letter-spacing:.02em}
-  .tier h3{margin:0 0 6px;font-size:1.15rem}
-  .price{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px}
-  .once{color:var(--muted);font-size:.88rem;margin:0 0 18px}
-  .tier ul{list-style:none;padding:0;margin:0 0 24px;flex:1}
-  .tier li{position:relative;padding-left:26px;margin-bottom:10px;color:#334155;font-size:.97rem}
-  .tier li::before{content:"";position:absolute;left:0;top:.42em;width:15px;height:15px;border-radius:50%;background:#dbeafe url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='%232563eb' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/11px no-repeat}
-  .tier .btn{justify-content:center}
-  .btn-outline{border:1px solid var(--line);color:var(--text)} .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
-  @media (max-width:900px){.tiers{grid-template-columns:1fr}}
-
-  .terms{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
-  .term{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
-  .term b{display:block;margin-bottom:4px}
-  .term span{color:var(--muted);font-size:.93rem}
-  @media (max-width:900px){.terms{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:520px){.terms{grid-template-columns:1fr}}
-
-  /* Process */
-  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:s}
-  .step{counter-increment:s}
-  .step::before{content:counter(s,decimal-leading-zero);display:block;font-weight:800;font-size:.9rem;color:var(--accent);margin-bottom:8px}
-  .step h3{margin:0 0 6px;font-size:1.08rem}
-  .step p{margin:0;color:var(--muted);font-size:.96rem}
-  @media (max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:520px){.steps{grid-template-columns:1fr}}
-
-  /* Portfolio band */
-  .band{background:linear-gradient(120deg,#0b1020,#16224a);color:var(--ink);border-radius:24px;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
-  .band h2{color:#fff;margin:0 0 8px}
-  .band p{margin:0;color:var(--ink-muted);max-width:560px}
-
-  /* Contact */
-  .contact{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-  .contact .card a.big{font-size:1.15rem;font-weight:700;word-break:break-all}
-  @media (max-width:760px){.contact{grid-template-columns:1fr}}
-
-  footer{background:var(--bg);color:var(--ink-muted);padding:40px 0;font-size:.92rem}
-  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-  footer a{color:var(--ink)}
-  @media (max-width:520px){section{padding:64px 0}.band{padding:32px 24px}}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-</style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CyberHub Software">
+<meta property="og:title" content="CyberHub Software: a better website, one price, yours to keep">
+<meta property="og:description" content="One-time website redesigns for Dayton-area small businesses from $450, plus the Dinner Agent and DriveReel iOS apps.">
+<meta property="og:url" content="https://cyberhubsoftware.com/">
+<meta property="og:image" content="https://cyberhubsoftware.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23d4ff3f'/%3E%3Cpath d='M43 22a14 14 0 1 0 0 20' stroke='%230b0b10' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.className='js'</script>
+<link rel="stylesheet" href="assets/css/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"CyberHub Software, LLC","url":"https://cyberhubsoftware.com/","email":"contact@cyberhubsoftware.com","description":"One-time website redesigns for small businesses, and iOS apps.","address":{"@type":"PostalAddress","addressLocality":"Dayton","addressRegion":"OH","addressCountry":"US"},"areaServed":[{"@type":"City","name":"Dayton"},{"@type":"State","name":"Ohio"}],"priceRange":"$450-$1,650","makesOffer":[{"@type":"Offer","name":"Starter website","price":"450","priceCurrency":"USD"},{"@type":"Offer","name":"Standard website","price":"950","priceCurrency":"USD"},{"@type":"Offer","name":"Plus website","price":"1650","priceCurrency":"USD"}]}
+</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -145,58 +31,285 @@
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="CyberHub Software home">
-      <span class="logo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 64 64"><path d="M46 20a18 18 0 1 0 0 24" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"/></svg></span>
-      CyberHub Software
+      <span class="logo" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 64 64"><path d="M46 20a18 18 0 1 0 0 24" stroke="#0b0b10" stroke-width="10" fill="none" stroke-linecap="round"/></svg></span>
+      <span class="bname">CyberHub</span>
     </a>
     <nav aria-label="Main">
-      <ul>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#process">Process</a></li>
         <li><a href="#apps">Apps</a></li>
-        <li><a href="#websites">Website redesigns</a></li>
-        <li><a href="#work">Our work</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
     </nav>
-    <a class="cta-sm" href="mailto:contact@cyberhubsoftware.com?subject=Website%20redesign">Get a quote</a>
+    <div class="nav-cta">
+      <a class="btn btn-lime" href="mailto:contact@cyberhubsoftware.com?subject=Website%20quote">Get a quote</a>
+      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+    </div>
   </div>
 </header>
 
 <div class="hero" id="top">
-  <div class="wrap">
+  <div class="hero-bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="grid-lines"></div><div class="grain"></div></div>
+  <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow"><span class="dot"></span>Dayton, Ohio · Independent software studio</span>
-      <h1>Simple, useful software. <span class="grad">Websites that work.</span></h1>
-      <p class="lead">CyberHub Software builds iOS apps people actually use, and rebuilds outdated small-business websites into fast, phone-friendly sites you own outright. One price, no monthly fees.</p>
-      <div class="btns">
-        <a class="btn btn-primary" href="#websites">Website redesign pricing →</a>
-        <a class="btn btn-ghost" href="#apps">See our apps</a>
+      <span class="pill"><b>Dayton, OH</b> Website redesigns for local business</span>
+      <h1>
+        <span class="line"><span style="--d:.05s">A better website.</span></span>
+        <span class="line"><span class="outline" style="--d:.15s">One price.</span></span>
+        <span class="line"><span class="accent" style="--d:.25s">Yours to keep.</span></span>
+      </h1>
+      <p class="lede" data-reveal style="--d:.35s">We rebuild outdated small-business websites into fast, phone-first sites that bring in calls. <strong>Flat one-time pricing from $450</strong>, a 30-day fix window, and your domain and hosting stay in your name. No monthly fees from us.</p>
+      <div class="hero-ctas" data-reveal style="--d:.45s">
+        <a class="btn btn-lime" href="mailto:contact@cyberhubsoftware.com?subject=Free%20website%20review">Get a free review <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#work">See before &amp; after</a>
       </div>
-      <div class="meta">
-        <span><b>One-time</b> pricing</span>
-        <span><b>30-day</b> fix window</span>
-        <span><b>You own</b> the domain &amp; hosting</span>
-      </div>
+      <ul class="hero-facts" data-reveal style="--d:.55s">
+        <li><b>$0</b><span>monthly fees</span></li>
+        <li><b>30 days</b><span>of free fixes</span></li>
+        <li><b>100%</b><span>owned by you</span></li>
+        <li><b>1–3 wks</b><span>typical build</span></li>
+      </ul>
     </div>
-    <div class="stack" aria-hidden="true">
-      <div class="panel browser">
-        <div class="bar"><i></i><i></i><i></i></div>
-        <div class="sk h"></div><div class="sk w80"></div><div class="sk w60"></div>
-        <div class="tiles"><div></div><div></div><div></div></div>
-        <div class="sk w40" style="margin-top:16px"></div>
-      </div>
-      <div class="panel phone">
-        <div class="notch"></div>
-        <div class="app"><span class="ic ai-dinner"></span>Dinner Agent</div>
-        <div class="app"><span class="ic ai-reel"></span>DriveReel</div>
-        <div class="app"><span class="ic" style="background:linear-gradient(135deg,#22c55e,#06b6d4)"></span>Your new site</div>
-      </div>
+    <div class="phones" aria-hidden="true" data-reveal style="--d:.3s">
+      <div class="phone before"><div class="screen"><img src="assets/work/mamma-disalvo-before.webp" alt="" width="390" height="844"></div></div>
+      <div class="phone after"><div class="island"></div><div class="screen"><img src="assets/work/mamma-disalvo-after.webp" alt="" width="390" height="844"></div></div>
+      <span class="tag-float t1 float">Before: tiny desktop page</span>
+      <span class="tag-float t2 float d2">After: built for phones</span>
+      <span class="tag-float t3 float d3">Tap to call ✓</span>
+      <span class="hero-note">Concept redesign, not affiliated with the business</span>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <ul><li>Mobile-first</li><li>One-time price</li><li>30-day fix window</li><li>You own the domain</li><li>No monthly fees</li><li>Built in Dayton, Ohio</li></ul>
+      <ul><li>Mobile-first</li><li>One-time price</li><li>30-day fix window</li><li>You own the domain</li><li>No monthly fees</li><li>Built in Dayton, Ohio</li></ul>
     </div>
   </div>
 </div>
 
 <main id="main">
 
-<section id="apps">
+<section id="services">
   <div class="wrap">
+    <div class="sec-head">
+      <div data-reveal>
+        <p class="kicker">Services</p>
+        <h2>Everything your site needs.<br><span class="hl">Nothing</span> it doesn't.</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:.1s">Most local websites were built for a desktop screen ten years ago. We rebuild them for how customers actually find you today: on a phone, in a hurry, ready to call.</p>
+    </div>
+    <div class="bento">
+      <article class="svc big" data-reveal>
+        <div>
+          <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0b0b10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+          <h3>A full redesign, not a template swap</h3>
+        </div>
+        <div>
+          <p>Custom layout, type and color built around your business, with clear calls to action, your real hours and services, and nothing that slows a customer down.</p>
+          <div class="chips"><span class="chip">Restaurants &amp; bars</span><span class="chip">Salons &amp; spas</span><span class="chip">Clinics</span><span class="chip">Trades</span><span class="chip">Churches</span></div>
+        </div>
+      </article>
+      <article class="svc lime" data-reveal style="--d:.08s">
+        <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0b0b10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+        <h3>Phone-first</h3>
+        <p>Big tap targets, click-to-call, one-tap directions, and text you can read without pinching.</p>
+      </article>
+      <article class="svc" data-reveal>
+        <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0b0b10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div>
+        <h3>Fast by default</h3>
+        <p>Lightweight static pages with no bloated page builders, so the site loads quickly even on a weak signal.</p>
+      </article>
+      <article class="svc" data-reveal style="--d:.08s">
+        <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0b0b10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <h3>Local SEO basics</h3>
+        <p>Proper titles, descriptions, business details for Google, a sitemap and a Google Business Profile check.</p>
+      </article>
+      <article class="svc" data-reveal style="--d:.16s">
+        <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0b0b10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <h3>Booking &amp; ordering</h3>
+        <p>We connect the tool you already use (or pick one), like Square, Calendly, OpenTable or Vagaro, in your own account.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="dark work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div data-reveal>
+        <p class="kicker">Before &amp; after</p>
+        <h2>Same business.<br>A whole new first impression.</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:.1s">Concept redesigns of real Dayton-area websites, shown on a phone. Drag the slider to compare the current site with our concept.</p>
+    </div>
+    <div class="cases">
+      <article class="case" data-reveal>
+        <div class="compare">
+          <div class="screen">
+            <img src="assets/work/mamma-disalvo-before.webp" alt="Before: the current Mamma DiSalvo homepage on a phone, a shrunken desktop layout (logo and photos pixelated)" width="390" height="844" loading="lazy">
+            <img class="after-img" src="assets/work/mamma-disalvo-after.webp" alt="After: CyberHub's concept redesign for Mamma DiSalvo on a phone" width="390" height="844" loading="lazy">
+          </div>
+          <span class="lbl b" aria-hidden="true">Before</span><span class="lbl a" aria-hidden="true">After</span>
+          <span class="divider" aria-hidden="true"></span>
+          <span class="knob" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+          <input type="range" min="0" max="100" value="50" step="1" aria-label="Compare before and after for Mamma DiSalvo">
+        </div>
+        <h3>Mamma DiSalvo Ristorante</h3>
+        <p class="where">Italian restaurant · Kettering</p>
+        <span class="concept">Concept redesign · not affiliated</span>
+        <a class="view" href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/mamma-disalvo/">View the concept →</a>
+      </article>
+      <article class="case" data-reveal style="--d:.1s">
+        <div class="compare">
+          <div class="screen">
+            <img src="assets/work/down-the-pike-before.webp" alt="Before: the current Down the Pike Bar homepage on a phone, an old Weebly layout (logo and photos pixelated)" width="390" height="844" loading="lazy">
+            <img class="after-img" src="assets/work/down-the-pike-after.webp" alt="After: CyberHub's concept redesign for Down the Pike Bar on a phone" width="390" height="844" loading="lazy">
+          </div>
+          <span class="lbl b" aria-hidden="true">Before</span><span class="lbl a" aria-hidden="true">After</span>
+          <span class="divider" aria-hidden="true"></span>
+          <span class="knob" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+          <input type="range" min="0" max="100" value="50" step="1" aria-label="Compare before and after for Down the Pike Bar">
+        </div>
+        <h3>Down the Pike Bar</h3>
+        <p class="where">Bar &amp; grill · West Carrollton</p>
+        <span class="concept">Concept redesign · not affiliated</span>
+        <a class="view" href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/down-the-pike/">View the concept →</a>
+      </article>
+      <article class="case" data-reveal style="--d:.2s">
+        <div class="compare">
+          <div class="screen">
+            <img src="assets/work/ramke-before.webp" alt="Before: the current Ramke Chiropractic homepage on a phone, a shrunken table layout (photos pixelated)" width="390" height="844" loading="lazy">
+            <img class="after-img" src="assets/work/ramke-after.webp" alt="After: CyberHub's concept redesign for Ramke Chiropractic on a phone" width="390" height="844" loading="lazy">
+          </div>
+          <span class="lbl b" aria-hidden="true">Before</span><span class="lbl a" aria-hidden="true">After</span>
+          <span class="divider" aria-hidden="true"></span>
+          <span class="knob" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+          <input type="range" min="0" max="100" value="50" step="1" aria-label="Compare before and after for Ramke Chiropractic">
+        </div>
+        <h3>Ramke Chiropractic</h3>
+        <p class="where">Chiropractor · Centerville</p>
+        <span class="concept">Concept redesign · not affiliated</span>
+        <a class="view" href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/ramke-chiropractic/">View the concept →</a>
+      </article>
+    </div>
+    <div class="work-foot" data-reveal>
+      <p>These are unsolicited concept redesigns. They are not affiliated with or endorsed by the businesses shown. "Before" images are phone screenshots of each public homepage taken Oct 18, 2026, with logos and photos of people pixelated. Concepts use free-license stock photos only.</p>
+      <a class="btn btn-ghost" href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/">Full portfolio <span class="arr" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div data-reveal>
+        <p class="kicker">Pricing</p>
+        <h2>Flat prices.<br><span class="hl">Paid once.</span></h2>
+      </div>
+      <p class="lede" data-reveal style="--d:.1s">No contracts, no retainers, no monthly plan from us. Pick a size, get a fixed quote, and own the result.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier" data-reveal>
+        <h3 class="name">Starter</h3>
+        <p class="for">A sharp one-page site for a shop, food truck or solo pro.</p>
+        <div class="price"><span class="cur">$</span><span class="amt">450</span></div>
+        <p class="once">one-time · about 1 week</p>
+        <ul>
+          <li>One long, mobile-first page</li>
+          <li>Services or menu highlights, hours, map</li>
+          <li>Click-to-call and contact form or email link</li>
+          <li>Basic SEO setup</li>
+          <li>1 revision round</li>
+        </ul>
+        <a class="btn btn-line" href="mailto:contact@cyberhubsoftware.com?subject=Starter%20website%20quote">Ask about Starter</a>
+      </article>
+      <article class="tier feat" data-reveal style="--d:.1s">
+        <span class="badge">Most popular</span>
+        <h3 class="name">Standard</h3>
+        <p class="for">A complete small-business site that replaces the old one.</p>
+        <div class="price"><span class="cur">$</span><span class="amt">950</span></div>
+        <p class="once">one-time · about 2 weeks</p>
+        <ul>
+          <li>Up to 5 pages: home, about, services or menu, gallery, contact</li>
+          <li>A real web menu or services list, not a PDF</li>
+          <li>Contact form and reviews section</li>
+          <li>SEO basics plus a Google Business Profile tune-up</li>
+          <li>2 revision rounds</li>
+        </ul>
+        <a class="btn btn-lime" href="mailto:contact@cyberhubsoftware.com?subject=Standard%20website%20quote">Ask about Standard <span class="arr" aria-hidden="true">→</span></a>
+      </article>
+      <article class="tier" data-reveal style="--d:.2s">
+        <h3 class="name">Plus</h3>
+        <p class="for">For businesses that take bookings, orders or inquiries online.</p>
+        <div class="price"><span class="cur">$</span><span class="amt">1,650</span></div>
+        <p class="once">one-time · about 2–3 weeks</p>
+        <ul>
+          <li>Up to 8 pages</li>
+          <li>Booking, ordering or inquiry tool connected to your account</li>
+          <li>Simple editing guide plus a 30-minute walkthrough</li>
+          <li>Everything in Standard</li>
+          <li>3 revision rounds</li>
+        </ul>
+        <a class="btn btn-line" href="mailto:contact@cyberhubsoftware.com?subject=Plus%20website%20quote">Ask about Plus</a>
+      </article>
+    </div>
+    <div class="terms" data-reveal>
+      <div class="term"><b>30-day fix window</b><span>Anything that isn't right after launch, we fix free for 30 days.</span></div>
+      <div class="term"><b>You own everything</b><span>Your domain and hosting stay in your own accounts from day one.</span></div>
+      <div class="term"><b>No ongoing fees</b><span>No management plan or retainer. We hand it off and you're done.</span></div>
+      <div class="term"><b>Half up front</b><span>50% to start, 50% when you approve the finished site.</span></div>
+    </div>
+    <p class="addons" data-reveal>Hosting: free on GitHub Pages or Cloudflare Pages, or on Squarespace or Wix if you want to edit it yourself (their plan is billed to you). Optional add-ons: extra page $100 · copywriting help $150 · Squarespace/Wix build with training +$150 · rush under a week $200.</p>
+  </div>
+</section>
+
+<section id="process" class="apps-sec" style="background:var(--white)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div data-reveal>
+        <p class="kicker">How it works</p>
+        <h2>From outdated to done<br>in four steps.</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:.1s">Most sites take one to three weeks, depending on how quickly we get your content.</p>
+    </div>
+    <ol class="steps">
+      <li class="step" data-reveal><span class="num">01</span><h3>Free review</h3><p>Send your current web address. We reply with a short list of what to fix and a fixed quote.</p><span class="time">Within 2 business days</span></li>
+      <li class="step" data-reveal style="--d:.1s"><span class="num">02</span><h3>Design &amp; build</h3><p>After the deposit, we design and build the new site and share a private preview link.</p><span class="time">1–3 weeks</span></li>
+      <li class="step" data-reveal style="--d:.2s"><span class="num">03</span><h3>Launch</h3><p>Once you approve it, we launch it in your own hosting account and point your domain.</p><span class="time">Launch day</span></li>
+      <li class="step" data-reveal style="--d:.3s"><span class="num">04</span><h3>Hand-off</h3><p>You get every login and a quick guide. We fix anything that comes up for 30 days, then step away.</p><span class="time">30-day fix window</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <div data-reveal>
+        <p class="kicker">Client reviews</p>
+        <h2>Reviews from real clients<br>will live here.</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:.1s">We're just starting to take website clients, and we won't post made-up quotes. As projects launch, owners' own words will appear here.</p>
+    </div>
+    <!--
+      TESTIMONIAL TEMPLATE: replace a .review-slot with this once a client gives written permission.
+      <figure class="review-slot">
+        <blockquote><p>Client's exact words.</p></blockquote>
+        <figcaption class="who"><span class="av"></span><span><b>Name</b>, Business, Town</span></figcaption>
+      </figure>
+    -->
+    <div class="reviews-grid" aria-label="Placeholder review slots, no reviews yet">
+      <div class="review-slot" data-reveal><span class="ph-label">Placeholder · review slot 1</span><div class="sk"></div><div class="sk s80"></div><div class="sk s60"></div><div class="who"><span class="av"></span><span>Your business could be first</span></div></div>
+      <div class="review-slot" data-reveal style="--d:.1s"><span class="ph-label">Placeholder · review slot 2</span><div class="sk"></div><div class="sk s80"></div><div class="sk s60"></div><div class="who"><span class="av"></span><span>Reserved for a real client</span></div></div>
+      <div class="review-slot" data-reveal style="--d:.2s"><span class="ph-label">Placeholder · review slot 3</span><div class="sk"></div><div class="sk s80"></div><div class="sk s60"></div><div class="who"><span class="av"></span><span>Reserved for a real client</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="apps" class="apps-sec">
+  <div class="wrap" data-reveal>
     <p class="kicker">Apps</p>
     <h2>iOS apps from CyberHub</h2>
     <p class="sub">Small, focused apps for iPhone and iPad that do one job well.</p>
@@ -229,92 +342,36 @@
   </div>
 </section>
 
-<section id="websites" class="soft">
-  <div class="wrap">
-    <p class="kicker">Website redesigns</p>
-    <h2>A better website, for one price. Then it's all yours.</h2>
-    <p class="sub">We rebuild outdated small-business websites into fast, modern, phone-friendly sites, hand them back, and step away. No contracts, no monthly fees, no ongoing management.</p>
-
-    <div class="tiers">
-      <div class="tier">
-        <h3>One-page refresh</h3>
-        <div class="price">$500–$800</div>
-        <p class="once">one-time</p>
-        <ul>
-          <li>A single modern, mobile-first page</li>
-          <li>Hours, location, map and click-to-call</li>
-          <li>Contact form or email link</li>
-          <li>Basic search-engine setup</li>
-        </ul>
-        <a class="btn btn-outline" href="mailto:contact@cyberhubsoftware.com?subject=One-page%20refresh">Ask about this</a>
-      </div>
-      <div class="tier pop">
-        <span class="badge">Most popular</span>
-        <h3>Five-page site</h3>
-        <div class="price">$1,200–$1,800</div>
-        <p class="once">one-time</p>
-        <ul>
-          <li>Up to five pages (home, about, services, menu, contact)</li>
-          <li>A real web menu or services list, not a PDF</li>
-          <li>Photo gallery and reviews</li>
-          <li>Search-engine and Google Business tune-up</li>
-        </ul>
-        <a class="btn btn-primary" href="mailto:contact@cyberhubsoftware.com?subject=Five-page%20site">Ask about this</a>
-      </div>
-      <div class="tier">
-        <h3>Booking or ordering</h3>
-        <div class="price">$1,800–$2,500</div>
-        <p class="once">one-time</p>
-        <ul>
-          <li>Everything in the five-page site</li>
-          <li>Online booking, appointments or ordering</li>
-          <li>Connected to a tool you control (Square, Calendly, etc.)</li>
-          <li>Walkthrough so your team can run it</li>
-        </ul>
-        <a class="btn btn-outline" href="mailto:contact@cyberhubsoftware.com?subject=Booking%20or%20ordering%20site">Ask about this</a>
-      </div>
+<section id="faq">
+  <div class="wrap faq-grid">
+    <div class="sec-head" data-reveal>
+      <p class="kicker">FAQ</p>
+      <h2>Straight answers.</h2>
+      <p class="lede">Anything else? Email <a href="mailto:contact@cyberhubsoftware.com">contact@cyberhubsoftware.com</a>.</p>
     </div>
-
-    <div class="terms">
-      <div class="term"><b>Half up front</b><span>50% to start, 50% when you approve the finished site.</span></div>
-      <div class="term"><b>30-day fix window</b><span>Anything that isn't right after launch, we fix free for 30 days.</span></div>
-      <div class="term"><b>You own everything</b><span>Your domain and hosting stay in your own accounts from day one.</span></div>
-      <div class="term"><b>No monthly fees</b><span>No ongoing management or retainers. We hand it off and you're done.</span></div>
+    <div class="faq" data-reveal style="--d:.1s">
+      <details><summary>Is it really one price, with nothing monthly?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>Yes. You pay the flat price once (half to start, half at approval). We don't sell monthly plans. Your only ongoing costs are your own domain renewal and, if you choose Squarespace or Wix, that platform's plan. GitHub Pages and Cloudflare Pages hosting are free.</p></div></details>
+      <details><summary>Who owns the website?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>You do. The domain stays at your registrar and the site is launched in a hosting account in your name. At hand-off you hold every login and we remove our access.</p></div></details>
+      <details><summary>What is the 30-day fix window?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>For 30 days after launch, we fix anything that isn't working or isn't what we agreed, free. After that, new work is a new quote, with no retainer.</p></div></details>
+      <details><summary>Can I edit the site myself?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>Yes. If you want to change things often, we can build it on Squarespace or Wix in your account and show you how. If you rarely change anything, a fast static site on free hosting is usually the better fit.</p></div></details>
+      <details><summary>How long does it take?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>About one week for Starter and one to three weeks for Standard and Plus. The biggest factor is how quickly we get your photos, hours and service details.</p></div></details>
+      <details><summary>What do you need from me?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>Your current web address, your logo if you have one, any photos you'd like used, and a few minutes to confirm hours, services and prices. We can use free-license stock photos where you don't have your own.</p></div></details>
+      <details><summary>Do you only work in Dayton?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>We're based in the Dayton area and focus on the Miami Valley and small-town Ohio, but we can work with businesses anywhere by email and video call.</p></div></details>
     </div>
   </div>
 </section>
 
-<section>
+<section class="cta" id="quote">
   <div class="wrap">
-    <p class="kicker">How it works</p>
-    <h2>From outdated to done in four steps</h2>
-    <p class="sub">Most sites take one to three weeks, depending on how quickly we get your content.</p>
-    <div class="steps">
-      <div class="step"><h3>Free review</h3><p>We look at your current site and send a short list of what to fix and a fixed quote.</p></div>
-      <div class="step"><h3>Design &amp; build</h3><p>After the deposit, we build the new site and share a private preview link.</p></div>
-      <div class="step"><h3>Launch</h3><p>Once you approve it, we launch it in your own accounts and point your domain.</p></div>
-      <div class="step"><h3>Hand-off</h3><p>You get the logins and a quick guide. We fix anything that comes up for 30 days.</p></div>
-    </div>
+    <p class="kicker" data-reveal style="justify-content:center">Free review &amp; fixed quote</p>
+    <h2 data-reveal>Let's make yours the <em>best site</em> on the block.</h2>
+    <p class="lede" data-reveal style="--d:.1s">Send us your current website address. We'll reply with a free review and a fixed, one-time price.</p>
+    <a class="mail-big" data-reveal style="--d:.2s" href="mailto:contact@cyberhubsoftware.com?subject=Website%20quote">contact@cyberhubsoftware.com <span aria-hidden="true">→</span></a>
   </div>
 </section>
 
-<section id="work" style="padding-top:0">
+<section id="contact" class="contact-sec">
   <div class="wrap">
-    <div class="band">
-      <div>
-        <h2>See before-and-after redesigns</h2>
-        <p>Real local business sites, rebuilt to show what a modern, phone-friendly version could look like.</p>
-      </div>
-      <a class="btn btn-primary" href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/">View the portfolio →</a>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="soft">
-  <div class="wrap">
-    <p class="kicker">Contact</p>
-    <h2>Let's talk</h2>
-    <p class="sub">Send us your current website address and we'll reply with a free review and a fixed price.</p>
     <div class="contact">
       <div class="card">
         <h3 style="margin:0 0 6px">Website projects &amp; general</h3>
@@ -333,10 +390,13 @@
 </main>
 
 <footer>
-  <div class="wrap">
+  <p class="bigword" aria-hidden="true">CyberHub</p>
+  <div class="wrap row">
     <span>© 2026 CyberHub Software, LLC · Dayton, Ohio, USA. All rights reserved.</span>
     <span><a href="https://cyberhub28-dotcom.github.io/dinneragent-site/privacy">Dinner Agent privacy</a> · <a href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/">Portfolio</a></span>
+    <span><a href="credits.html">Credits</a></span>
   </div>
 </footer>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>
