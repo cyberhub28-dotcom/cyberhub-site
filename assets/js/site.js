@@ -85,3 +85,16 @@
     }, { passive: true });
   }
 })();
+
+// Pause control for the scrolling band (WCAG 2.2.2)
+(function () {
+  var band = document.querySelector('.marquee');
+  var btn = band && band.querySelector('.marquee-btn');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var paused = band.classList.toggle('paused');
+    btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    btn.setAttribute('aria-label', paused ? 'Play the scrolling band' : 'Pause the scrolling band');
+    btn.querySelector('.mb-tx').textContent = paused ? 'Play' : 'Pause';
+  });
+})();

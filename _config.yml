@@ -1,0 +1,4 @@
+# GitHub Pages (Jekyll) build settings: keep repo notes off the published site.
+exclude:
+  - README.md
+  - samples/CREDITS.md

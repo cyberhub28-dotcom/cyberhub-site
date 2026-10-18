@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Halfmile Tap &amp; Grill (sample design for a fictional business) | CyberHub Software</title>
+<meta name="description" content="Sample design for a fictional business: Halfmile Tap & Grill, an imaginary neighborhood bar and grill in Dayton, Ohio. Designed by CyberHub Software.">
+<meta name="theme-color" content="#121214">
+<link rel="preload" href="../../fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Anton";src:url(../../fonts/anton.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Inter";src:url(../../../assets/fonts/inter-var.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{--bg:#121214;--panel:#1b1b1f;--panel2:#232329;--text:#f3efe8;--muted:#a7a29a;--amber:#ffb238;--amber-d:#f29b0c;--red:#e5482d;--line:rgba(255,255,255,.1);--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 "Inter",system-ui,sans-serif;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}a{color:inherit}
+h1,h2,h3{font-family:"Anton",Impact,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:.95;margin:0}
+.wrap{width:min(1200px,100% - 40px);margin:0 auto}
+.sample{background:var(--amber);color:#1a1205;font:700 13px/1.4 "Inter",sans-serif;text-align:center;padding:9px 14px}
+.sample a{color:#1a1205}
+.skip{position:absolute;left:-999px}.skip:focus{left:10px;top:10px;z-index:30;background:#fff;color:#000;padding:8px 12px}
+header{position:sticky;top:0;z-index:10;background:rgba(18,18,20,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:"Anton",sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.brand i{display:grid;place-items:center;width:36px;height:36px;border-radius:9px;background:var(--amber);color:#121214;font-style:normal;font-size:15px}
+nav{display:flex;gap:26px;font-weight:600;font-size:15px;color:var(--muted)}nav a{text-decoration:none}nav a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 24px;border-radius:12px;font-weight:750;font-size:16px;text-decoration:none;transition:transform .25s var(--ease),background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-amber{background:var(--amber);color:#17120a}.btn-amber:hover{background:var(--amber-d)}
+.btn-ghost{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35);color:var(--text)}
+.hero{padding:56px 0 80px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
+.tag{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 22px}
+.tag .dot{width:9px;height:9px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 0 rgba(61,220,132,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+.hero h1{font-size:clamp(60px,9vw,128px)}
+.hero h1 span{display:block;color:transparent;-webkit-text-stroke:2px var(--amber)}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.hero p.lead{color:var(--muted);font-size:19px;max-width:30em;margin:26px 0 30px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.photo{position:relative}
+.photo img{border-radius:22px;aspect-ratio:4/4.4;object-fit:cover;width:100%;box-shadow:0 50px 90px -40px rgba(0,0,0,.9)}
+.sticker{position:absolute;left:-26px;bottom:34px;background:var(--red);color:#fff;font-family:"Anton",sans-serif;text-transform:uppercase;font-size:22px;line-height:1;padding:16px 18px;border-radius:14px;transform:rotate(-6deg);box-shadow:0 20px 40px -14px rgba(0,0,0,.7)}
+.sticker small{display:block;font:700 12px/1.2 "Inter",sans-serif;letter-spacing:.08em;margin-top:6px}
+.ticker{background:var(--amber);color:#17120a;overflow:hidden;white-space:nowrap;padding:14px 0;font-family:"Anton",sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:.03em}
+.ticker div{display:inline-block;animation:tick 26s linear infinite}
+.ticker span{margin:0 26px}
+.ticker-wrap{position:relative}.ticker.paused div{animation-play-state:paused}
+.tick-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);font:700 12px/1 "Inter",sans-serif;letter-spacing:.06em;text-transform:uppercase;background:#17120a;color:#ffb238;border:0;border-radius:999px;padding:9px 13px;cursor:pointer}
+@keyframes tick{to{transform:translateX(-50%)}}
+section{padding:100px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:46px}
+.sec-head h2{font-size:clamp(44px,6vw,80px)}
+.sec-head h2 em{font-style:normal;color:var(--amber)}
+.sec-head p{color:var(--muted);max-width:30em;margin:0}
+.week{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ev{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;transition:transform .3s var(--ease),border-color .3s}
+.ev:hover{transform:translateY(-4px);border-color:rgba(255,178,56,.5)}
+.ev .day{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.ev h3{font-size:34px;margin:14px 0 10px}.ev p{margin:0;color:var(--muted);font-size:15.5px}
+.menu{background:var(--panel)}
+.menu-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.menu-wrap img{border-radius:20px;aspect-ratio:1/1.1;object-fit:cover;position:sticky;top:96px}
+.cat{margin-bottom:34px}.cat h3{font-size:30px;color:var(--amber);margin-bottom:8px}
+.item{display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid var(--line)}
+.item b{font-weight:700}.item small{display:block;color:var(--muted);font-size:14.5px}.item span{font-weight:800;color:var(--amber)}
+.note{font-size:14px;color:var(--muted)}
+.party{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.box{border-radius:22px;padding:40px;background:var(--panel2);border:1px solid var(--line)}
+.box.hot{background:linear-gradient(140deg,#ff9f1c,#e5482d);color:#160c05;border:0}
+.box h3{font-size:44px;margin-bottom:14px}.box p{margin:0 0 22px;font-size:17px}
+.box.hot .btn{background:#160c05;color:#fff}
+.visit{border-top:1px solid var(--line)}
+.visit .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.hours{list-style:none;margin:0;padding:0}.hours li{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line)}.hours li span:last-child{font-weight:700}
+.contact a.big{display:block;font-family:"Anton",sans-serif;font-size:48px;color:var(--amber);text-decoration:none;margin:12px 0}
+.contact p{color:var(--muted);margin:6px 0}
+footer{padding:40px 0 120px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}footer a{color:var(--amber)}
+.callbar{position:fixed;left:12px;right:12px;bottom:12px;z-index:15;display:none;gap:8px;padding:8px;border-radius:16px;background:rgba(27,27,31,.94);backdrop-filter:blur(10px);border:1px solid var(--line)}
+.callbar .btn{flex:1;min-height:46px}
+[data-r]{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}[data-r].in{opacity:1;transform:none}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+@media(max-width:900px){nav{display:none}.hero .wrap,.menu-wrap,.party,.visit .wrap{grid-template-columns:1fr}.week{grid-template-columns:1fr 1fr}.menu-wrap img{position:static}section{padding:72px 0}.callbar{display:flex}.sticker{left:12px}}
+@media(max-width:520px){.week{grid-template-columns:1fr}.hero{padding-top:36px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ticker div,.tag .dot{animation:none}[data-r]{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="sample" role="note">Sample design for a fictional business. Halfmile Tap &amp; Grill is not a real bar. Design by <a href="../../../">CyberHub Software</a>.</div>
+<header><div class="wrap">
+  <a class="brand" href="#top"><i aria-hidden="true">½</i>Halfmile</a>
+  <nav aria-label="Main"><a href="#week">This week</a><a href="#menu">Menu</a><a href="#party">Parties</a><a href="#visit">Visit</a></nav>
+  <a class="btn btn-amber" href="tel:+19375550168" style="min-height:42px;padding:0 16px;font-size:15px">Call</a>
+</div></header>
+<main id="main">
+<section class="hero" id="top" aria-label="Welcome"><div class="wrap">
+  <div>
+    <p class="tag"><span class="dot" aria-hidden="true"></span>Open today · 11 am – midnight</p>
+    <h1>Cold taps. <span>Hot grill.</span> <em>Your corner.</em></h1>
+    <p class="lead">Halfmile is the neighborhood tap room and grill in Dayton: smash burgers, wings by the dozen, twelve local drafts and trivia every Tuesday.</p>
+    <div class="ctas">
+      <a class="btn btn-amber" href="tel:+19375550168"><span aria-hidden="true">☎</span> Call ahead (937) 555-0168</a>
+      <a class="btn btn-ghost" href="#menu">See the menu</a>
+    </div>
+  </div>
+  <div class="photo" data-r>
+    <img src="../../img/halfmile-burger-1600.webp" srcset="../../img/halfmile-burger-800.webp 800w, ../../img/halfmile-burger-1600.webp 1600w" sizes="(min-width:900px) 45vw, 100vw" alt="A cheeseburger with fries in a wire basket and a side of ketchup on a wooden board" width="1600" height="1067" fetchpriority="high">
+    <div class="sticker">Burger night<small>Thursdays · sample offer</small></div>
+  </div>
+</div></section>
+<div class="ticker-wrap"><div class="ticker" id="ticker" aria-hidden="true"><div><span>Smash burgers</span>★<span>12 local drafts</span>★<span>Trivia Tuesdays</span>★<span>Wings by the dozen</span>★<span>Game day on every screen</span>★<span>Smash burgers</span>★<span>12 local drafts</span>★<span>Trivia Tuesdays</span>★<span>Wings by the dozen</span>★<span>Game day on every screen</span>★</div></div><button class="tick-btn" type="button" aria-pressed="false" aria-controls="ticker">Pause</button></div>
+
+<section id="week"><div class="wrap">
+  <div class="sec-head" data-r><h2>This week at <em>Halfmile</em></h2><p>Something going on every night. Call ahead to save a table for your team.</p></div>
+  <div class="week">
+    <div class="ev" data-r><span class="day">Tuesday · 7 pm</span><h3>Trivia night</h3><p>Teams up to six. Bring your know-it-all friend.</p></div>
+    <div class="ev" data-r><span class="day">Wednesday</span><h3>Wing night</h3><p>Ten house sauces, from mild to regret.</p></div>
+    <div class="ev" data-r><span class="day">Thursday</span><h3>Burger night</h3><p>The smash burger and a draft, sample pricing.</p></div>
+    <div class="ev" data-r><span class="day">Weekends</span><h3>Game day</h3><p>Every game on, sound on for the big one.</p></div>
+  </div>
+</div></section>
+
+<section id="menu" class="menu"><div class="wrap menu-wrap">
+  <img src="../../img/halfmile-wings-800.webp" alt="A platter of glazed chicken wings on lettuce with dipping sauces and fries" width="800" height="533" loading="lazy" data-r>
+  <div>
+    <div class="sec-head" style="margin-bottom:30px" data-r><h2>The <em>menu</em></h2></div>
+    <div class="cat" data-r><h3>From the grill</h3>
+      <div class="item"><div><b>Halfmile smash</b><small>Two patties, American cheese, pickles, house sauce</small></div><span>13</span></div>
+      <div class="item"><div><b>Patty melt</b><small>Rye, grilled onions, Swiss</small></div><span>12</span></div>
+      <div class="item"><div><b>Crispy chicken sandwich</b><small>Slaw, pickles, hot honey</small></div><span>12</span></div>
+    </div>
+    <div class="cat" data-r><h3>Wings &amp; shareables</h3>
+      <div class="item"><div><b>Wings, 6 / 12 / 24</b><small>Ten house sauces and dry rubs</small></div><span>9+</span></div>
+      <div class="item"><div><b>Loaded fries</b><small>Cheese sauce, bacon, scallions</small></div><span>10</span></div>
+      <div class="item"><div><b>Pretzel bites</b><small>Beer cheese for dipping</small></div><span>9</span></div>
+    </div>
+    <div class="cat" data-r><h3>On tap</h3>
+      <div class="item"><div><b>12 rotating drafts</b><small>Mostly Ohio brewers. Ask what's new.</small></div><span>5+</span></div>
+    </div>
+    <p class="note">Sample menu written for this fictional bar.</p>
+  </div>
+</div></section>
+
+<section id="party"><div class="wrap">
+  <div class="sec-head" data-r><h2>Bring <em>the crew</em></h2></div>
+  <div class="party">
+    <div class="box hot" data-r><h3>Back room parties</h3><p>A private room for birthdays, team nights and watch parties. Call to check a date.</p><a class="btn" href="tel:+19375550168">Call to book</a></div>
+    <div class="box" data-r><h3>Take-out trays</h3><p>Wings, sliders and fries by the tray for game day at home. Order a day ahead.</p><a class="btn btn-amber" href="mailto:orders@example.com">Email an order</a></div>
+  </div>
+</div></section>
+
+<section id="visit" class="visit"><div class="wrap">
+  <div data-r>
+    <div class="sec-head" style="margin-bottom:24px"><h2>Hours</h2></div>
+    <ul class="hours">
+      <li><span>Monday – Thursday</span><span>11 am – 11 pm</span></li>
+      <li><span>Friday – Saturday</span><span>11 am – 1 am</span></li>
+      <li><span>Sunday</span><span>11 am – 10 pm</span></li>
+      <li><span>Kitchen</span><span>Until 1 hour before close</span></li>
+    </ul>
+  </div>
+  <div class="contact" data-r>
+    <div class="sec-head" style="margin-bottom:10px"><h2>Find us</h2></div>
+    <a class="big" href="tel:+19375550168">(937) 555-0168</a>
+    <p>860 Brassmoor St., Dayton, OH</p>
+    <p><a href="mailto:hello@example.com">hello@example.com</a></p>
+  </div>
+</div></section>
+</main>
+<footer><div class="wrap">
+  <p style="margin:0"><strong style="color:var(--text)">Sample design for a fictional business.</strong> Halfmile Tap &amp; Grill, its address, phone number (a 555 number reserved for fiction), emails, events and menu are invented for demonstration. Photos are free Pexels stock images (see <a href="../../../credits.html">credits</a>). Design by <a href="../../../">CyberHub Software</a>.</p>
+</div></footer>
+<div class="callbar"><a class="btn btn-amber" href="tel:+19375550168"><span aria-hidden="true">☎</span> Call</a><a class="btn btn-ghost" href="#menu">Menu</a></div>
+<script>
+(function(){var t=document.getElementById('ticker'),b=document.querySelector('.tick-btn');if(b)b.addEventListener('click',function(){var p=t.classList.toggle('paused');b.setAttribute('aria-pressed',p);b.textContent=p?'Play':'Pause'})})();
+(function(){var els=document.querySelectorAll('[data-r]');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('in')});return}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});els.forEach(function(e){io.observe(e)})})();
+</script>
+</body>
+</html>

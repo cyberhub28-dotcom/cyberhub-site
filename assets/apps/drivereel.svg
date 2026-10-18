@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="DriveReel app icon">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#302e30"/><stop offset=".55" stop-color="#1b1a20"/><stop offset="1" stop-color="#0a090f"/></linearGradient>
+<linearGradient id="dr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b3a49"/><stop offset="1" stop-color="#2e2d3a"/></linearGradient>
+<filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="200" height="200" rx="44" fill="url(#bg)"/>
+<rect x="19" y="29.5" width="158" height="100" rx="15" fill="#111119"/>
+<g filter="url(#glow)">
+<rect x="19" y="29.5" width="158" height="100" rx="15" fill="none" stroke="#e0b356" stroke-width="7"/>
+<g fill="#f0d27a"><circle cx="30" cy="39.2" r="3.9"/><circle cx="30" cy="119.6" r="3.9"/><circle cx="47" cy="39.2" r="3.9"/><circle cx="47" cy="119.6" r="3.9"/><circle cx="64" cy="39.2" r="3.9"/><circle cx="64" cy="119.6" r="3.9"/><circle cx="81" cy="39.2" r="3.9"/><circle cx="81" cy="119.6" r="3.9"/><circle cx="98" cy="39.2" r="3.9"/><circle cx="98" cy="119.6" r="3.9"/><circle cx="115" cy="39.2" r="3.9"/><circle cx="115" cy="119.6" r="3.9"/><circle cx="132" cy="39.2" r="3.9"/><circle cx="132" cy="119.6" r="3.9"/><circle cx="149" cy="39.2" r="3.9"/><circle cx="149" cy="119.6" r="3.9"/><circle cx="166" cy="39.2" r="3.9"/><circle cx="166" cy="119.6" r="3.9"/><circle cx="30" cy="60.3" r="3.9"/><circle cx="166" cy="60.3" r="3.9"/><circle cx="30" cy="80.4" r="3.9"/><circle cx="166" cy="80.4" r="3.9"/><circle cx="30" cy="100.5" r="3.9"/><circle cx="166" cy="100.5" r="3.9"/></g>
+<path d="M87.5 58.5 L124 80.8 L87.5 103.2 Z" fill="#f2cd72" stroke="#f2cd72" stroke-width="1.5" stroke-linejoin="round"/>
+</g>
+<rect x="27" y="144.5" width="143" height="28.5" rx="7" fill="url(#dr)"/>
+<path d="M39 158.8 H115" stroke="#161523" stroke-width="1.6" stroke-linecap="round"/>
+<circle cx="153" cy="158.8" r="4" fill="#f2c97a" filter="url(#glow)"/>
+</svg>
