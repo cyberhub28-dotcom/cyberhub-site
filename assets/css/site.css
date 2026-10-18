@@ -326,3 +326,63 @@ footer a{color:var(--on-ink)}
 }
 
 @media (max-width:620px){h2 br{display:none}.pill{font-size:.8rem}}
+
+/* Hero: neutral CSS-only design mockup */
+.mock{position:relative;height:560px;perspective:1400px}
+.mock-browser{position:absolute;left:0;top:40px;width:88%;border-radius:18px;overflow:hidden;background:#14141c;box-shadow:0 50px 90px -30px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.1);transform:rotate(-3deg)}
+.mb-bar{display:flex;align-items:center;gap:7px;padding:12px 14px;background:#1d1d27;border-bottom:1px solid rgba(255,255,255,.06)}
+.mb-bar i{width:10px;height:10px;border-radius:50%;background:#3a3a48}
+.mb-bar i:first-child{background:#ff5f57}.mb-bar i:nth-child(2){background:#febc2e}.mb-bar i:nth-child(3){background:#28c840}
+.mb-url{margin-left:12px;flex:1;max-width:220px;font-size:.7rem;color:var(--on-ink-muted);background:#121218;border-radius:999px;padding:4px 12px}
+.mb-body{padding:18px 20px 22px}
+.mb-nav{display:flex;align-items:center;gap:14px}
+.mb-logo{width:26px;height:26px;border-radius:8px;background:var(--lime)}
+.mb-links{display:flex;gap:10px;flex:1}.mb-links b{width:42px;height:7px;border-radius:4px;background:rgba(255,255,255,.18)}
+.mb-btn{width:64px;height:22px;border-radius:999px;background:var(--violet)}
+.mb-hero{margin:22px 0 18px;padding:26px 22px;border-radius:14px;background:linear-gradient(130deg,rgba(123,107,255,.55),rgba(212,255,63,.25)),#1b1b26;display:flex;flex-direction:column;gap:10px}
+.mb-h{display:block;height:16px;border-radius:6px;background:#fff}
+.mb-p{display:block;height:7px;border-radius:4px;background:rgba(255,255,255,.45);width:90%}
+.w80{width:80%}.w55{width:55%}.w70{width:70%}
+.mb-ctas{display:flex;gap:8px;margin-top:6px}.mb-ctas b{width:84px;height:24px;border-radius:999px;background:var(--lime)}.mb-ctas b+b{background:transparent;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.mb-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mb-cards span{height:64px;border-radius:10px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.mock-phone{position:absolute;right:2%;top:150px;width:200px;aspect-ratio:390/800;border-radius:36px;padding:8px;background:linear-gradient(160deg,#2b2b38,#0f0f15);box-shadow:0 50px 90px -30px rgba(0,0,0,.85),inset 0 0 0 1px rgba(255,255,255,.12);transform:rotate(5deg);z-index:2}
+.mp-screen{position:relative;height:100%;border-radius:29px;overflow:hidden;background:#101017;padding:44px 12px 12px;display:flex;flex-direction:column;gap:12px}
+.mp-island{position:absolute;top:12px;left:50%;width:64px;height:18px;margin-left:-32px;border-radius:20px;background:#000}
+.mp-hero{padding:18px 14px;border-radius:14px;background:linear-gradient(150deg,rgba(212,255,63,.4),rgba(123,107,255,.5)),#1b1b26;display:flex;flex-direction:column;gap:8px}
+.mp-hero .mb-h{height:12px}
+.mp-rows{display:flex;flex-direction:column;gap:8px;flex:1}.mp-rows span{height:38px;border-radius:10px;background:rgba(255,255,255,.07)}
+.mp-call{text-align:center;font-weight:800;font-size:.8rem;color:var(--ink);background:var(--lime);border-radius:999px;padding:10px}
+@media (max-width:1060px){.mock{height:500px}.mock-phone{width:176px}}
+@media (max-width:900px){.mock{height:440px;max-width:460px;margin:10px auto 0;width:100%}.mock-browser{top:30px;width:90%}.mock-phone{top:120px;width:160px}}
+@media (max-width:420px){.mock{height:380px}.mock-phone{width:140px;top:110px}.mb-body{padding:14px}.mb-links b{width:26px}.mb-cards span{height:44px}}
+
+/* What a redesign includes */
+.shift{display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:stretch}
+.shift-col{border-radius:24px;padding:32px 30px}
+.shift-col.old{background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px var(--line-ink)}
+.shift-col.new{background:linear-gradient(150deg,rgba(212,255,63,.14),rgba(123,107,255,.16));box-shadow:inset 0 0 0 1px rgba(212,255,63,.35)}
+.shift-h{margin:0 0 18px;font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.old .shift-h{color:var(--on-ink-muted)}.new .shift-h{color:var(--lime)}
+.shift ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.shift li{position:relative;padding-left:30px;line-height:1.45}
+.old li{color:var(--on-ink-muted)}
+.old li::before{content:"";position:absolute;left:4px;top:.6em;width:12px;height:2px;background:#ff6b6b;transform:rotate(45deg)}
+.old li::after{content:"";position:absolute;left:4px;top:.6em;width:12px;height:2px;background:#ff6b6b;transform:rotate(-45deg)}
+.new li::before{content:"";position:absolute;left:2px;top:.2em;width:18px;height:18px;border-radius:50%;background:var(--lime)}
+.new li::after{content:"";position:absolute;left:8px;top:calc(.2em + 4px);width:5px;height:9px;border:solid var(--ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.shift-arrow{align-self:center;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--lime);color:var(--ink);box-shadow:0 0 30px rgba(212,255,63,.35)}
+.soon{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:56px;padding:26px 30px;border-radius:22px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px var(--line-ink)}
+.soon>div{flex:1;min-width:240px}
+.soon h3{margin:0 0 4px;font-size:1.25rem}
+.soon p{margin:0;color:var(--on-ink-muted);font-size:.95rem}
+.soon-dot{width:12px;height:12px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 6px rgba(212,255,63,.18);animation:soonPulse 2s ease-in-out infinite}
+@keyframes soonPulse{50%{box-shadow:0 0 0 12px rgba(212,255,63,0)}}
+@media (max-width:900px){.shift{grid-template-columns:1fr}.shift-arrow{justify-self:center;transform:rotate(90deg)}}
+@media (prefers-reduced-motion:reduce){.soon-dot{animation:none}}
+.mock-browser{animation:mockA 7s ease-in-out infinite}
+.mock-phone{animation:mockB 6s ease-in-out infinite -2s}
+@keyframes mockA{50%{transform:rotate(-3deg) translateY(-8px)}}
+@keyframes mockB{50%{transform:rotate(5deg) translateY(-12px)}}
+@media (prefers-reduced-motion:reduce){.mock-browser,.mock-phone{animation:none}}
+.mock .tag-float.t1{top:6px;left:6%}
+@media (max-width:420px){.mock{height:430px}.mock-phone{top:96px}}
