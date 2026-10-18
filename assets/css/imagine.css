@@ -311,3 +311,4 @@ html:not(.js) .qform{display:none}
   .qx{top:12px;right:12px}
 }
 @media (max-width:360px){.qchks{grid-template-columns:1fr}}
+.qf .qnote{text-align:left;margin-top:8px;font-size:.8rem}
