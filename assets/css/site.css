@@ -386,3 +386,7 @@ footer a{color:var(--on-ink)}
 @media (prefers-reduced-motion:reduce){.mock-browser,.mock-phone{animation:none}}
 .mock .tag-float.t1{top:6px;left:6%}
 @media (max-width:420px){.mock{height:430px}.mock-phone{top:96px}}
+/* Apps not yet on the App Store */
+.soon-badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--ink);background:var(--lime);padding:3px 10px;border-radius:999px;margin-top:6px;white-space:nowrap}
+.soon-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.link-soon{font-size:.9rem;font-weight:600;padding:8px 15px;border-radius:999px;border:1px dashed var(--line);color:var(--muted);cursor:default}
