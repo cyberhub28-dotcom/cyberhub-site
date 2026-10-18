@@ -22,6 +22,7 @@
 <script>document.documentElement.className='js'</script>
 <link rel="stylesheet" href="../assets/css/site.css">
 <link rel="stylesheet" href="../assets/css/imagine.css">
+<link rel="stylesheet" href="../assets/css/layout.css">
 </head>
 <body data-page="pricing">
 <a class="skip" href="#main">Skip to content</a>
@@ -33,11 +34,10 @@
       <span class="bstack"><span class="bname">CyberHub</span><span class="bsub">Software</span></span>
     </a>
     <nav aria-label="Main">
-      <ul class="nav-links" id="nav-links"><li><a href="../services/">Services</a></li><li><a href="../work/">Work</a></li><li><a href="../pricing/" aria-current="page">Pricing</a></li><li><a href="../apps/">Apps</a></li><li><a href="../contact/">Contact</a></li></ul>
+      <ul class="nav-links" id="nav-links"><li><a href="../">Home</a></li><li><a href="../services/">Services</a></li><li><a href="../work/">Work</a></li><li><a href="../pricing/" aria-current="page">Pricing</a></li><li><a href="../apps/">Apps</a></li><li><a href="../contact/">Contact</a></li></ul>
     </nav>
     <div class="nav-cta">
       <a class="btn btn-lime nav-start" data-review href="../contact/"><span class="ns-long">Start Your Free Review</span><span class="ns-short">Free review</span> <span class="arr" aria-hidden="true">→</span></a>
-      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     </div>
   </div>
 </header>
@@ -53,8 +53,9 @@
       </div>
       <p class="lede" data-reveal style="--d:.1s">No long-term contracts. Every project uses a short written agreement. No retainers and no monthly plan from us.</p>
     </div>
+    <div class="tier-tabs" data-tabs="Packages" data-tabs-below="980">
     <div class="tiers">
-      <article class="tier" data-reveal>
+      <article class="tier" data-reveal data-tab="Starter" id="starter">
         <h3 class="name">Starter</h3>
         <p class="for">A sharp one-page site for a shop, food truck or solo pro.</p>
         <div class="price"><span class="cur">$</span><span class="amt">450</span></div>
@@ -68,7 +69,7 @@
         </ul>
         <a class="btn btn-line" href="mailto:contact@cyberhubsoftware.com?subject=Starter%20website%20quote">Ask about Starter</a>
       </article>
-      <article class="tier feat" data-reveal style="--d:.1s">
+      <article class="tier feat" data-reveal style="--d:.1s" data-tab="Standard" data-tab-default id="standard">
         <span class="badge">Best value</span>
         <h3 class="name">Standard</h3>
         <p class="for">A complete small-business site that replaces the old one.</p>
@@ -83,7 +84,7 @@
         </ul>
         <a class="btn btn-lime" href="mailto:contact@cyberhubsoftware.com?subject=Standard%20website%20quote">Ask about Standard <span class="arr" aria-hidden="true">→</span></a>
       </article>
-      <article class="tier" data-reveal style="--d:.2s">
+      <article class="tier" data-reveal style="--d:.2s" data-tab="Plus" id="plus">
         <h3 class="name">Plus</h3>
         <p class="for">For businesses that take bookings, orders or inquiries online.</p>
         <div class="price"><span class="cur">$</span><span class="amt">1,650</span></div>
@@ -98,13 +99,19 @@
         <a class="btn btn-line" href="mailto:contact@cyberhubsoftware.com?subject=Plus%20website%20quote">Ask about Plus</a>
       </article>
     </div>
-    <div class="terms" data-reveal>
+    </div>
+    <div class="founding" data-reveal><span class="da-new">Founding clients</span><p><b>Our first 3 clients get $150 off any package, or a free Google Business Profile tune-up.</b> In return, we ask for a short, honest testimonial we can post on our site, and permission to show your finished site in our portfolio. Any testimonial we post will note that you got a founding-client discount. The offer ends once 3 spots are filled.</p></div>
+    <div class="more-tabs" data-tabs="Terms, add-ons and FAQ">
+      <div class="tpanel" data-tab="Terms" id="terms">
+      <div class="terms">
       <div class="term"><b>30-day fix window</b><span>Anything that isn't right after launch, we fix free for 30 days.</span></div>
       <div class="term"><b>Yours to keep</b><span>Your domain and hosting are in your name from day one. Our rights in the custom design and code pass to you at final payment.</span></div>
       <div class="term"><b>No ongoing fees</b><span>No management plan or retainer. We hand it off and you're done.</span></div>
       <div class="term"><b>Half up front</b><span>50% to start, 50% when you approve the finished site.</span></div>
     </div>
-    <div class="addon-list" data-reveal>
+      </div>
+      <div class="tpanel" data-tab="Add-ons" id="add-ons">
+      <div class="addon-list">
       <h2 class="h-sm">Add-ons</h2>
       <ul>
         <li><span>Google Business Profile setup or cleanup</span><b>$150–$300</b></li>
@@ -112,14 +119,11 @@
         <li><span>Digital menu with QR codes</span><b>$150–$250</b></li>
       </ul>
       <p class="addon-more">One-time prices, quoted in writing. <a href="../services/#add-ons">What each add-on includes →</a></p>
-      <div class="founding" data-reveal><span class="da-new">Founding clients</span><p><b>Our first 3 clients get $150 off any package, or a free Google Business Profile tune-up.</b> In return, we ask for a short, honest testimonial we can post on our site, and permission to show your finished site in our portfolio. Any testimonial we post will note that you got a founding-client discount. The offer ends once 3 spots are filled.</p></div>
       <p class="addons" data-reveal>Hosting: free on Cloudflare Pages by default (GitHub Pages is an option for simple sites that don&rsquo;t sell online), or on Squarespace or Wix if you want to edit it yourself (their plan is billed to you). Other add-ons: extra page $100 · copywriting help $150 · Squarespace/Wix build with training +$150 · rush under a week $200.</p>
     </div>
-  </div>
-</section>
-
-<section id="faq">
-  <div class="wrap faq-grid">
+      </div>
+      <div class="tpanel" data-tab="FAQ" id="faq">
+      <div class="faq-grid">
     <div class="sec-head" data-reveal>
       <p class="kicker">FAQ</p>
       <h2>Straight answers.</h2>
@@ -134,6 +138,9 @@
       <details><summary>How long does it take?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>About one week for Starter and one to three weeks for Standard and Plus. The biggest factor is how quickly we get your photos, hours and service details.</p></div></details>
       <details><summary>What do you need from me?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>Your current web address, your logo if you have one, any photos you'd like used, and a few minutes to confirm hours, services and prices. We can use free-license stock photos where you don't have your own.</p></div></details>
       <details><summary>Do you only work in Dayton?<span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>We're based in the Dayton area and focus on the Miami Valley and small-town Ohio, but we can work with businesses anywhere by email and video call.</p></div></details>
+    </div>
+  </div>
+      </div>
     </div>
   </div>
 </section>

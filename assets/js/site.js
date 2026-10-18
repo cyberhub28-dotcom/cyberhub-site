@@ -286,3 +286,105 @@
       .then(function () { sb.disabled = false; tx.textContent = 'Send my free review request'; });
   });
 })();
+
+// Apple-style segmented tabs. Markup: a [data-tabs="Label"] group holding [data-tab="Tab name"] panels.
+// Optional data-tabs-below="980" turns tabs on only at or below that width (side by side above it).
+// Without JS no tab bar is built and every panel shows (progressive enhancement).
+(function () {
+  var groups = document.querySelectorAll('[data-tabs]');
+  if (!groups.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var all = [];
+  Array.prototype.forEach.call(groups, function (g, gi) {
+    var panels = Array.prototype.filter.call(g.querySelectorAll('[data-tab]'), function (p) { return p.parentNode.closest('[data-tabs]') === g; });
+    if (panels.length < 2) return;
+    var mq = g.getAttribute('data-tabs-below') ? window.matchMedia('(max-width:' + g.getAttribute('data-tabs-below') + 'px)') : null;
+    var list = document.createElement('div');
+    list.className = 'seg-list';
+    list.setAttribute('role', 'tablist');
+    list.setAttribute('aria-label', g.getAttribute('data-tabs') || 'Sections');
+    var current = 0;
+    var tabs = panels.map(function (p, i) {
+      if (!p.id) p.id = 'tp-' + gi + '-' + i;
+      if (p.hasAttribute('data-tab-default')) current = i;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'seg-tab'; b.id = 'tab-' + p.id;
+      b.setAttribute('role', 'tab'); b.setAttribute('aria-controls', p.id);
+      b.textContent = p.getAttribute('data-tab');
+      b.addEventListener('click', function () { select(i, false, true); });
+      list.appendChild(b);
+      return b;
+    });
+    var anchor = panels[0].parentNode === g ? panels[0] : panels[0].parentNode;
+    anchor.parentNode.insertBefore(list, anchor);
+    function on() { return !mq || mq.matches; }
+    function select(i, focus, animate) {
+      current = i;
+      var live = on();
+      tabs.forEach(function (t, j) {
+        var sel = j === i;
+        t.setAttribute('aria-selected', sel ? 'true' : 'false');
+        t.tabIndex = sel ? 0 : -1;
+        if (live) {
+          panels[j].hidden = !sel;
+          if (sel && animate && !reduce) { panels[j].classList.remove('tab-in'); void panels[j].offsetWidth; panels[j].classList.add('tab-in'); }
+        }
+      });
+      if (focus) tabs[i].focus();
+      // keep the chosen tab in view if the bar scrolls sideways
+      var t = tabs[i], l = list;
+      if (l.scrollWidth > l.clientWidth) l.scrollLeft = t.offsetLeft - (l.clientWidth - t.offsetWidth) / 2;
+    }
+    function apply() {
+      var live = on();
+      list.hidden = !live;
+      g.classList.toggle('tabs-on', live);
+      panels.forEach(function (p, j) {
+        if (live) { p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', tabs[j].id); }
+        else { p.removeAttribute('role'); p.removeAttribute('aria-labelledby'); p.hidden = false; }
+      });
+      select(current, false, false);
+    }
+    list.addEventListener('keydown', function (e) {
+      var n = tabs.length, i = current;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') i = (current + 1) % n;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') i = (current - 1 + n) % n;
+      else if (e.key === 'Home') i = 0;
+      else if (e.key === 'End') i = n - 1;
+      else return;
+      e.preventDefault();
+      select(i, true, true);
+    });
+    if (mq) { if (mq.addEventListener) mq.addEventListener('change', apply); else mq.addListener(apply); }
+    apply();
+    all.push({ panels: panels, select: select, on: on });
+  });
+
+  // Links to something inside a hidden tab (e.g. /pricing/#faq, /services/#add-ons) open that tab first
+  function reveal(el) {
+    var hit = false;
+    all.forEach(function (grp) {
+      if (!grp.on()) return;
+      grp.panels.forEach(function (p, i) { if (p === el || p.contains(el)) { grp.select(i, false, false); hit = true; } });
+    });
+    return hit;
+  }
+  window.CyberHubReveal = reveal;
+  function fromHash(scroll) {
+    var id = location.hash.slice(1);
+    if (!id) return;
+    var el = null;
+    try { el = document.getElementById(decodeURIComponent(id)); } catch (e) {}
+    if (el && reveal(el) && scroll) requestAnimationFrame(function () { el.scrollIntoView({ block: 'start' }); });
+  }
+  fromHash(true);
+  window.addEventListener('hashchange', function () { fromHash(true); });
+})();
+
+// Mobile page strip: keep the current page's link in view
+(function () {
+  var ul = document.querySelector('.nav-links');
+  var cur = ul && ul.querySelector('[aria-current="page"]');
+  if (!cur || ul.scrollWidth <= ul.clientWidth) return;
+  ul.scrollLeft = cur.parentNode.offsetLeft - (ul.clientWidth - cur.parentNode.offsetWidth) / 2;
+})();

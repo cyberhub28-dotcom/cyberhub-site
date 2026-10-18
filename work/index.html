@@ -22,6 +22,7 @@
 <script>document.documentElement.className='js'</script>
 <link rel="stylesheet" href="../assets/css/site.css">
 <link rel="stylesheet" href="../assets/css/imagine.css">
+<link rel="stylesheet" href="../assets/css/layout.css">
 </head>
 <body data-page="work">
 <a class="skip" href="#main">Skip to content</a>
@@ -33,11 +34,10 @@
       <span class="bstack"><span class="bname">CyberHub</span><span class="bsub">Software</span></span>
     </a>
     <nav aria-label="Main">
-      <ul class="nav-links" id="nav-links"><li><a href="../services/">Services</a></li><li><a href="../work/" aria-current="page">Work</a></li><li><a href="../pricing/">Pricing</a></li><li><a href="../apps/">Apps</a></li><li><a href="../contact/">Contact</a></li></ul>
+      <ul class="nav-links" id="nav-links"><li><a href="../">Home</a></li><li><a href="../services/">Services</a></li><li><a href="../work/" aria-current="page">Work</a></li><li><a href="../pricing/">Pricing</a></li><li><a href="../apps/">Apps</a></li><li><a href="../contact/">Contact</a></li></ul>
     </nav>
     <div class="nav-cta">
       <a class="btn btn-lime nav-start" data-review href="../contact/"><span class="ns-long">Start Your Free Review</span><span class="ns-short">Free review</span> <span class="arr" aria-hidden="true">→</span></a>
-      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     </div>
   </div>
 </header>
@@ -53,8 +53,9 @@
       </div>
       <p class="lede" data-reveal style="--d:.1s">These three businesses are fictional. We designed both the dated "before" and the modern "after" to show what a CyberHub redesign looks like on a phone.</p>
     </div>
+    <div class="cases-tabs" data-tabs="Sample designs" data-tabs-below="980">
     <div class="cases">
-      <article class="case" data-reveal>
+      <article class="case" data-reveal data-tab="Valdoro" id="valdoro">
         <div class="compare">
           <div class="screen">
             <img src="../assets/samples/valdoro-before.webp" alt="Before: a dated, desktop-only sample site for the fictional Osteria Valdoro, shrunk onto a phone screen" width="585" height="1266" loading="lazy">
@@ -70,7 +71,7 @@
         <span class="concept">Sample design for a fictional business</span>
         <span class="view-links"><a class="view" href="../samples/osteria-valdoro/after/">See the after →</a> <a class="view muted" href="../samples/osteria-valdoro/before/">the before</a></span>
       </article>
-      <article class="case" data-reveal style="--d:.1s">
+      <article class="case" data-reveal style="--d:.1s" data-tab="Halfmile" id="halfmile">
         <div class="compare">
           <div class="screen">
             <img src="../assets/samples/halfmile-before.webp" alt="Before: a dated, desktop-only sample site for the fictional Halfmile Tap &amp; Grill, shrunk onto a phone screen" width="585" height="1266" loading="lazy">
@@ -86,7 +87,7 @@
         <span class="concept">Sample design for a fictional business</span>
         <span class="view-links"><a class="view" href="../samples/halfmile-tap-and-grill/after/">See the after →</a> <a class="view muted" href="../samples/halfmile-tap-and-grill/before/">the before</a></span>
       </article>
-      <article class="case" data-reveal style="--d:.2s">
+      <article class="case" data-reveal style="--d:.2s" data-tab="Brindlewood" id="brindlewood">
         <div class="compare">
           <div class="screen">
             <img src="../assets/samples/brindlewood-before.webp" alt="Before: a dated, desktop-only sample site for the fictional Brindlewood Chiropractic &amp; Physical Therapy, shrunk onto a phone screen" width="585" height="1266" loading="lazy">
@@ -102,6 +103,7 @@
         <span class="concept">Sample design for a fictional business</span>
         <span class="view-links"><a class="view" href="../samples/brindlewood-chiropractic-pt/after/">See the after →</a> <a class="view muted" href="../samples/brindlewood-chiropractic-pt/before/">the before</a></span>
       </article>
+    </div>
     </div>
     <div class="work-foot" data-reveal>
       <p>Sample designs for fictional businesses. They are not clients or client projects, and any resemblance to a real business is unintended. Names, phone numbers (555 numbers reserved for fiction), emails, addresses and menus are invented. Photos are free Pexels stock images; see <a href="../credits.html">credits</a>.</p>
@@ -119,7 +121,7 @@
       </div>
       <p class="lede" data-reveal style="--d:.1s">We won't post made-up quotes. As projects launch, owners' own words will appear here.</p>
     </div>
-    <div class="reviews-grid" aria-label="Placeholder review slots, no reviews yet">
+    <div class="reviews-grid rail" tabindex="0" role="region" aria-label="Placeholder review slots, no reviews yet">
       <div class="review-slot" data-reveal><span class="ph-label">Placeholder · review slot 1</span><div class="sk"></div><div class="sk s80"></div><div class="sk s60"></div><div class="who"><span class="av"></span><span>Your business could be first</span></div></div>
       <div class="review-slot" data-reveal style="--d:.1s"><span class="ph-label">Placeholder · review slot 2</span><div class="sk"></div><div class="sk s80"></div><div class="sk s60"></div><div class="who"><span class="av"></span><span>Reserved for a real client</span></div></div>
       <div class="review-slot" data-reveal style="--d:.2s"><span class="ph-label">Placeholder · review slot 3</span><div class="sk"></div><div class="sk s80"></div><div class="sk s60"></div><div class="who"><span class="av"></span><span>Reserved for a real client</span></div></div>

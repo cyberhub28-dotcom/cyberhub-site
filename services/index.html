@@ -22,6 +22,7 @@
 <script>document.documentElement.className='js'</script>
 <link rel="stylesheet" href="../assets/css/site.css">
 <link rel="stylesheet" href="../assets/css/imagine.css">
+<link rel="stylesheet" href="../assets/css/layout.css">
 </head>
 <body data-page="services">
 <a class="skip" href="#main">Skip to content</a>
@@ -33,11 +34,10 @@
       <span class="bstack"><span class="bname">CyberHub</span><span class="bsub">Software</span></span>
     </a>
     <nav aria-label="Main">
-      <ul class="nav-links" id="nav-links"><li><a href="../services/" aria-current="page">Services</a></li><li><a href="../work/">Work</a></li><li><a href="../pricing/">Pricing</a></li><li><a href="../apps/">Apps</a></li><li><a href="../contact/">Contact</a></li></ul>
+      <ul class="nav-links" id="nav-links"><li><a href="../">Home</a></li><li><a href="../services/" aria-current="page">Services</a></li><li><a href="../work/">Work</a></li><li><a href="../pricing/">Pricing</a></li><li><a href="../apps/">Apps</a></li><li><a href="../contact/">Contact</a></li></ul>
     </nav>
     <div class="nav-cta">
       <a class="btn btn-lime nav-start" data-review href="../contact/"><span class="ns-long">Start Your Free Review</span><span class="ns-short">Free review</span> <span class="arr" aria-hidden="true">→</span></a>
-      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     </div>
   </div>
 </header>
@@ -53,7 +53,9 @@
       </div>
       <p class="lede" data-reveal style="--d:.1s">We rebuild local websites for how customers find you today: on a phone, in a hurry, ready to call.</p>
     </div>
-    <div class="bento">
+    <div class="svc-tabs" data-tabs="Services">
+      <div class="tpanel" data-tab="Redesign" id="redesign">
+    <div class="bento rail" tabindex="0" role="region" aria-label="What a redesign includes">
       <article class="svc big" data-reveal>
         <div>
           <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
@@ -85,17 +87,14 @@
         <p>We connect a tool like Square, Calendly, OpenTable or Vagaro, in your own account.</p>
       </article>
     </div>
-  </div>
-</section>
-
-<section class="extras-sec" id="add-ons">
-  <div class="wrap">
+      </div>
+      <div class="tpanel extras-sec" data-tab="Add-ons" id="add-ons">
     <div class="extras">
       <div class="extras-head" data-reveal>
         <h2 class="h-sm">Add-on services</h2>
         <p>Add them to any project, or book them on their own. Each is a flat, one-time price, quoted in writing before we start.</p>
       </div>
-      <div class="extras-grid">
+      <div class="extras-grid rail" tabindex="0" role="region" aria-label="Add-on services">
         <article class="extra" data-reveal>
           <div class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.6"/></svg></div>
           <h4>Google Business Profile setup or cleanup</h4>
@@ -119,11 +118,8 @@
         </article>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="process" class="apps-sec process-sec">
-  <div class="wrap">
+      </div>
+      <div class="tpanel process-sec" data-tab="How it works" id="process">
     <div class="sec-head">
       <div data-reveal>
         <p class="kicker">How it works</p>
@@ -131,14 +127,17 @@
       </div>
       <p class="lede" data-reveal style="--d:.1s">Most sites take one to three weeks.</p>
     </div>
-    <ol class="steps">
+    <ol class="steps rail" tabindex="0" aria-label="How it works">
       <li class="step" data-reveal><span class="num">01</span><h3>Free review</h3><p>Send your current web address. We reply with a short list of what to fix and a fixed quote.</p><span class="time">Within 2 business days</span></li>
       <li class="step" data-reveal style="--d:.1s"><span class="num">02</span><h3>Design &amp; build</h3><p>After the deposit, we design and build the new site and share a private preview link.</p><span class="time">1–3 weeks</span></li>
       <li class="step" data-reveal style="--d:.2s"><span class="num">03</span><h3>Launch</h3><p>Once you approve it, we launch it in your own hosting account and point your domain.</p><span class="time">Launch day</span></li>
       <li class="step" data-reveal style="--d:.3s"><span class="num">04</span><h3>Hand-off</h3><p>You get every login and a quick guide. We fix anything that comes up for 30 days, then step away.</p><span class="time">30-day fix window</span></li>
     </ol>
+      </div>
+    </div>
   </div>
 </section>
+
 
 <section class="cta cta-short" id="quote">
   <div class="wrap">

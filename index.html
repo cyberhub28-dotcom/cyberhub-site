@@ -22,6 +22,7 @@
 <script>document.documentElement.className='js'</script>
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/imagine.css">
+<link rel="stylesheet" href="assets/css/layout.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"CyberHub Software","url":"https://cyberhubsoftware.com/","email":"contact@cyberhubsoftware.com","description":"One-time website redesigns for small businesses, and iOS apps.","address":{"@type":"PostalAddress","addressLocality":"Dayton","addressRegion":"OH","addressCountry":"US"},"areaServed":[{"@type":"City","name":"Dayton"},{"@type":"State","name":"Ohio"}],"priceRange":"$450-$1,650","makesOffer":[{"@type":"Offer","name":"Starter website","price":"450","priceCurrency":"USD"},{"@type":"Offer","name":"Standard website","price":"950","priceCurrency":"USD"},{"@type":"Offer","name":"Plus website","price":"1650","priceCurrency":"USD"}]}
 </script>
@@ -36,11 +37,10 @@
       <span class="bstack"><span class="bname">CyberHub</span><span class="bsub">Software</span></span>
     </a>
     <nav aria-label="Main">
-      <ul class="nav-links" id="nav-links"><li><a href="services/">Services</a></li><li><a href="work/">Work</a></li><li><a href="pricing/">Pricing</a></li><li><a href="apps/">Apps</a></li><li><a href="contact/">Contact</a></li></ul>
+      <ul class="nav-links" id="nav-links"><li><a href="./" aria-current="page">Home</a></li><li><a href="services/">Services</a></li><li><a href="work/">Work</a></li><li><a href="pricing/">Pricing</a></li><li><a href="apps/">Apps</a></li><li><a href="contact/">Contact</a></li></ul>
     </nav>
     <div class="nav-cta">
       <a class="btn btn-lime nav-start" data-review href="contact/"><span class="ns-long">Start Your Free Review</span><span class="ns-short">Free review</span> <span class="arr" aria-hidden="true">→</span></a>
-      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     </div>
   </div>
 </header>
@@ -86,9 +86,10 @@
 
 <main id="main">
 
-<section class="vals-sec" aria-label="Why CyberHub">
-  <div class="wrap">
-    <div class="vals">
+<section class="home-tabs" aria-label="Why CyberHub">
+  <div class="wrap" data-tabs="Explore CyberHub">
+    <div class="tpanel" data-tab="Why CyberHub" id="why">
+      <div class="vals">
       <article class="svc val" data-reveal>
         <div class="ic" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
         <h3>One flat price</h3>
@@ -105,11 +106,8 @@
         <p>Anything that isn't right after launch, we fix free for 30 days.</p>
       </article>
     </div>
-  </div>
-</section>
-
-<section class="teasers-sec">
-  <div class="wrap teasers">
+    </div>
+    <div class="tpanel" data-tab="Sample work" id="sample">
     <article class="teaser t-work" data-reveal>
       <div class="compare">
           <div class="screen">
@@ -129,14 +127,19 @@
         <a class="t-link" href="work/">See all three samples <span aria-hidden="true">→</span></a>
       </div>
     </article>
+    </div>
+    <div class="tpanel" data-tab="Pricing" id="price">
     <article class="teaser t-price" data-reveal style="--d:.1s">
       <p class="kicker">Pricing</p>
       <p class="t-big"><span>From</span> $450</p>
       <p>Flat, one-time prices: Starter $450 · Standard $950 · Plus $1,650.</p>
       <a class="t-link" href="pricing/">See pricing <span aria-hidden="true">→</span></a>
     </article>
+    </div>
   </div>
 </section>
+
+
 
 <section class="cta cta-short" id="quote">
   <div class="wrap">
