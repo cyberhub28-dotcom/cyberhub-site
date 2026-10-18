@@ -98,3 +98,31 @@
     btn.querySelector('.mb-tx').textContent = paused ? 'Play' : 'Pause';
   });
 })();
+
+// Sticky "free review" banner: dismissible, hidden near the quote/contact area
+(function () {
+  var bar = document.getElementById('ready');
+  if (!bar) return;
+  var KEY = 'ch-ready-dismissed';
+  try { if (sessionStorage.getItem(KEY)) return; } catch (e) {}
+  var shown = false, nearEnd = false, pastHero = false;
+  function update() {
+    var want = pastHero && !nearEnd;
+    if (want === shown) return;
+    shown = want;
+    if (want) { bar.hidden = false; requestAnimationFrame(function () { bar.classList.add('on'); }); document.body.classList.add('has-ready'); }
+    else { bar.classList.remove('on'); document.body.classList.remove('has-ready'); }
+  }
+  function onScroll() { pastHero = window.scrollY > window.innerHeight * 0.6; update(); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  var end = document.getElementById('quote');
+  if (end && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { nearEnd = es[0].isIntersecting || es[0].boundingClientRect.top < 0; update(); }, { threshold: 0 }).observe(end);
+  }
+  bar.querySelector('.ready-x').addEventListener('click', function () {
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    bar.classList.remove('on'); bar.hidden = true; document.body.classList.remove('has-ready');
+    window.removeEventListener('scroll', onScroll);
+  });
+})();
