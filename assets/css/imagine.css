@@ -67,13 +67,13 @@ body{background:var(--ink);color:var(--text)}
 .da-glow{position:absolute;left:12%;top:14%;width:76%;height:76%;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.55) 0%,rgba(217,119,6,.28) 38%,rgba(217,119,6,0) 70%);filter:blur(10px);animation:glowPulse 4.5s ease-in-out infinite}
 @keyframes glowPulse{0%,100%{opacity:.7;transform:scale(.94)}50%{opacity:1;transform:scale(1.06)}}
 .da-ring{position:absolute;left:8%;top:8%;width:84%;height:84%;border-radius:50%;border:1px solid rgba(251,191,36,.18);box-shadow:inset 0 0 60px rgba(251,191,36,.08)}
-.da-part{position:absolute;height:auto;filter:drop-shadow(0 14px 22px rgba(0,0,0,.45));animation:daIn 1s var(--ease) var(--in) both,daFloat var(--ft,4s) ease-in-out calc(var(--in) + 1s) infinite alternate}
+.da-part{position:absolute;height:auto;animation:daIn 1s var(--ease) var(--in) both,daFloat var(--ft,4s) ease-in-out calc(var(--in) + 1s) infinite alternate}
 .da-hat{--ft:3.6s;--fy:-14px}
 .da-title{--ft:4.6s;--fy:-8px}
 .da-clip{--ft:3.9s;--fy:-10px}
 .da-bowl{--ft:4.3s;--fy:-7px}
 .da-jar{--ft:3.4s;--fy:-11px}
-@keyframes daIn{from{opacity:0;filter:blur(8px) drop-shadow(0 14px 22px rgba(0,0,0,.45))}to{opacity:1}}
+@keyframes daIn{from{opacity:0;scale:.92}to{opacity:1;scale:1}}
 @keyframes daFloat{from{transform:translateY(0)}to{transform:translateY(var(--fy,-10px))}}
 .da-sparks .spk{z-index:2}
 .da-label{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px;padding:9px 16px 9px 9px;border-radius:999px;background:rgba(20,26,35,.75);border:1px solid var(--line);color:#E5E7EB;font-size:.88rem;font-weight:550;text-decoration:none;transition:border-color .3s,box-shadow .3s}
