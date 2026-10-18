@@ -3,51 +3,340 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CyberHub Software, LLC</title>
-<meta name="description" content="CyberHub Software, LLC is an independent software company in Dayton, Ohio that makes iOS apps, including Dinner Agent and DriveReel.">
+<title>CyberHub Software, LLC | iOS apps and website redesigns in Dayton, Ohio</title>
+<meta name="description" content="CyberHub Software, LLC is an independent software company in Dayton, Ohio. We make iOS apps, including Dinner Agent and DriveReel, and rebuild outdated small-business websites for a one-time price.">
+<meta name="theme-color" content="#0b1020">
+<meta property="og:title" content="CyberHub Software, LLC">
+<meta property="og:description" content="iOS apps and one-time website redesigns from Dayton, Ohio.">
+<meta property="og:url" content="https://cyberhubsoftware.com/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://cyberhubsoftware.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M42 22a14 14 0 1 0 0 20' stroke='white' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
-  :root { --bg:#f7f8fa; --card:#fff; --text:#1c1e21; --muted:#5f6368; --accent:#2563eb; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
-  main { max-width:820px; margin:0 auto; padding:56px 20px 32px; }
-  h1 { font-size:2.1rem; margin:0 0 8px; }
-  .lead { color:var(--muted); font-size:1.1rem; margin:0 0 40px; }
-  .apps { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
-  .card { background:var(--card); border-radius:14px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
-  .card h2 { margin:0 0 6px; font-size:1.25rem; }
-  .card p { margin:0 0 14px; color:var(--muted); }
-  a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
-  .contact { margin-top:44px; }
-  footer { max-width:820px; margin:0 auto; padding:24px 20px 48px; color:var(--muted); font-size:.9rem; border-top:1px solid #e3e5e8; }
+  :root{
+    --bg:#0b1020; --bg2:#111832; --surface:#ffffff; --soft:#f5f7fb; --text:#0f172a; --muted:#5b6478;
+    --line:#e4e8f0; --accent:#2563eb; --accent2:#06b6d4; --ink:#e7ecf7; --ink-muted:#a8b3cc;
+    --radius:18px; --max:1120px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--surface);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+  .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:#fff;padding:8px 12px;border-radius:8px;z-index:10}
+
+  /* Nav */
+  .nav{position:sticky;top:0;z-index:5;background:rgba(11,16,32,.85);backdrop-filter:saturate(160%) blur(10px);-webkit-backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;letter-spacing:-.01em}
+  .brand:hover{text-decoration:none}
+  .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center}
+  .nav ul{list-style:none;display:flex;gap:26px;margin:0;padding:0}
+  .nav ul a{color:var(--ink-muted);font-size:.95rem;font-weight:500} .nav ul a:hover{color:#fff;text-decoration:none}
+  .nav .cta-sm{color:#fff;background:var(--accent);padding:8px 14px;border-radius:999px;font-size:.9rem;font-weight:600}
+  .nav .cta-sm:hover{text-decoration:none;background:#1d4ed8}
+  @media (max-width:760px){.nav ul{display:none}}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;background:radial-gradient(1200px 500px at 85% -10%,rgba(6,182,212,.28),transparent 60%),radial-gradient(900px 500px at -10% 20%,rgba(37,99,235,.35),transparent 60%),var(--bg);color:var(--ink)}
+  .hero::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,#000 30%,transparent);-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent);pointer-events:none}
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-top:92px;padding-bottom:104px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#9fe7f5;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.3);padding:6px 12px;border-radius:999px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#22d3ee;box-shadow:0 0 10px #22d3ee}
+  h1{font-size:clamp(2.3rem,5.4vw,3.9rem);line-height:1.05;letter-spacing:-.03em;margin:20px 0 18px;color:#fff}
+  .grad{background:linear-gradient(90deg,#60a5fa,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:1.15rem;color:var(--ink-muted);max-width:560px;margin:0 0 30px}
+  .btns{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;font-weight:600;font-size:1rem;transition:transform .15s,background .15s}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  .btn-primary{background:var(--accent);color:#fff} .btn-primary:hover{background:#1d4ed8}
+  .btn-ghost{color:#fff;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.04)} .btn-ghost:hover{background:rgba(255,255,255,.1)}
+  .meta{display:flex;flex-wrap:wrap;gap:22px;margin-top:34px;color:var(--ink-muted);font-size:.92rem}
+  .meta b{color:#fff;font-weight:600}
+
+  /* Hero visual */
+  .stack{position:relative;height:380px}
+  .panel{position:absolute;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 60px rgba(0,0,0,.35);backdrop-filter:blur(6px)}
+  .browser{inset:0 40px 70px 0;padding:14px}
+  .bar{display:flex;gap:6px;margin-bottom:14px}.bar i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25)}
+  .sk{height:12px;border-radius:6px;background:rgba(255,255,255,.14);margin-bottom:10px}
+  .sk.h{height:26px;width:70%;background:linear-gradient(90deg,rgba(96,165,250,.7),rgba(34,211,238,.6))}
+  .sk.w60{width:60%}.sk.w80{width:80%}.sk.w40{width:40%}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}.tiles div{height:70px;border-radius:12px;background:rgba(255,255,255,.08)}
+  .phone{width:150px;height:270px;right:0;bottom:0;padding:12px;border-radius:28px;background:linear-gradient(180deg,#1a2347,#0f1630)}
+  .phone .notch{width:54px;height:6px;border-radius:6px;background:rgba(255,255,255,.2);margin:2px auto 14px}
+  .phone .app{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px;border-radius:12px;background:rgba(255,255,255,.07);font-size:.72rem;color:#dbe4f7}
+  .phone .ic{width:26px;height:26px;border-radius:8px;flex:none}
+  @media (max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-top:64px;padding-bottom:72px}.stack{display:none}}
+
+  /* Sections */
+  section{padding:88px 0}
+  .soft{background:var(--soft)}
+  .kicker{color:var(--accent);font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px}
+  h2{font-size:clamp(1.8rem,3.4vw,2.5rem);letter-spacing:-.02em;line-height:1.15;margin:0 0 14px}
+  .sub{color:var(--muted);font-size:1.08rem;max-width:640px;margin:0 0 44px}
+
+  /* Apps */
+  .apps{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:box-shadow .2s,transform .2s}
+  .card:hover{box-shadow:0 18px 40px rgba(15,23,42,.08);transform:translateY(-2px)}
+  .app-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .app-icon{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;flex:none}
+  .ai-dinner{background:linear-gradient(135deg,#f97316,#ef4444)} .ai-reel{background:linear-gradient(135deg,#6366f1,#06b6d4)}
+  .card h3{margin:0;font-size:1.3rem;letter-spacing:-.01em}
+  .tag{display:inline-block;font-size:.75rem;font-weight:600;color:var(--muted);background:var(--soft);border:1px solid var(--line);padding:2px 9px;border-radius:999px;margin-top:4px}
+  .card p{color:var(--muted);margin:0 0 18px}
+  .links{display:flex;flex-wrap:wrap;gap:8px}
+  .links a{font-size:.9rem;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line);color:var(--text)}
+  .links a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+  @media (max-width:760px){.apps{grid-template-columns:1fr}}
+
+  /* Pricing */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+  .tier{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+  .tier.pop{border:2px solid var(--accent);box-shadow:0 24px 50px rgba(37,99,235,.14);position:relative}
+  .badge{position:absolute;top:-13px;left:28px;background:var(--accent);color:#fff;font-size:.75rem;font-weight:700;padding:4px 11px;border-radius:999px;letter-spacing:.02em}
+  .tier h3{margin:0 0 6px;font-size:1.15rem}
+  .price{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px}
+  .once{color:var(--muted);font-size:.88rem;margin:0 0 18px}
+  .tier ul{list-style:none;padding:0;margin:0 0 24px;flex:1}
+  .tier li{position:relative;padding-left:26px;margin-bottom:10px;color:#334155;font-size:.97rem}
+  .tier li::before{content:"";position:absolute;left:0;top:.42em;width:15px;height:15px;border-radius:50%;background:#dbeafe url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='%232563eb' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/11px no-repeat}
+  .tier .btn{justify-content:center}
+  .btn-outline{border:1px solid var(--line);color:var(--text)} .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+  @media (max-width:900px){.tiers{grid-template-columns:1fr}}
+
+  .terms{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+  .term{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+  .term b{display:block;margin-bottom:4px}
+  .term span{color:var(--muted);font-size:.93rem}
+  @media (max-width:900px){.terms{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.terms{grid-template-columns:1fr}}
+
+  /* Process */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:s}
+  .step{counter-increment:s}
+  .step::before{content:counter(s,decimal-leading-zero);display:block;font-weight:800;font-size:.9rem;color:var(--accent);margin-bottom:8px}
+  .step h3{margin:0 0 6px;font-size:1.08rem}
+  .step p{margin:0;color:var(--muted);font-size:.96rem}
+  @media (max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.steps{grid-template-columns:1fr}}
+
+  /* Portfolio band */
+  .band{background:linear-gradient(120deg,#0b1020,#16224a);color:var(--ink);border-radius:24px;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+  .band h2{color:#fff;margin:0 0 8px}
+  .band p{margin:0;color:var(--ink-muted);max-width:560px}
+
+  /* Contact */
+  .contact{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .contact .card a.big{font-size:1.15rem;font-weight:700;word-break:break-all}
+  @media (max-width:760px){.contact{grid-template-columns:1fr}}
+
+  footer{background:var(--bg);color:var(--ink-muted);padding:40px 0;font-size:.92rem}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  footer a{color:var(--ink)}
+  @media (max-width:520px){section{padding:64px 0}.band{padding:32px 24px}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<main>
-  <h1>CyberHub Software, LLC</h1>
-  <p class="lead">An independent software company in Dayton, Ohio that builds simple, useful iOS apps.</p>
+<a class="skip" href="#main">Skip to content</a>
 
-  <section class="apps">
-    <div class="card">
-      <h2>Dinner Agent</h2>
-      <p>Meal planning made easy: plan dinners, build grocery lists and get cooking help.</p>
-      <a href="https://cyberhub28-dotcom.github.io/dinneragent-site/">Website</a> ·
-      <a href="https://cyberhub28-dotcom.github.io/dinneragent-site/privacy">Privacy</a> ·
-      <a href="https://cyberhub28-dotcom.github.io/dinneragent-site/support">Support</a>
-    </div>
-    <div class="card">
-      <h2>DriveReel: Watch Off Your SSD</h2>
-      <p>Play videos straight from your external SSD or drive on iPhone and iPad.</p>
-      <!-- TODO: add DriveReel App Store link -->
-      <a href="https://apps.apple.com/us/search?term=DriveReel">App Store</a>
-    </div>
-  </section>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="CyberHub Software home">
+      <span class="logo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 64 64"><path d="M46 20a18 18 0 1 0 0 24" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"/></svg></span>
+      CyberHub Software
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#apps">Apps</a></li>
+        <li><a href="#websites">Website redesigns</a></li>
+        <li><a href="#work">Our work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="cta-sm" href="mailto:contact@cyberhubsoftware.com?subject=Website%20redesign">Get a quote</a>
+  </div>
+</header>
 
-  <section class="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:support@cyberhubsoftware.com">support@cyberhubsoftware.com</a><br>
-    CyberHub Software, LLC · Dayton, Ohio, USA</p>
-  </section>
+<div class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow"><span class="dot"></span>Dayton, Ohio · Independent software studio</span>
+      <h1>Simple, useful software. <span class="grad">Websites that work.</span></h1>
+      <p class="lead">CyberHub Software builds iOS apps people actually use, and rebuilds outdated small-business websites into fast, phone-friendly sites you own outright. One price, no monthly fees.</p>
+      <div class="btns">
+        <a class="btn btn-primary" href="#websites">Website redesign pricing →</a>
+        <a class="btn btn-ghost" href="#apps">See our apps</a>
+      </div>
+      <div class="meta">
+        <span><b>One-time</b> pricing</span>
+        <span><b>30-day</b> fix window</span>
+        <span><b>You own</b> the domain &amp; hosting</span>
+      </div>
+    </div>
+    <div class="stack" aria-hidden="true">
+      <div class="panel browser">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <div class="sk h"></div><div class="sk w80"></div><div class="sk w60"></div>
+        <div class="tiles"><div></div><div></div><div></div></div>
+        <div class="sk w40" style="margin-top:16px"></div>
+      </div>
+      <div class="panel phone">
+        <div class="notch"></div>
+        <div class="app"><span class="ic ai-dinner"></span>Dinner Agent</div>
+        <div class="app"><span class="ic ai-reel"></span>DriveReel</div>
+        <div class="app"><span class="ic" style="background:linear-gradient(135deg,#22c55e,#06b6d4)"></span>Your new site</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<section id="apps">
+  <div class="wrap">
+    <p class="kicker">Apps</p>
+    <h2>iOS apps from CyberHub</h2>
+    <p class="sub">Small, focused apps for iPhone and iPad that do one job well.</p>
+    <div class="apps">
+      <article class="card">
+        <div class="app-head">
+          <div class="app-icon ai-dinner" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v8a2 2 0 0 0 2 2v10M11 2v6M3 2v6a4 4 0 0 0 4 4M17 2c-1.7 1.3-3 3.8-3 7h3v13"/></svg></div>
+          <div><h3>Dinner Agent</h3><span class="tag">iPhone</span></div>
+        </div>
+        <p>Meal planning made easy: plan dinners, build grocery lists and get cooking help.</p>
+        <div class="links">
+          <a href="https://cyberhub28-dotcom.github.io/dinneragent-site/">Website</a>
+          <a href="https://cyberhub28-dotcom.github.io/dinneragent-site/privacy">Privacy</a>
+          <a href="https://cyberhub28-dotcom.github.io/dinneragent-site/support">Support</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="app-head">
+          <div class="app-icon ai-reel" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg></div>
+          <div><h3>DriveReel: Watch Off Your SSD</h3><span class="tag">iPhone &amp; iPad</span></div>
+        </div>
+        <p>Play videos straight from your external SSD or drive on iPhone and iPad.</p>
+        <!-- TODO: add DriveReel App Store link -->
+        <div class="links">
+          <a href="https://apps.apple.com/us/search?term=DriveReel">App Store</a>
+        </div>
+      </article>
+    </div>
+    <p style="margin:26px 0 0;color:var(--muted)">App support: <a href="mailto:support@cyberhubsoftware.com">support@cyberhubsoftware.com</a></p>
+  </div>
+</section>
+
+<section id="websites" class="soft">
+  <div class="wrap">
+    <p class="kicker">Website redesigns</p>
+    <h2>A better website, for one price. Then it's all yours.</h2>
+    <p class="sub">We rebuild outdated small-business websites into fast, modern, phone-friendly sites, hand them back, and step away. No contracts, no monthly fees, no ongoing management.</p>
+
+    <div class="tiers">
+      <div class="tier">
+        <h3>One-page refresh</h3>
+        <div class="price">$500–$800</div>
+        <p class="once">one-time</p>
+        <ul>
+          <li>A single modern, mobile-first page</li>
+          <li>Hours, location, map and click-to-call</li>
+          <li>Contact form or email link</li>
+          <li>Basic search-engine setup</li>
+        </ul>
+        <a class="btn btn-outline" href="mailto:contact@cyberhubsoftware.com?subject=One-page%20refresh">Ask about this</a>
+      </div>
+      <div class="tier pop">
+        <span class="badge">Most popular</span>
+        <h3>Five-page site</h3>
+        <div class="price">$1,200–$1,800</div>
+        <p class="once">one-time</p>
+        <ul>
+          <li>Up to five pages (home, about, services, menu, contact)</li>
+          <li>A real web menu or services list, not a PDF</li>
+          <li>Photo gallery and reviews</li>
+          <li>Search-engine and Google Business tune-up</li>
+        </ul>
+        <a class="btn btn-primary" href="mailto:contact@cyberhubsoftware.com?subject=Five-page%20site">Ask about this</a>
+      </div>
+      <div class="tier">
+        <h3>Booking or ordering</h3>
+        <div class="price">$1,800–$2,500</div>
+        <p class="once">one-time</p>
+        <ul>
+          <li>Everything in the five-page site</li>
+          <li>Online booking, appointments or ordering</li>
+          <li>Connected to a tool you control (Square, Calendly, etc.)</li>
+          <li>Walkthrough so your team can run it</li>
+        </ul>
+        <a class="btn btn-outline" href="mailto:contact@cyberhubsoftware.com?subject=Booking%20or%20ordering%20site">Ask about this</a>
+      </div>
+    </div>
+
+    <div class="terms">
+      <div class="term"><b>Half up front</b><span>50% to start, 50% when you approve the finished site.</span></div>
+      <div class="term"><b>30-day fix window</b><span>Anything that isn't right after launch, we fix free for 30 days.</span></div>
+      <div class="term"><b>You own everything</b><span>Your domain and hosting stay in your own accounts from day one.</span></div>
+      <div class="term"><b>No monthly fees</b><span>No ongoing management or retainers. We hand it off and you're done.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">How it works</p>
+    <h2>From outdated to done in four steps</h2>
+    <p class="sub">Most sites take one to three weeks, depending on how quickly we get your content.</p>
+    <div class="steps">
+      <div class="step"><h3>Free review</h3><p>We look at your current site and send a short list of what to fix and a fixed quote.</p></div>
+      <div class="step"><h3>Design &amp; build</h3><p>After the deposit, we build the new site and share a private preview link.</p></div>
+      <div class="step"><h3>Launch</h3><p>Once you approve it, we launch it in your own accounts and point your domain.</p></div>
+      <div class="step"><h3>Hand-off</h3><p>You get the logins and a quick guide. We fix anything that comes up for 30 days.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="work" style="padding-top:0">
+  <div class="wrap">
+    <div class="band">
+      <div>
+        <h2>See before-and-after redesigns</h2>
+        <p>Real local business sites, rebuilt to show what a modern, phone-friendly version could look like.</p>
+      </div>
+      <a class="btn btn-primary" href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/">View the portfolio →</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="soft">
+  <div class="wrap">
+    <p class="kicker">Contact</p>
+    <h2>Let's talk</h2>
+    <p class="sub">Send us your current website address and we'll reply with a free review and a fixed price.</p>
+    <div class="contact">
+      <div class="card">
+        <h3 style="margin:0 0 6px">Website projects &amp; general</h3>
+        <p>Quotes, questions and partnerships.</p>
+        <a class="big" href="mailto:contact@cyberhubsoftware.com">contact@cyberhubsoftware.com</a>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px">App support</h3>
+        <p>Help with Dinner Agent or DriveReel.</p>
+        <a class="big" href="mailto:support@cyberhubsoftware.com">support@cyberhubsoftware.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
-<footer>© 2026 CyberHub Software, LLC. All rights reserved.</footer>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 CyberHub Software, LLC · Dayton, Ohio, USA. All rights reserved.</span>
+    <span><a href="https://cyberhub28-dotcom.github.io/dinneragent-site/privacy">Dinner Agent privacy</a> · <a href="https://cyberhub28-dotcom.github.io/cyberhub-portfolio/">Portfolio</a></span>
+  </div>
+</footer>
 </body>
 </html>
