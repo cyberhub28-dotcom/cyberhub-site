@@ -126,3 +126,163 @@
     window.removeEventListener('scroll', onScroll);
   });
 })();
+
+// Old single-page links (e.g. /#pricing) now live on their own pages
+(function () {
+  if (document.body.getAttribute('data-page') !== 'home' || !location.hash) return;
+  var map = { '#services': 'services/', '#process': 'services/#process', '#work': 'work/', '#reviews': 'work/#reviews', '#pricing': 'pricing/', '#faq': 'pricing/#faq', '#apps': 'apps/', '#quote': 'contact/', '#contact': 'contact/' };
+  var to = map[location.hash];
+  if (to) location.replace(to);
+})();
+
+// Free review form: modal on most pages, inline on Contact. Sends via the service in form-config.js.
+(function () {
+  var form = document.getElementById('review-form');
+  if (!form) return;
+  var cfg = window.CYBERHUB_FORM || {};
+  var modal = document.getElementById('qmodal');
+  var card = modal ? modal.querySelector('.qcard') : document.getElementById('rf-inline');
+  var done = card.querySelector('.qdone');
+  var sum = form.querySelector('.qerr-sum');
+  var urlIn = form.querySelector('#rf-url'), noSite = form.querySelector('#rf-nosite');
+  var opener = null;
+  var EMAIL = 'contact@cyberhubsoftware.com';
+
+  noSite.addEventListener('change', function () {
+    urlIn.disabled = noSite.checked;
+    if (noSite.checked) { urlIn.value = ''; clearErr(urlIn); }
+  });
+
+  // Open / close
+  function focusables() {
+    return Array.prototype.filter.call(card.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]):not([tabindex="-1"]),select,textarea'), function (el) { return el.offsetParent !== null; });
+  }
+  function open(e) {
+    if (e) e.preventDefault();
+    if (!modal) { // Contact page: jump to the inline form
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () { (form.hidden ? done : form.querySelector('#rf-name')).focus({ preventScroll: true }); }, 350);
+      return;
+    }
+    opener = document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('q-open');
+    requestAnimationFrame(function () { modal.classList.add('on'); });
+    var first = form.hidden ? done : form.querySelector('#rf-name');
+    setTimeout(function () { first.focus(); }, 30);
+    document.addEventListener('keydown', onKey);
+  }
+  function close() {
+    if (!modal || modal.hidden) return;
+    modal.classList.remove('on');
+    modal.hidden = true;
+    if (!done.hidden) { done.hidden = true; form.hidden = false; var hd = card.querySelector('.qhead'); if (hd) hd.hidden = false; }
+    document.documentElement.classList.remove('q-open');
+    document.removeEventListener('keydown', onKey);
+    if (opener && opener.focus) opener.focus();
+  }
+  function onKey(e) {
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key !== 'Tab') return;
+    var f = focusables(); if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !card.contains(document.activeElement))) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  document.querySelectorAll('[data-review]').forEach(function (a) { a.addEventListener('click', open); });
+  if (modal) modal.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', close); });
+
+  // Validation
+  function setErr(el, msg) {
+    var e = document.getElementById(el.getAttribute('aria-describedby'));
+    el.setAttribute('aria-invalid', 'true'); if (e) e.textContent = msg;
+  }
+  function clearErr(el) {
+    var e = document.getElementById(el.getAttribute('aria-describedby'));
+    el.removeAttribute('aria-invalid'); if (e) e.textContent = '';
+  }
+  function validate() {
+    var bad = [];
+    var name = form.elements.name, biz = form.elements.business, em = form.elements.email, ph = form.elements.phone;
+    [name, biz, em, ph, urlIn].forEach(clearErr);
+    if (!name.value.trim()) { setErr(name, 'Please enter your name.'); bad.push(name); }
+    if (!biz.value.trim()) { setErr(biz, 'Please enter your business name.'); bad.push(biz); }
+    if (!em.value.trim()) { setErr(em, 'Please enter your email address.'); bad.push(em); }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em.value.trim())) { setErr(em, 'Please check your email address, e.g. name@example.com.'); bad.push(em); }
+    var method = (form.querySelector('input[name=contact_method]:checked') || {}).value;
+    var digits = ph.value.replace(/\D/g, '');
+    if (ph.value.trim() && (digits.length < 10 || digits.length > 15)) { setErr(ph, 'Please enter a full phone number with area code.'); bad.push(ph); }
+    else if ((method === 'Phone' || method === 'Text') && !digits) { setErr(ph, 'Add a phone number so we can ' + (method === 'Text' ? 'text' : 'call') + ' you, or choose Email.'); bad.push(ph); }
+    if (!urlIn.disabled && urlIn.value.trim() && !/^(https?:\/\/)?[^\s.\/]+(\.[^\s.\/]+)+(\/\S*)?$/i.test(urlIn.value.trim())) { setErr(urlIn, 'Please enter a web address like yourbusiness.com, or tick "No website yet".'); bad.push(urlIn); }
+    if (bad.length) {
+      sum.hidden = false;
+      sum.textContent = bad.length === 1 ? 'Please fix 1 field below.' : 'Please fix ' + bad.length + ' fields below.';
+      bad[0].focus();
+    } else { sum.hidden = true; sum.textContent = ''; }
+    return !bad.length;
+  }
+  ['name', 'business', 'email', 'phone'].forEach(function (n) {
+    form.elements[n].addEventListener('input', function () { if (this.getAttribute('aria-invalid')) clearErr(this); });
+  });
+  urlIn.addEventListener('input', function () { if (this.getAttribute('aria-invalid')) clearErr(this); });
+
+  function collect() {
+    var d = {}, goals = [];
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.disabled || el.name === 'botcheck') return;
+      if (el.type === 'checkbox') { if (el.checked) { if (el.name === 'goals') goals.push(el.value); else d[el.name] = el.value; } return; }
+      if (el.type === 'radio') { if (el.checked) d[el.name] = el.value; return; }
+      if (el.value.trim()) d[el.name] = el.value.trim();
+    });
+    if (goals.length) d.goals = goals.join(', ');
+    return d;
+  }
+  var LABELS = { name: 'Name', business: 'Business', email: 'Email', phone: 'Phone', website: 'Website', no_website: 'No website yet', business_type: 'Business type', budget: 'Budget', goals: 'Wants most', timeline: 'Timeline', contact_method: 'Preferred contact', message: 'Anything else' };
+  function mailto(d) {
+    var lines = Object.keys(LABELS).filter(function (k) { return d[k]; }).map(function (k) { return LABELS[k] + ': ' + d[k]; });
+    return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Free website review: ' + (d.business || '')) + '&body=' + encodeURIComponent(lines.join('\n'));
+  }
+  function show(h, p, actions) {
+    form.hidden = true;
+    var head = card.querySelector('.qhead'); if (head) head.hidden = true;
+    done.hidden = false;
+    done.querySelector('.qd-h').textContent = h;
+    done.querySelector('.qd-p').innerHTML = p;
+    var box = done.querySelector('.qd-actions'); box.innerHTML = '';
+    actions.forEach(function (a) { box.appendChild(a); });
+    done.classList.toggle('warn', h.indexOf('Thanks') !== 0);
+    done.focus();
+  }
+  function btn(text, href, primary) {
+    var el = document.createElement(href ? 'a' : 'button');
+    el.className = 'btn ' + (primary ? 'btn-lime' : 'btn-ghost');
+    if (href) el.href = href; else { el.type = 'button'; if (modal) el.addEventListener('click', close); else el.hidden = true; }
+    el.textContent = text; return el;
+  }
+  var mailLink = '<a href="mailto:' + EMAIL + '">' + EMAIL + '</a>';
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (form.elements.botcheck.checked) return; // honeypot: quietly ignore bots
+    if (!validate()) return;
+    var d = collect();
+    var key = String(cfg.accessKey || '');
+    if (!cfg.endpoint || !key || key === 'REPLACE_ME') {
+      show('Almost there: please email us', 'Our online form isn\u2019t switched on yet, so nothing was sent. Please email your details to ' + mailLink + ' and we\u2019ll reply within 1\u20132 business days.', [btn('Email these details \u2192', mailto(d), true), btn('Close')]);
+      return;
+    }
+    var sb = form.querySelector('.qsubmit'), tx = sb.querySelector('.qs-tx');
+    sb.disabled = true; tx.textContent = 'Sending\u2026';
+    var payload = Object.assign({ access_key: key, subject: 'Free review request: ' + d.business, from_name: 'CyberHub website form', botcheck: false }, d);
+    fetch(cfg.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || j.success === false) throw new Error(j.message || r.status); }); })
+      .then(function () {
+        form.reset(); urlIn.disabled = false;
+        show('Thanks! We\u2019ll reply within 1\u20132 business days.', 'We sent your request to ' + EMAIL + '. Keep an eye on your inbox.', [btn('Close')]);
+      })
+      .catch(function () {
+        show('That didn\u2019t go through', 'Sorry, the form couldn\u2019t send just now. Please email your details to ' + mailLink + ' instead.', [btn('Email these details \u2192', mailto(d), true), btn('Close')]);
+      })
+      .then(function () { sb.disabled = false; tx.textContent = 'Send my free review request'; });
+  });
+})();
