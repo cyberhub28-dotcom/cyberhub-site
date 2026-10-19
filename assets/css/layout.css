@@ -192,3 +192,9 @@ footer .bigword{font-size:clamp(4rem,13vw,11rem);margin-bottom:28px}
   .contact .card a.big{font-size:.98rem}
   .mail-side{font-size:.98rem}
 }
+
+/* Terms page: readable prose column */
+.terms-doc{max-width:720px;padding-bottom:clamp(56px,8vw,96px)}
+.terms-doc p{color:#D1D5DB;font-size:1.05rem;line-height:1.7;margin:0 0 1.1em}
+.terms-doc strong{color:#fff;font-weight:650}
+.terms-doc .terms-updated{color:var(--muted);font-size:.9rem}
