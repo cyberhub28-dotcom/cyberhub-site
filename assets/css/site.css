@@ -425,3 +425,4 @@ footer a{color:var(--on-ink)}
 
 /* App icons as images */
 .app-img{object-fit:cover;background:#0b0b10;padding:0}
+.brandlogo{display:block;height:42px;width:auto}@media(max-width:640px){.brandlogo{height:30px}}
