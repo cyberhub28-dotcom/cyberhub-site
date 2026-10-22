@@ -212,7 +212,7 @@
     var method = (form.querySelector('input[name=contact_method]:checked') || {}).value;
     var digits = ph.value.replace(/\D/g, '');
     if (ph.value.trim() && (digits.length < 10 || digits.length > 15)) { setErr(ph, 'Please enter a full phone number with area code.'); bad.push(ph); }
-    else if ((method === 'Phone' || method === 'Text') && !digits) { setErr(ph, 'Add a phone number so we can ' + (method === 'Text' ? 'text' : 'call') + ' you, or choose Email.'); bad.push(ph); }
+    else if (method === 'Phone' && !digits) { setErr(ph, 'Add a phone number so we can call you, or choose Email.'); bad.push(ph); }
     if (!urlIn.disabled && urlIn.value.trim() && !/^(https?:\/\/)?[^\s.\/]+(\.[^\s.\/]+)+(\/\S*)?$/i.test(urlIn.value.trim())) { setErr(urlIn, 'Please enter a web address like yourbusiness.com, or tick "No website yet".'); bad.push(urlIn); }
     if (bad.length) {
       sum.hidden = false;
@@ -237,7 +237,7 @@
     if (goals.length) d.goals = goals.join(', ');
     return d;
   }
-  var LABELS = { name: 'Name', business: 'Business', email: 'Email', phone: 'Phone', website: 'Website', no_website: 'No website yet', business_type: 'Business type', budget: 'Budget', goals: 'Wants most', timeline: 'Timeline', contact_method: 'Preferred contact', message: 'Anything else', text_consent: 'OK to text' };
+  var LABELS = { name: 'Name', business: 'Business', email: 'Email', phone: 'Phone', website: 'Website', no_website: 'No website yet', business_type: 'Business type', budget: 'Budget', goals: 'Wants most', timeline: 'Timeline', contact_method: 'Preferred contact', message: 'Anything else' };
   function mailto(d) {
     var lines = Object.keys(LABELS).filter(function (k) { return d[k]; }).map(function (k) { return LABELS[k] + ': ' + d[k]; });
     return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Free website review: ' + (d.business || '')) + '&body=' + encodeURIComponent(lines.join('\n'));
