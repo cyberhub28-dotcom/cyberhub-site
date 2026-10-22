@@ -237,7 +237,7 @@
     if (goals.length) d.goals = goals.join(', ');
     return d;
   }
-  var LABELS = { name: 'Name', business: 'Business', email: 'Email', phone: 'Phone', website: 'Website', no_website: 'No website yet', business_type: 'Business type', budget: 'Budget', goals: 'Wants most', timeline: 'Timeline', contact_method: 'Preferred contact', message: 'Anything else' };
+  var LABELS = { name: 'Name', business: 'Business', email: 'Email', phone: 'Phone', website: 'Website', no_website: 'No website yet', business_type: 'Business type', budget: 'Budget', goals: 'Wants most', timeline: 'Timeline', contact_method: 'Preferred contact', message: 'Anything else', text_consent: 'OK to text' };
   function mailto(d) {
     var lines = Object.keys(LABELS).filter(function (k) { return d[k]; }).map(function (k) { return LABELS[k] + ': ' + d[k]; });
     return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Free website review: ' + (d.business || '')) + '&body=' + encodeURIComponent(lines.join('\n'));
