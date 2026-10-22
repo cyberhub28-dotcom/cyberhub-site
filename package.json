@@ -1,0 +1,10 @@
+{
+  "name": "cyberhub-site",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/text-consent.test.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  }
+}
