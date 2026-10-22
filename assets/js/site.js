@@ -229,12 +229,16 @@
   function collect() {
     var d = {}, goals = [];
     Array.prototype.forEach.call(form.elements, function (el) {
-      if (!el.name || el.disabled || el.name === 'botcheck') return;
+      if (!el.name || el.disabled || el.name === 'botcheck' || el.name === 'text_consent') return;
       if (el.type === 'checkbox') { if (el.checked) { if (el.name === 'goals') goals.push(el.value); else d[el.name] = el.value; } return; }
       if (el.type === 'radio') { if (el.checked) d[el.name] = el.value; return; }
       if (el.value.trim()) d[el.name] = el.value.trim();
     });
     if (goals.length) d.goals = goals.join(', ');
+    // Web3Forms prints only the keys we send, and an unticked checkbox is not a
+    // successful control, so omitting it left the consent line out of the email.
+    var consent = form.elements.text_consent;
+    d.text_consent = consent && consent.checked ? 'Yes' : 'No';
     return d;
   }
   var LABELS = { name: 'Name', business: 'Business', email: 'Email', phone: 'Phone', website: 'Website', no_website: 'No website yet', business_type: 'Business type', budget: 'Budget', goals: 'Wants most', timeline: 'Timeline', contact_method: 'Preferred contact', message: 'Anything else', text_consent: 'OK to text' };
@@ -274,6 +278,9 @@
     var sb = form.querySelector('.qsubmit'), tx = sb.querySelector('.qs-tx');
     sb.disabled = true; tx.textContent = 'Sending\u2026';
     var payload = Object.assign({ access_key: key, subject: 'Free review request: ' + d.business, from_name: 'CyberHub website form', botcheck: false }, d);
+    // Names are forwarded as-is, so this is the email line "OK to text: Yes" or "OK to text: No".
+    payload[LABELS.text_consent] = d.text_consent;
+    delete payload.text_consent;
     fetch(cfg.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || j.success === false) throw new Error(j.message || r.status); }); })
       .then(function () {

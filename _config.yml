@@ -2,3 +2,6 @@
 exclude:
   - README.md
   - samples/CREDITS.md
+  - package.json
+  - package-lock.json
+  - tests
