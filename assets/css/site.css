@@ -305,6 +305,10 @@ footer{background:var(--ink);color:var(--on-ink-muted);padding:0 0 40px;font-siz
 footer .bigword{font-family:var(--display);font-weight:800;letter-spacing:-.06em;line-height:.8;font-size:clamp(4rem,17vw,15rem);color:rgba(255,255,255,.05);text-align:center;margin:0 0 40px;user-select:none;white-space:nowrap;overflow:hidden}
 footer .wrap.row{display:flex;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;border-top:1px solid var(--line-ink);padding-top:28px}
 footer a{color:var(--on-ink)}
+footer address.postal,.contact address.postal,.terms-doc address.postal{font-style:normal}
+footer address.postal{line-height:1.45}
+.contact address.postal{line-height:1.5;color:var(--on-ink);margin:0}
+.terms-doc address.postal{color:#D1D5DB;font-size:1.05rem;line-height:1.7;margin:0 0 1.1em}
 
 /* Reveal motion (only when JS is running) */
 .js [data-reveal]{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
