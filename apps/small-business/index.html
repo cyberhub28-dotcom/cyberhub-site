@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+<meta name="robots" content="noindex, nofollow">
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://keys.cyberhubsoftware.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <!-- cyberhub-lock:start (made by key-server/client/inject_lock.py; edit that, not this) -->
@@ -2946,7 +2947,7 @@ function renderMore() {
   <div class="about">
     <div class="mark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1l6 3.5v7L8 15l-6-3.5v-7z" style="fill:none;stroke:currentColor;stroke-width:1.6"/><path d="M8 5l3 1.75v3.5L8 12 5 10.25v-3.5z" style="fill:currentColor"/></svg>CyberHub Software</div>
     <div><b style="color:var(--ink-2)">Small Business</b></div>
-    <p>This app keeps the records you enter. Profit, tax and mileage numbers are estimates to help you plan. It isn't tax, legal or accounting advice, and it doesn't file anything. Check with a tax pro before you rely on a number.</p>
+    <p>This app keeps the records you enter. Profit, tax and mileage numbers are estimates to help you plan. Mileage uses the IRS standard business rate for each trip's date, unless you set your own rate. It isn't tax, legal or accounting advice, and it doesn't file anything. Check with a tax pro before you rely on a number.</p>
     <p>No account, no ads, no tracking. It doesn't connect to your bank or take card payments. Your business data stays on this phone unless you save or share it.</p>
   </div>`;
 }
@@ -3489,7 +3490,7 @@ function taxPayForm(key) {
 function ratesForm() {
   const pf = S.profile;
   openSheet("Taxes and mileage", F.num("setAside", "Set aside for taxes (%)", pf.setAside, "25", "Used for the tax estimate on Home. Many people use 25 to 30%.") +
-    F.num("mileRate", "Your own mileage rate ($ per mile)", pf.mileRate, "Leave blank for the IRS rate", "Blank uses the IRS business rate: 70¢ for 2025, 72.5¢ to June 30, 2026 and 76¢ from July 1, 2026."), v => {
+    F.num("mileRate", "Your own mileage rate ($ per mile)", pf.mileRate, "Leave blank for the IRS rate", "Blank uses the IRS standard business rate for each trip's date: 70¢ in 2025, 72.5¢ through June 30, 2026, and 76¢ from July 1, 2026. Check with a tax pro which rate fits you."), v => {
     const p = numOr(v.setAside, 0), m = numOr(v.mileRate, 0);
     if (Number.isNaN(p) || p > 60) return "Pick a percent from 0 to 60.";
     if (Number.isNaN(m) || m > 5) return "The mileage rate is dollars per mile, like 0.76.";

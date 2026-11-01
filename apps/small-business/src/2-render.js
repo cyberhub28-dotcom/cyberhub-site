@@ -441,7 +441,7 @@ function renderMore() {
   <div class="about">
     <div class="mark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1l6 3.5v7L8 15l-6-3.5v-7z" style="fill:none;stroke:currentColor;stroke-width:1.6"/><path d="M8 5l3 1.75v3.5L8 12 5 10.25v-3.5z" style="fill:currentColor"/></svg>CyberHub Software</div>
     <div><b style="color:var(--ink-2)">Small Business</b></div>
-    <p>This app keeps the records you enter. Profit, tax and mileage numbers are estimates to help you plan. It isn't tax, legal or accounting advice, and it doesn't file anything. Check with a tax pro before you rely on a number.</p>
+    <p>This app keeps the records you enter. Profit, tax and mileage numbers are estimates to help you plan. Mileage uses the IRS standard business rate for each trip's date, unless you set your own rate. It isn't tax, legal or accounting advice, and it doesn't file anything. Check with a tax pro before you rely on a number.</p>
     <p>No account, no ads, no tracking. It doesn't connect to your bank or take card payments. Your business data stays on this phone unless you save or share it.</p>
   </div>`;
 }
