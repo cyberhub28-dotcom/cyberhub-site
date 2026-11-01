@@ -2,6 +2,7 @@
   "name": "Wedding Command Center",
   "short_name": "Our Wedding",
   "description": "Plan your wedding in one place: countdown, guests, seating, budget, vendors and checklist.",
+  "id": "./",
   "display": "standalone",
   "scope": "./",
   "background_color": "#F5F4F7",
