@@ -271,8 +271,10 @@ let route = 'home';
    tell the couple, and let them save it as a backup file (Menu > Your data). Later saves never touch it. */
 const KEPT = KEY + '-unreadable-';
 let keptNow = '';
+/* If the kept copy can't be written (phone nearly full), the plan that couldn't open stays under KEY and saving pauses, so nothing saves over it. */
+let holdSave = false, heldWarned = false;
 function keepAside() {
-  try { const raw = localStorage.getItem(KEY); if (!raw) return ''; const k = KEPT + Date.now(); localStorage.setItem(k, raw); keptNow = k; return k; } catch (e) { return ''; }
+  try { const raw = localStorage.getItem(KEY); if (!raw) return ''; const k = KEPT + Date.now(); localStorage.setItem(k, raw); keptNow = k; return k; } catch (e) { holdSave = true; return ''; }
 }
 function keptCopies() { const out = []; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf(KEPT) === 0) out.push(k); } } catch (e) {} return out.sort(); }
 function load() {
@@ -282,10 +284,12 @@ function load() {
   try { return normalize(JSON.parse(raw)); }
   catch (e) { keepAside(); return null; }
 }
-function persist() {
-  if (!S) return;
-  try { localStorage.setItem(KEY, JSON.stringify(S)); storageOK = true; }
-  catch (e) { const was = storageOK; storageOK = false; if (was && typeof toast === 'function') toast('Couldn’t save on this phone. It may be full. Save a backup now.'); }
+/* Returns true only when the plan really saved. quiet skips the warning toast. */
+function persist(quiet) {
+  if (!S) return false;
+  if (holdSave) { if (!quiet && !heldWarned && typeof toast === 'function') { heldWarned = true; toast('Saving is paused until you save your old plan. Menu, then Your data.'); } return false; }
+  try { localStorage.setItem(KEY, JSON.stringify(S)); storageOK = true; return true; }
+  catch (e) { const was = storageOK; storageOK = false; if (was && !quiet && typeof toast === 'function') toast('Couldn’t save on this phone. It may be full. Save a backup now.'); return false; }
 }
 function commit(opts) {
   cleanHouseholds(S);
