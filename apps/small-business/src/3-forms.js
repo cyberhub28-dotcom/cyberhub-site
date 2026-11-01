@@ -537,7 +537,7 @@ function taxPayForm(key) {
 function ratesForm() {
   const pf = S.profile;
   openSheet("Taxes and mileage", F.num("setAside", "Set aside for taxes (%)", pf.setAside, "25", "Used for the tax estimate on Home. Many people use 25 to 30%.") +
-    F.num("mileRate", "Your own mileage rate ($ per mile)", pf.mileRate, "Leave blank for the IRS rate", "Blank uses the IRS business rate: 70¢ for 2025, 72.5¢ to June 30, 2026 and 76¢ from July 1, 2026."), v => {
+    F.num("mileRate", "Your own mileage rate ($ per mile)", pf.mileRate, "Leave blank for the IRS rate", "Blank uses the IRS standard business rate for each trip's date: 70¢ in 2025, 72.5¢ through June 30, 2026, and 76¢ from July 1, 2026. Check with a tax pro which rate fits you."), v => {
     const p = numOr(v.setAside, 0), m = numOr(v.mileRate, 0);
     if (Number.isNaN(p) || p > 60) return "Pick a percent from 0 to 60.";
     if (Number.isNaN(m) || m > 5) return "The mileage rate is dollars per mile, like 0.76.";
