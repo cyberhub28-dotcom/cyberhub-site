@@ -7,7 +7,7 @@
 <script>
 (function () {
   'use strict';
-  var SERVER = 'https://keys.cyberhubsoftware.com', TEMPLATE_ID = 'wedding-command-center', APP_NAME = 'Wedding Command Center', SHOP_URL = 'https://cyberhubsoftware.com', SHOP_HOST = 'cyberhubsoftware.com';
+  var SERVER = 'https://keys.cyberhubsoftware.com', TEMPLATE_ID = 'wedding-command-center', APP_NAME = 'Wedding Command Center', SHOP_URL = 'https://cyberhubsoftware.com/apps/wedding-planner/buy/', SHOP_HOST = 'cyberhubsoftware.com';
   // Only the real shop locks. Previews and local copies open as before.
   var host = String(location.hostname || '');
   if (host !== SHOP_HOST && !host.endsWith('.' + SHOP_HOST)) return;
@@ -148,7 +148,7 @@ function write(storage, templateId, value) {
 //     server: 'https://keys.cyberhubsoftware.com',
 //     templateId: 'budget',
 //     appName: 'Paycheck Budget',
-//     shopUrl: 'https://cyberhubsoftware.com/shop',
+//     shopUrl: 'https://cyberhubsoftware.com/apps/budget/buy/',   // this app's buy page
 //     initialKey,   // optional: a key read from the link before the app loaded
 //   });
 //   // ...the app is unlocked from here on.
@@ -201,6 +201,7 @@ function startLock({ server, templateId, appName, shopUrl, initialKey, doc = glo
           </form>
           <button id="r" class="primary" hidden>Try again</button>
           <a id="s" class="link" hidden></a>
+          <p id="lg" class="legal" hidden><a href="https://cyberhubsoftware.com/legal/license/">License</a> · <a href="https://cyberhubsoftware.com/legal/refund/">Refund</a> · <a href="https://cyberhubsoftware.com/legal/privacy/">Privacy</a></p>
         </div>
       </div>`;
     doc.body.appendChild(host);
@@ -208,6 +209,11 @@ function startLock({ server, templateId, appName, shopUrl, initialKey, doc = glo
     const $ = (id) => root.getElementById(id);
     $('s').textContent = `Get ${appName}`;
     if (shopUrl) $('s').href = shopUrl;
+    // The License · Refund · Privacy line shows and hides with Get.
+    const showGet = (on) => {
+      $('s').hidden = !on;
+      $('lg').hidden = !on;
+    };
 
     const show = (reason) => {
       const m = messageFor(reason, appName);
@@ -216,7 +222,7 @@ function startLock({ server, templateId, appName, shopUrl, initialKey, doc = glo
       $('b').textContent = m.body;
       $('f').hidden = !m.askKey;
       $('r').hidden = !m.retry;
-      $('s').hidden = !(m.askKey && shopUrl);
+      showGet(!!(m.askKey && shopUrl));
     };
 
     // Remembers the last key given, so Try again re-checks that same key.
@@ -227,7 +233,7 @@ function startLock({ server, templateId, appName, shopUrl, initialKey, doc = glo
       $('b').textContent = '';
       $('f').hidden = true;
       $('r').hidden = true;
-      $('s').hidden = true;
+      showGet(false);
       const result = await unlock({ server, templateId, typedKey: lastKey });
       if (result.state === 'unlocked') {
         host.remove();
@@ -264,12 +270,18 @@ const STYLES = `
     font: 600 17px -apple-system, system-ui, sans-serif; cursor: pointer; }
   .primary:active { opacity: 0.8; }
   .link { display: block; margin-top: 16px; color: #0a84ff; font-size: 15px; text-decoration: none; min-height: 44px; line-height: 44px; }
+  /* Small text, but each link's tap area is at least 44 by 44 points. */
+  .legal { margin: 0 0 -10px; font-size: 13px; line-height: 44px; color: #3c3c43; }
+  .legal a { display: inline-block; box-sizing: border-box; min-width: 44px; min-height: 44px; padding: 0 2px; text-align: center;
+    vertical-align: top; color: #0a84ff; text-decoration: underline; text-underline-offset: 2px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   [hidden] { display: none !important; }
   @media (prefers-color-scheme: dark) {
     .scrim { background: rgba(0, 0, 0, 0.88); color: #f2f2f7; }
     .card { background: #1c1c1e; box-shadow: none; }
     p { color: #aeaeb2; }
+    .legal { color: #aeaeb2; }
+    .legal a { color: #64d2ff; }
     input { background: #2c2c2e; border-color: #3a3a3c; }
   }
 `;

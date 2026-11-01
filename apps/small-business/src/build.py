@@ -39,5 +39,6 @@ if not mode:
     for f in sorted([app / "manifest.webmanifest", *(app / "lib").glob("*.js"), *(app / "icons").glob("*.png")]):
         h.update(f.name.encode()); h.update(f.read_bytes())
     sw = (app / "sw.js").read_text()
+    h.update(re.sub(r'const CACHE = "smallbiz-[^"]*";', "", sw).encode())  # a change to this helper also gets a fresh copy
     assert re.search(r'const CACHE = "smallbiz-[^"]*";', sw)
     (app / "sw.js").write_text(re.sub(r'const CACHE = "smallbiz-[^"]*";', f'const CACHE = "smallbiz-{h.hexdigest()[:10]}";', sw))

@@ -148,7 +148,7 @@ function write(storage, templateId, value) {
 //     server: 'https://keys.cyberhubsoftware.com',
 //     templateId: 'budget',
 //     appName: 'Paycheck Budget',
-//     shopUrl: 'https://cyberhubsoftware.com/shop',
+//     shopUrl: 'https://cyberhubsoftware.com/apps/budget/buy/',   // this app's buy page
 //     initialKey,   // optional: a key read from the link before the app loaded
 //   });
 //   // ...the app is unlocked from here on.
@@ -209,6 +209,11 @@ function startLock({ server, templateId, appName, shopUrl, initialKey, doc = glo
     const $ = (id) => root.getElementById(id);
     $('s').textContent = `Get ${appName}`;
     if (shopUrl) $('s').href = shopUrl;
+    // The License · Refund · Privacy line shows and hides with Get.
+    const showGet = (on) => {
+      $('s').hidden = !on;
+      $('lg').hidden = !on;
+    };
 
     const show = (reason) => {
       const m = messageFor(reason, appName);
@@ -217,8 +222,7 @@ function startLock({ server, templateId, appName, shopUrl, initialKey, doc = glo
       $('b').textContent = m.body;
       $('f').hidden = !m.askKey;
       $('r').hidden = !m.retry;
-      $('s').hidden = !(m.askKey && shopUrl);
-      $('lg').hidden = $('s').hidden;
+      showGet(!!(m.askKey && shopUrl));
     };
 
     // Remembers the last key given, so Try again re-checks that same key.
@@ -229,8 +233,7 @@ function startLock({ server, templateId, appName, shopUrl, initialKey, doc = glo
       $('b').textContent = '';
       $('f').hidden = true;
       $('r').hidden = true;
-      $('s').hidden = true;
-      $('lg').hidden = true;
+      showGet(false);
       const result = await unlock({ server, templateId, typedKey: lastKey });
       if (result.state === 'unlocked') {
         host.remove();
@@ -267,18 +270,19 @@ const STYLES = `
     font: 600 17px -apple-system, system-ui, sans-serif; cursor: pointer; }
   .primary:active { opacity: 0.8; }
   .link { display: block; margin-top: 16px; color: #0a84ff; font-size: 15px; text-decoration: none; min-height: 44px; line-height: 44px; }
-  .legal { margin: 2px 0 0; font-size: 13px; line-height: 1.45; color: #3c3c43; }
-  .legal a { color: #0a84ff; text-decoration: underline; text-underline-offset: 2px; padding: 6px 2px; }
+  /* Small text, but each link's tap area is at least 44 by 44 points. */
+  .legal { margin: 0 0 -10px; font-size: 13px; line-height: 44px; color: #3c3c43; }
+  .legal a { display: inline-block; box-sizing: border-box; min-width: 44px; min-height: 44px; padding: 0 2px; text-align: center;
+    vertical-align: top; color: #0a84ff; text-decoration: underline; text-underline-offset: 2px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   [hidden] { display: none !important; }
   @media (prefers-color-scheme: dark) {
     .scrim { background: rgba(0, 0, 0, 0.88); color: #f2f2f7; }
     .card { background: #1c1c1e; box-shadow: none; }
     p { color: #aeaeb2; }
-    input { background: #2c2c2e; border-color: #3a3a3c; }
     .legal { color: #aeaeb2; }
     .legal a { color: #64d2ff; }
-
+    input { background: #2c2c2e; border-color: #3a3a3c; }
   }
 `;
 
