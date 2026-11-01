@@ -1,0 +1,8 @@
+Third-party code in this folder
+
+jspdf.umd.min.js
+  jsPDF 2.5.1 (https://github.com/parallax/jsPDF)
+  Copyright (c) 2010-2021 James Hall, yWorks GmbH and contributors
+  MIT License. Full text in jspdf-LICENSE.txt.
+  Same file as https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
+  sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==

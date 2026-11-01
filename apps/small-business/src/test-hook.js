@@ -1,0 +1,2 @@
+/* test builds only (build.py --test): lets the computer tests drive the app. Never in the shipped index.html. */
+window.__biz = { get state() { return S; }, loadSample: id => { S = sample(id); S.look = undefined; clientFocus = null; askLast = null; commit(); go("home"); }, get P() { return P; }, go, goPage, runAsk, understand, answer, events, totals, invStatus, taxNow, budgetNow, onboard, get tab() { return tab; }, makeDocPDF, makePacket, calendarFile, backup };

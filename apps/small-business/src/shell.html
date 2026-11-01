@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<!--CSP-->
+<!-- cyberhub-lock:start (made by key-server/client/inject_lock.py; edit that, not this) -->
+<script>
+(function () {
+  'use strict';
+  var SERVER = 'https://keys.cyberhubsoftware.com', TEMPLATE_ID = 'small-business', APP_NAME = 'Small Business', SHOP_URL = 'https://cyberhubsoftware.com', SHOP_HOST = 'cyberhubsoftware.com';
+  // Only the real shop locks. Previews and local copies open as before.
+  var host = String(location.hostname || '');
+  if (host !== SHOP_HOST && !host.endsWith('.' + SHOP_HOST)) return;
+
+// CyberHub purchase-key check for mini apps. Drop this file into a mini app
+// and call unlock() when the app opens:
+//
+//   import { unlock } from './cyberhub-key.js';
+//   const result = await unlock({ server: 'https://keys.example.com', templateId: 'budget' });
+//   if (result.state === 'unlocked') startApp();
+//   else showLockScreen(result);   // result.reason says why
+//
+// What it does:
+// - First open from the buyer's link (…/#key=CH-XXXX-…): reads the key, makes
+//   a random device token, and activates this device (max 3 per key).
+// - Later opens: checks the key is still good (refunds turn it off).
+// - Offline: keeps working for up to OFFLINE_GRACE_DAYS since the last good check.
+// - iPhone Safari tab: only checks the key and asks the buyer to Add to Home
+//   Screen first. The Home Screen app keeps its own storage, so activating in
+//   the Safari tab would waste one of the 3 device slots.
+//
+// Only the key, a random device token and the last check date are saved on
+// the device. Nothing the buyer types into the app is sent anywhere.
+
+const OFFLINE_GRACE_DAYS = 14;
+const STORE_PREFIX = 'cyberhub-key:';
+
+// typedKey is a key the buyer typed or pasted on the lock screen.
+async function unlock({ server, templateId, typedKey, storage = globalThis.localStorage, win = globalThis.window, fetchFn = globalThis.fetch }) {
+  const saved = read(storage, templateId);
+  const fromLink = keyFromLink(win);
+  const key = cleanKey(typedKey) || fromLink || saved.key;
+  if (!key) return { state: 'locked', reason: 'no_key' };
+
+  if (isIosSafariTab(win)) {
+    const verified = await call(fetchFn, server, 'verify', { key, template_id: templateId });
+    if (verified.ok) return { state: 'add_to_home_screen' };
+    return lockedFrom(verified);
+  }
+
+  const deviceToken = saved.deviceToken || newDeviceToken();
+  const firstTime = !saved.key || saved.key !== key || !saved.activated;
+  const action = firstTime ? 'activate' : 'check';
+  const result = await call(fetchFn, server, action, { key, template_id: templateId, device_token: deviceToken });
+
+  if (result.ok) {
+    write(storage, templateId, { key, deviceToken, activated: true, lastOk: Date.now() });
+    if (fromLink) clearKeyFromAddressBar(win);
+    return { state: 'unlocked' };
+  }
+
+  if (result.offline && saved.key === key && saved.activated && withinGrace(saved.lastOk)) {
+    return { state: 'unlocked', offline: true };
+  }
+
+  if (!result.offline && ['disabled', 'invalid_key', 'not_activated'].includes(result.error)) {
+    // Keep the device token so a fixed key can reuse this device's slot.
+    write(storage, templateId, { deviceToken, activated: false });
+  }
+  return lockedFrom(result);
+}
+
+function lockedFrom(result) {
+  if (result.offline) return { state: 'locked', reason: 'offline' };
+  return { state: 'locked', reason: result.error || 'unknown' };
+}
+
+async function call(fetchFn, server, action, body) {
+  try {
+    const res = await fetchFn(`${server.replace(/\/+$/, '')}/${action}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (res.status >= 500) return { ok: false, offline: true };
+    return await res.json();
+  } catch {
+    return { ok: false, offline: true };
+  }
+}
+
+function cleanKey(value) {
+  return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
+
+function keyFromLink(win) {
+  if (!win || !win.location) return null;
+  const params = new URLSearchParams(String(win.location.hash || '').replace(/^#/, ''));
+  return params.get('key');
+}
+
+function clearKeyFromAddressBar(win) {
+  try {
+    win.history.replaceState(null, '', win.location.pathname + win.location.search);
+  } catch {
+    // Not important if this fails.
+  }
+}
+
+function isIosSafariTab(win) {
+  if (!win || !win.navigator) return false;
+  const ua = win.navigator.userAgent || '';
+  const isIos = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && win.navigator.maxTouchPoints > 1);
+  const standalone = win.navigator.standalone === true
+    || (typeof win.matchMedia === 'function' && win.matchMedia('(display-mode: standalone)').matches);
+  return isIos && !standalone;
+}
+
+function newDeviceToken() {
+  const bytes = crypto.getRandomValues(new Uint8Array(24));
+  return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function withinGrace(lastOk) {
+  return typeof lastOk === 'number' && Date.now() - lastOk < OFFLINE_GRACE_DAYS * 24 * 60 * 60 * 1000;
+}
+
+function read(storage, templateId) {
+  try {
+    return JSON.parse(storage.getItem(STORE_PREFIX + templateId) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function write(storage, templateId, value) {
+  try {
+    storage.setItem(STORE_PREFIX + templateId, JSON.stringify(value));
+  } catch {
+    // Storage can be full or blocked; the app still works this session.
+  }
+}
+
+// Lock screen for CyberHub mini apps. Covers the app until its key checks out.
+//
+//   import { startLock } from './cyberhub-lock.js';
+//   await startLock({
+//     server: 'https://keys.cyberhubsoftware.com',
+//     templateId: 'budget',
+//     appName: 'Paycheck Budget',
+//     shopUrl: 'https://cyberhubsoftware.com/shop',
+//     initialKey,   // optional: a key read from the link before the app loaded
+//   });
+//   // ...the app is unlocked from here on.
+//
+// Buyer data never leaves the device. The lock only decides whether the app
+// shows. A tech-savvy person could get around it; it stops casual sharing,
+// it isn't copy-proof.
+
+
+const SUPPORT = 'support@cyberhubsoftware.com';
+
+function messageFor(reason, appName) {
+  switch (reason) {
+    case 'no_key':
+      return { title: `Unlock ${appName}`, body: 'Open the personal link from your purchase email, or paste your purchase key below.', askKey: true };
+    case 'invalid_key':
+      return { title: 'That key didn\'t work', body: `Check the key in your purchase email for ${appName} and try again.`, askKey: true };
+    case 'device_limit':
+      return { title: 'Already on 3 devices', body: `This key is in use on 3 devices, the most it allows. Need help? Email ${SUPPORT}.`, askKey: false };
+    case 'disabled':
+      return { title: 'This key is switched off', body: `This purchase was refunded or cancelled, so the key no longer works. Questions? Email ${SUPPORT}.`, askKey: true };
+    case 'suspended':
+      return { title: 'This key is on hold', body: `There's an open payment question on this purchase. Email ${SUPPORT} and we'll help.`, askKey: false };
+    case 'offline':
+      return { title: 'You\'re offline', body: 'Connect to the internet once to unlock. After that the app works offline too.', askKey: false, retry: true };
+    case 'too_many_tries':
+      return { title: 'Too many tries', body: 'Please wait a minute, then try again.', askKey: false, retry: true };
+    case 'add_to_home_screen':
+      return { title: 'One more step', body: `Your key works! Tap the Share button, then "Add to Home Screen". Then open ${appName} from your Home Screen. If it asks for your key, paste it there.`, askKey: false };
+    default:
+      return { title: 'Something went wrong', body: `Please try again. If it keeps happening, email ${SUPPORT}.`, askKey: false, retry: true };
+  }
+}
+
+function startLock({ server, templateId, appName, shopUrl, initialKey, doc = globalThis.document }) {
+  return new Promise((resolve) => {
+    const host = doc.createElement('div');
+    host.setAttribute('data-cyberhub-lock', '');
+    const root = host.attachShadow({ mode: 'closed' });
+    root.innerHTML = `<style>${STYLES}</style>
+      <div class="scrim" role="dialog" aria-modal="true" aria-labelledby="t">
+        <div class="card">
+          <div class="icon" aria-hidden="true"></div>
+          <h1 id="t"></h1>
+          <p id="b"></p>
+          <form id="f" hidden>
+            <label for="k" class="sr">Purchase key</label>
+            <input id="k" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CH-XXXX-XXXX-XXXX-XXXX">
+            <button type="submit" class="primary">Unlock</button>
+          </form>
+          <button id="r" class="primary" hidden>Try again</button>
+          <a id="s" class="link" hidden></a>
+        </div>
+      </div>`;
+    doc.body.appendChild(host);
+
+    const $ = (id) => root.getElementById(id);
+    $('s').textContent = `Get ${appName}`;
+    if (shopUrl) $('s').href = shopUrl;
+
+    const show = (reason) => {
+      const m = messageFor(reason, appName);
+      // textContent only: nothing typed or returned is ever run as code.
+      $('t').textContent = m.title;
+      $('b').textContent = m.body;
+      $('f').hidden = !m.askKey;
+      $('r').hidden = !m.retry;
+      $('s').hidden = !(m.askKey && shopUrl);
+    };
+
+    // Remembers the last key given, so Try again re-checks that same key.
+    let lastKey = null;
+    const attempt = async (typedKey) => {
+      if (typedKey) lastKey = typedKey;
+      $('t').textContent = 'Checking your key…';
+      $('b').textContent = '';
+      $('f').hidden = true;
+      $('r').hidden = true;
+      $('s').hidden = true;
+      const result = await unlock({ server, templateId, typedKey: lastKey });
+      if (result.state === 'unlocked') {
+        host.remove();
+        resolve(result);
+        return;
+      }
+      show(result.state === 'add_to_home_screen' ? 'add_to_home_screen' : result.reason);
+    };
+
+    $('f').addEventListener('submit', (e) => {
+      e.preventDefault();
+      attempt($('k').value);
+    });
+    $('r').addEventListener('click', () => attempt());
+    attempt(initialKey);
+  });
+}
+
+const STYLES = `
+  :host { all: initial; }
+  .scrim { position: fixed; inset: 0; z-index: 2147483647; display: flex; align-items: center; justify-content: center;
+    padding: max(24px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+    background: rgba(242, 242, 247, 0.92); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+    font: 17px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; color: #1c1c1e; }
+  .card { width: 100%; max-width: 360px; background: #fff; border-radius: 22px; padding: 28px 22px 22px; text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); }
+  .icon { width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 14px; background: linear-gradient(135deg, #0a84ff, #5e5ce6); }
+  h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; }
+  p { margin: 0 0 18px; color: #3c3c43; font-size: 15px; }
+  input { box-sizing: border-box; width: 100%; font: 600 17px ui-monospace, "SF Mono", Menlo, monospace; text-align: center;
+    padding: 14px 12px; border: 1px solid #d1d1d6; border-radius: 12px; background: #f2f2f7; color: inherit; margin-bottom: 12px; }
+  input:focus { outline: 3px solid rgba(10, 132, 255, 0.35); border-color: #0a84ff; }
+  .primary { width: 100%; min-height: 50px; border: 0; border-radius: 14px; background: #0a84ff; color: #fff;
+    font: 600 17px -apple-system, system-ui, sans-serif; cursor: pointer; }
+  .primary:active { opacity: 0.8; }
+  .link { display: block; margin-top: 16px; color: #0a84ff; font-size: 15px; text-decoration: none; min-height: 44px; line-height: 44px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  [hidden] { display: none !important; }
+  @media (prefers-color-scheme: dark) {
+    .scrim { background: rgba(0, 0, 0, 0.88); color: #f2f2f7; }
+    .card { background: #1c1c1e; box-shadow: none; }
+    p { color: #aeaeb2; }
+    input { background: #2c2c2e; border-color: #3a3a3c; }
+  }
+`;
+
+  // Read the key from the buyer's link right away, before the app runs.
+  var linkKey = keyFromLink(window);
+  var root = document.documentElement;
+  root.classList.add('cyberhub-locked');
+  var hide = document.createElement('style');
+  hide.textContent = 'html.cyberhub-locked body > *:not([data-cyberhub-lock]) { visibility: hidden !important; }';
+  (document.head || root).appendChild(hide);
+
+  function begin() {
+    startLock({ server: SERVER, templateId: TEMPLATE_ID, appName: APP_NAME, shopUrl: SHOP_URL, initialKey: linkKey })
+      .then(function () { root.classList.remove('cyberhub-locked'); hide.remove(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', begin);
+  else begin();
+})();
+</script>
+<!-- cyberhub-lock:end -->
+<title>Small Business</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Business">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<style>
+/*CSS*/
+</style>
+
+<header class="topbar" id="topbar">
+  <div class="wrap">
+    <div class="tb-left">
+      <a class="brandmark press" id="brandmark" href="#home" aria-label="Small Business, go to Home"><span class="bm-ic" id="bmIc"></span><span class="bm-tx">Small<br>Business</span></a>
+      <button type="button" class="glassbtn press" id="backBtn" aria-label="Back" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" style="fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/></svg></button>
+    </div>
+    <div class="bar-title" id="barTitle" aria-hidden="true"></div>
+    <div class="tb-group" role="group" aria-label="Actions">
+      <button type="button" class="gbtn press" id="menuBtn" aria-label="Menu: settings, backup and help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9" style="fill:currentColor"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor"/><circle cx="18.5" cy="12" r="1.9" style="fill:currentColor"/></svg></button>
+      <button type="button" class="gbtn add press" id="fab" aria-label="Add"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v15M4.5 12h15" style="fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="pagehead" id="pagehead"><h1 id="pageTitle">Home</h1><p class="psub" id="pageSub"></p></div>
+  <section class="view" id="v-home" aria-label="Home">
+    <div id="sampleBar"></div>
+    <a class="hero press" id="hero" href="#money"></a>
+    <div class="group" id="h-today"></div>
+    <div id="nudge"></div>
+    <div id="askWrap"></div>
+    <div class="group" id="h-week"></div>
+    <div class="group" id="h-tools"></div>
+    <div id="homeGroups">
+      <div class="group" id="h-owed"></div>
+      <div class="group" id="h-next"></div>
+      <div class="group" id="h-time"></div>
+      <div class="group" id="h-profit"></div>
+      <div class="group" id="h-budget"></div>
+      <div class="group" id="h-best"></div>
+      <div class="group" id="h-tax"></div>
+      <div class="group" id="h-miles"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-clients" aria-label="Clients" hidden>
+    <div class="vtools" id="clientTools" hidden><button type="button" class="backpill press" data-act="client-done"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" style="fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/></svg><span id="clientBack">All Clients</span></button></div>
+    <div id="clientsBody"></div>
+  </section>
+
+  <section class="view" id="v-money" aria-label="Money" hidden>
+    <div class="segc pseg" id="moneySeg" role="tablist" aria-label="Invoices, spending and budget">
+      <button class="on" role="tab" aria-selected="true" data-act="page" data-pager="money" data-id="0">Invoices</button>
+      <button role="tab" aria-selected="false" data-act="page" data-pager="money" data-id="1">Spending</button>
+      <button role="tab" aria-selected="false" data-act="page" data-pager="money" data-id="2">Budget</button>
+    </div>
+    <div class="pager" id="moneyPager">
+      <div class="page" id="pgInv" role="tabpanel" aria-label="Invoices"></div>
+      <div class="page" id="pgSpend" role="tabpanel" aria-label="Spending"></div>
+      <div class="page" id="pgBudget" role="tabpanel" aria-label="Budget"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-cal" aria-label="Calendar" hidden>
+    <div class="segc pseg" id="calSeg" role="tablist" aria-label="Calendar, time and to-do">
+      <button class="on" role="tab" aria-selected="true" data-act="page" data-pager="cal" data-id="0">Calendar</button>
+      <button role="tab" aria-selected="false" data-act="page" data-pager="cal" data-id="1">Time</button>
+      <button role="tab" aria-selected="false" data-act="page" data-pager="cal" data-id="2">To-Do</button>
+    </div>
+    <div class="pager" id="calPager">
+      <div class="page" id="pgCal" role="tabpanel" aria-label="Calendar"><div class="calwrap">
+        <div id="calCard"></div>
+        <div id="dayList"></div>
+        <div class="group" id="dueList"></div>
+        <div class="group" id="dueSide"></div>
+      </div></div>
+      <div class="page" id="pgTime" role="tabpanel" aria-label="Time"></div>
+      <div class="page" id="pgTodo" role="tabpanel" aria-label="To-do"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-tools" aria-label="Tools" hidden>
+    <div id="toolsBody" style="max-width:680px;margin:0 auto"></div>
+  </section>
+
+  <section class="view" id="v-more" aria-label="Menu" hidden>
+    <div id="moreBody" style="max-width:680px"></div>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Main">
+  <div class="in">
+    <a href="#home" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.5H9v5.5H5.5A1.5 1.5 0 0 1 4 19z" style="fill:none;stroke:currentColor;stroke-width:1.9;stroke-linejoin:round"/></svg>Home</a>
+    <a href="#clients" data-tab="clients"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3.3" style="fill:none;stroke:currentColor;stroke-width:1.9"/><path d="M3 19c1-3 3.3-4.4 6-4.4s5 1.4 6 4.4" style="fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round"/><path d="M15.5 5.8a3.2 3.2 0 0 1 0 6.3M17.5 14.8c1.7.6 2.9 2 3.5 4.2" style="fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round"/></svg><span id="clientsTab">Clients</span></a>
+    <a href="#money" data-tab="money"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2.5" style="fill:none;stroke:currentColor;stroke-width:1.9"/><circle cx="12" cy="12" r="2.6" style="fill:none;stroke:currentColor;stroke-width:1.9"/><path d="M6 9.5v5M18 9.5v5" style="stroke:currentColor;stroke-width:1.9;stroke-linecap:round"/></svg>Money<span class="badge" id="moneyBadge" hidden></span></a>
+    <a href="#cal" data-tab="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3" style="fill:none;stroke:currentColor;stroke-width:1.9"/><path d="M3.5 10h17M8 3v4M16 3v4" style="stroke:currentColor;stroke-width:1.9;stroke-linecap:round"/><path d="M12 13v3l2 1" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round"/></svg>Calendar<span class="badge dotb" id="calBadge" hidden></span></a>
+    <a href="#tools" data-tab="tools"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="2.5" style="fill:none;stroke:currentColor;stroke-width:1.9"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5M3 12.5h18M10 12.5v2h4v-2" style="fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"/></svg>Tools</a>
+  </div>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+<div id="sheetRoot"></div>
+
+<script>
+/*JS*/
+</script>

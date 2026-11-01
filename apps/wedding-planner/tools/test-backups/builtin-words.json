@@ -1,0 +1,161 @@
+{
+ "couple": {
+  "a": "Sam",
+  "b": {
+   "toString": 1
+  },
+  "date": "2026-99-99",
+  "time": {
+   "valueOf": 2
+  }
+ },
+ "guests": [
+  {
+   "id": "constructor",
+   "name": "Ann",
+   "rsvp": "toString",
+   "side": "__proto__",
+   "table": "constructor",
+   "addr": {
+    "s": {
+     "toString": 1
+    },
+    "c": "Austin"
+   }
+  },
+  {
+   "id": "__proto__",
+   "name": "Bo"
+  }
+ ],
+ "tables": [
+  {
+   "id": "constructor",
+   "name": "T",
+   "shape": "toString",
+   "seats": {
+    "valueOf": 1
+   }
+  }
+ ],
+ "households": [
+  {
+   "id": "hasOwnProperty",
+   "name": "H",
+   "addr": {
+    "toString": "x"
+   }
+  }
+ ],
+ "budget": {
+  "total": {
+   "toString": 1
+  },
+  "cats": [
+   1,
+   "x",
+   null
+  ],
+  "items": [
+   {
+    "id": "x1",
+    "name": "Cake",
+    "cost": 100,
+    "cat": "constructor",
+    "due": "2026-02-30"
+   }
+  ]
+ },
+ "vendors": [
+  {
+   "id": "v1",
+   "name": "V",
+   "kind": "constructor",
+   "status": "booked"
+  }
+ ],
+ "tasks": [
+  {
+   "id": "t1",
+   "t": "Do",
+   "b": "constructor",
+   "due": {
+    "toString": 1
+   }
+  }
+ ],
+ "docs": [
+  {
+   "id": "constructor",
+   "name": "d",
+   "type": {
+    "toString": 1
+   }
+  }
+ ],
+ "settings": {
+  "palette": "constructor",
+  "mode": "toString",
+  "currency": "valueOf",
+  "style": {
+   "vibe": "constructor",
+   "font": "toString",
+   "motif": "hasOwnProperty",
+   "accent": {
+    "toString": 1
+   }
+  }
+ },
+ "music": [
+  {
+   "id": "m1",
+   "moment": {
+    "toString": 1
+   },
+   "song": "S"
+  }
+ ],
+ "gifts": [
+  {
+   "id": "g1",
+   "from": "A",
+   "kind": "constructor"
+  }
+ ],
+ "lists": {
+  "shots": [
+   {
+    "id": "s1",
+    "t": "x",
+    "g": {
+     "toString": 1
+    }
+   }
+  ],
+  "kit": []
+ },
+ "info": {
+  "hotel": {
+   "toString": 1
+  }
+ },
+ "words": {
+  "a": {
+   "toString": 1
+  }
+ },
+ "day": [
+  {
+   "id": "d1",
+   "time": {
+    "toString": 1
+   },
+   "t": "m"
+  }
+ ],
+ "meta": {
+  "created": {
+   "toString": 1
+  }
+ }
+}
