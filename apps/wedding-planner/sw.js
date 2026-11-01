@@ -2,7 +2,8 @@
    - The app page is fetched fresh when there's a connection (so updates arrive),
      and the last copy is used when there isn't.
    - The PDF maker and icons are kept so they work offline too.
-   - Anything from another site (the key server, cdnjs) is never touched or kept. */
+   - Anything from another site (the key server, cdnjs) is never touched or kept.
+   - Only Wedding's own old caches are removed. The other apps on the site keep theirs. */
 const CACHE = 'wedding-cc-b9272c5b8d';
 const FILES = ['./', './index.html', './lib/pdf-lib.min.js', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
@@ -11,7 +12,7 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('wedding-cc-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 
 self.addEventListener('fetch', e => {

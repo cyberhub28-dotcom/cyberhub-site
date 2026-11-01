@@ -96,9 +96,15 @@ function pickRestore() {
    the original stays where it is and saving waits until it's saved as a file or deleted. */
 const UNREAD_KEY = KEY + "-unreadable";
 let unreadPinned = null;
-function keepUnreadable(raw) { if (!store.set(UNREAD_KEY, raw)) unreadPinned = raw; }
+/* An earlier kept copy is never replaced: a second one that can't open is held where it is (saving waits)
+   until it's saved as a file or deleted, and then the earlier one is offered again. */
+function keepUnreadable(raw) {
+  const old = store.get(UNREAD_KEY);
+  if (old === raw) return;
+  if (old || !store.set(UNREAD_KEY, raw)) unreadPinned = raw;
+}
 function unreadable() { return unreadPinned || store.get(UNREAD_KEY); }
-function dropUnreadable() { store.del(UNREAD_KEY); if (unreadPinned) { unreadPinned = null; save(); } }
+function dropUnreadable() { if (unreadPinned) { unreadPinned = null; save(); } else store.del(UNREAD_KEY); }
 async function saveUnreadable() {
   const raw = unreadable(); if (!raw) return;
   let state = null; try { state = JSON.parse(raw); } catch (e) {}
@@ -109,7 +115,7 @@ async function saveUnreadable() {
   }
   if (await saveFile("credentials-kept-copy-" + iso(TODAY) + ".json", data, "application/json", "Credentials kept copy")) {
     toast("Saved. Keep this file private, along with your other backups.");
-    if (unreadPinned) { unreadPinned = null; save(); }
+    if (unreadPinned) { unreadPinned = null; save(); renderNudge(); renderMore(); }
   }
 }
 function unreadableCard() {

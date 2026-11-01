@@ -123,8 +123,8 @@ const A = {
   'palette': el => { S.settings.palette = el.dataset.k; applyTheme(); commit({ quiet: true }); },
   'mode': el => { S.settings.mode = el.dataset.k; applyTheme(); commit({ quiet: true }); },
   'del-meal': el => { S.settings.meals.splice(+el.dataset.i, 1); commit(); },
-  'start-own': () => askConfirm('Start your own plan?', 'The sample wedding will be cleared from this device.', 'Start fresh').then(ok => { if (!ok) return; IMG.clear(); for (const k of Object.keys(THUMB)) delete THUMB[k]; S = null; walletFocus = null; try { localStorage.removeItem(KEY); } catch (e) {} applyThemeDefault(); renderWelcome(); window.scrollTo(0, 0); }),
-  'reset': () => askConfirm(S.sample ? 'Clear the sample?' : 'Erase your whole plan?', S.sample ? 'You’ll start a fresh plan.' : 'Everything on this device will be deleted. This can’t be undone unless you have a backup.', S.sample ? 'Clear it' : 'Erase everything', true).then(ok => { if (!ok) return; if (!S.sample) IMG.clear(); S = null; walletFocus = null; try { localStorage.removeItem(KEY); } catch (e) {} applyThemeDefault(); location.hash = ''; renderWelcome(); window.scrollTo(0, 0); })
+  'start-own': () => holdSave ? keptNotice() : askConfirm('Start your own plan?', 'The sample wedding will be cleared from this device.', 'Start fresh').then(ok => { if (!ok) return; IMG.clear(); for (const k of Object.keys(THUMB)) delete THUMB[k]; S = null; walletFocus = null; try { localStorage.removeItem(KEY); } catch (e) {} applyThemeDefault(); renderWelcome(); window.scrollTo(0, 0); }),
+  'reset': () => holdSave ? keptNotice() : askConfirm(S.sample ? 'Clear the sample?' : 'Erase your whole plan?', S.sample ? 'You’ll start a fresh plan.' : 'Everything on this device will be deleted. This can’t be undone unless you have a backup.', S.sample ? 'Clear it' : 'Erase everything', true).then(ok => { if (!ok) return; if (!S.sample) IMG.clear(); S = null; walletFocus = null; try { localStorage.removeItem(KEY); } catch (e) {} applyThemeDefault(); location.hash = ''; renderWelcome(); window.scrollTo(0, 0); })
 };
 Object.assign(A, EXTRA_ACTS);
 function applyThemeDefault() { const r = document.documentElement; r.removeAttribute('data-palette'); applyStyle(); if (themeSetByApp) { r.removeAttribute('data-theme'); themeSetByApp = false; } }
@@ -156,16 +156,16 @@ if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListen
 /* ================= Boot ================= */
 S = load();
 /* First visit opens on the sample wedding so the app shows what it does; the banner offers to start your own. */
-if (!S && storageOK) { S = samplePlan(); persist(); }
+if (!S && storageOK) { S = samplePlan(); persist(true); }
 try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
 readRoute();
 try { applyTheme(); render(); }
 catch (e) {
   /* The saved plan loaded but couldn't be drawn. Keep it aside, open the sample, and tell the couple. */
-  keepAside(); S = samplePlan(); persist(); route = 'home';
+  keepAside(); S = samplePlan(); persist(true); route = 'home';
   applyTheme(); render();
 }
-if (keptNow) keptNotice();
+if (keptNow || holdSave) keptNotice();
 /* Works offline from the Home Screen. Only on the real website, never inside a preview. */
 try { if ('serviceWorker' in navigator && location.protocol === 'https:' && !IS_PREVIEW) navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
 })();

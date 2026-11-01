@@ -165,12 +165,12 @@ function tableArt(t, at, big) {
   if (t.shape === 'round') for (let i = 0; i < n; i++) { const a = (-90 + i * 360 / n) * Math.PI / 180; seats += seat(50 + 42 * Math.cos(a), 50 + 42 * Math.sin(a), at[i]); }
   else { const top = Math.ceil(n / 2), bot = n - top; for (let i = 0; i < n; i++) { const isTop = i < top, k = isTop ? i : i - top, cnt = isTop ? top : bot; seats += seat(10 + 80 * (k + .5) / cnt, isTop ? 14 : 86, at[i]); } }
   const full = at.length >= n;
-  return '<div class="tgfx">' + seats + '<div class="tcore' + (full ? ' full' : '') + '">' + (full ? ic('check') : '<b class="num">' + at.length + '<i>/' + n + '</i></b>') + '</div></div>';
+  return '<div class="tgfx">' + seats + '<div class="tcore' + (full ? ' full' : '') + '">' + (full ? ic('check') : '<b class="num">' + at.length + '<i>/' + esc(n) + '</i></b>') + '</div></div>';
 }
 function tableTile(t, at) {
   const open = t.seats - at.length;
   return '<div class="ttile ' + esc(t.shape) + '" data-drop="' + esc(t.id) + '" data-act="open-table" data-id="' + esc(t.id) + '" role="button" tabindex="0" aria-label="' + esc(t.name) + ', ' + at.length + ' of ' + esc(t.seats) + ' seats filled">' +
-    tableArt(t, at) + '<div class="tl"><b>' + esc(t.name) + '</b><small class="' + (open <= 0 ? 'ok' : '') + '">' + (open <= 0 ? 'Full' : at.length ? open + ' open' : t.seats + ' seats, empty') + '</small></div></div>';
+    tableArt(t, at) + '<div class="tl"><b>' + esc(t.name) + '</b><small class="' + (open <= 0 ? 'ok' : '') + '">' + (open <= 0 ? 'Full' : at.length ? open + ' open' : esc(t.seats) + ' seats, empty') + '</small></div></div>';
 }
 R.seatingAfter = function (main) {
   const s = $('#s-search', main);

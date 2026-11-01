@@ -42,7 +42,7 @@ R.more = function () {
       (sa ? '' : (and ? '' : (ios ? '' : '<div class="kh2">iPhone</div>') + iosSteps) + (ios ? '' : (and ? '' : '<div class="kh2">Android</div>') + andSteps)) +
     '</div></div>' +
     '<div class="group"><div class="group-h"><h2>Your data</h2></div><div class="list">' +
-      (keptCopies().length ? li('save-kept', 'warn', 'save', 'Save the plan we couldn’t open', 'It’s kept on this phone. Save it as a file.') : '') +
+      (keptCopies().length || holdSave ? li('save-kept', 'warn', 'save', 'Save the plan we couldn’t open', holdSave ? 'Saving is paused until you do.' : 'It’s kept on this phone. Save it as a file.') : '') +
       (S.sample ? li('start-own', 'good', 'sparkle', 'Start my own plan', 'Clears the sample and sets you up') : '') +
       li('load-sample', 'warn', 'heart', 'See the sample wedding', S.sample ? 'You’re looking at it now' : 'A made-up wedding. Replaces what’s here.') +
       '<button type="button" class="li" data-act="reset"><span class="liic t-danger">' + ic('trash') + '</span><span class="tx"><b class="danger">' + (S.sample ? 'Clear the sample' : 'Delete all data') + '</b><small>Erases everything on this device</small></span></button>' +
@@ -74,7 +74,7 @@ R.help = function () {
     sec('Seating chart', '<ul><li>Tap a name under <b>Need a seat</b> and pick a table. Or press, hold and drag it onto a table. On a computer, drag with your mouse.</li><li>Tap a table to see it drawn big, with everyone seated there. Tap <b>Add guests</b> to tick who sits there, all at once.</li><li>From the same screen you can move someone, take them off, or tap <b>Edit table</b> to rename it, change its shape or seats, or delete it.</li><li><b>Seat everyone</b> fills your tables by group for you. Dashed names haven’t answered yet.</li></ul>') +
     sec('Vendors and budget', '<ul><li>Vendors are a stack of cards, like Apple Wallet. Tap one to bring it to the top with its contact, payments and files.</li><li>Cards that say <b>To book</b> are vendors you still need. Tap one and add who you booked.</li><li>Each budget category shows what you’ve spent against what you planned, and turns red if you go over.</li><li>Upcoming payments show on Home so nothing sneaks up on you.</li></ul>') +
     sec('Checklist', '<ul><li>Tasks are grouped by how far before the wedding to do them. Due dates come from your wedding date.</li><li>Add your own tasks to any month, or tap a task to change or delete it.</li></ul>') +
-    sec('Your plan and your privacy', '<ul><li>No account. No sign-in. Your plan is saved in this browser and stays on this phone. The app only goes online to check your unlock key and to load its PDF tools if they’re missing.</li><li>That also means it isn’t backed up for you. Tap <b>Back up now</b> after big changes, and keep the file in Files, iCloud Drive or Google Drive. If it’s been a week, Home shows a reminder when you open the app.</li><li>The backup file includes your files and photos. It isn’t locked with a password, so keep it private.</li><li>To use your plan on another device, open the app there and choose <b>Restore from a backup</b>.</li><li>Clearing your browser’s history or website data can erase your plan. A backup keeps it safe.</li></ul>') +
+    sec('Your plan and your privacy', '<ul><li>No account. No sign-in. Your plan is saved in this browser and stays on this phone. The app only goes online to check your unlock key, get app updates, and load its PDF tools if they’re missing.</li><li>That also means it isn’t backed up for you. Tap <b>Back up now</b> after big changes, and keep the file in Files, iCloud Drive or Google Drive. If it’s been a week, Home shows a reminder when you open the app.</li><li>The backup file includes your files and photos. It isn’t locked with a password, so keep it private.</li><li>To use your plan on another device, open the app there and choose <b>Restore from a backup</b>.</li><li>Clearing your browser’s history or website data can erase your plan. A backup keeps it safe.</li></ul>') +
     sec('Put it on your Home Screen', '<ul><li><b>iPhone or iPad:</b> open it in Safari, tap the Share button, then <b>Add to Home Screen</b>. It opens like an app, full screen. Do this before you start, because iPhone keeps the Home Screen app’s plan separate from Safari. Already started in Safari? Back up there, then restore in the Home Screen app.</li><li><b>Android:</b> open it in Chrome, tap the ⋮ menu, then <b>Add to Home screen</b> or <b>Install app</b>. On Android, clearing Chrome’s site data erases the plan even from the Home Screen, so keep backups.</li><li><b>Computer:</b> bookmark it, or pin the tab.</li></ul><p class="small">In a Safari tab, iPhone can clear the plan after about 7 days without a visit. The Home Screen app isn’t affected by that or by clearing Safari history.</p>') +
     sec('Big day', '<ul><li>Under <b>Plan</b>, tap <b>Big day</b> for your day-of timeline, wedding party, music, photo list, gifts, day-of kit, guest info and vows.</li><li>Tap <b>Build it for me</b> on the timeline and get a full day from your ceremony time.</li><li>Share any list with your DJ, photographer or wedding party in one tap.</li></ul>') +
     sec('Smart helpers', '<ul><li>Under <b>Plan</b>, tap <b>Helpers</b>. The plan check-up shows what needs you and why.</li><li>Party math figures drinks, cake, chairs and invitations. Seat everyone fills your tables by group.</li><li>The message and thank-you writers give you a warm first draft. Nothing is sent until you send it.</li><li>They run on this device with simple rules, not an AI service, so your details stay private.</li></ul>') +
@@ -219,8 +219,8 @@ function parseBackup(text) {
   restoredFiles = o.files && typeof o.files === 'object' && !Array.isArray(o.files) ? o.files : {};
   try { return normalize(p); } catch (e) { return null; }
 }
-/* Writes the backup's files first and only then removes files the restored plan no longer uses,
-   so a failed write never leaves the plan pointing at files that were already deleted. Returns how many files couldn't be stored. */
+/* Writes the backup's files only. Old files are removed later, after the restored plan has really saved,
+   so a failed write never leaves either plan pointing at files that were already deleted. */
 async function putRestoredFiles(plan) {
   const ok = [], keep = new Set(); let failed = 0;
   for (const d of plan.docs) {
@@ -230,9 +230,22 @@ async function putRestoredFiles(plan) {
   }
   plan.docs = ok;
   restoredFiles = {};
+  return { failed, keep };
+}
+async function applyRestore(p) {
+  const before = new Set(await IMG.keys());
+  const { failed, keep } = await putRestoredFiles(p);
+  const old = S;
+  S = p; S.sample = false; S.meta.lastBackup = Date.now(); S.meta.changes = 0;
+  if (!persist(true)) {
+    /* The restored plan didn't save. Put the earlier plan back and remove only the files written just now. */
+    S = old;
+    for (const k of keep) if (!before.has(k)) await IMG.del(k);
+    return { saved: false, failed };
+  }
   for (const k of await IMG.keys()) if (!keep.has(k)) await IMG.del(k);
   for (const k of Object.keys(THUMB)) delete THUMB[k];
-  return failed;
+  return { saved: true, failed };
 }
 function restoreSheet(fromWelcome) {
   openSheet({
@@ -248,7 +261,10 @@ function restoreSheet(fromWelcome) {
         if (p === 'other') { msg.textContent = 'That backup is from a different app. Pick a Wedding Command Center backup.'; return; }
         if (!p) { msg.textContent = 'That doesn’t look like a Wedding Command Center backup. Check that you picked the right file.'; return; }
         if (S && !S.sample && !fromWelcome) { const ok = await askConfirm('Replace your current plan?', 'Your plan on this device will be replaced with the backup from ' + (p.couple.a || p.couple.b ? [p.couple.a, p.couple.b].filter(Boolean).join(' & ') : 'this file') + '.', 'Replace', true); if (!ok) return; }
-        const failed = await putRestoredFiles(p); S = p; S.sample = false; S.meta.lastBackup = Date.now(); S.meta.changes = 0; persist(); applyTheme(); close(); go('home'); render(); toast(failed ? 'Plan restored, but ' + failed + ' file' + (failed === 1 ? '' : 's') + ' couldn’t be stored on this phone. It may be full.' : 'Plan restored');
+        if (holdSave) { close(); keptNotice(); return; }
+        const { saved, failed } = await applyRestore(p);
+        if (!saved) { const m = 'We couldn’t save the restored plan on this phone. Your earlier plan is unchanged.'; msg.textContent = m; toast(m); return; }
+        applyTheme(); close(); go('home'); render(); toast(failed ? 'Plan restored, but ' + failed + ' file' + (failed === 1 ? '' : 's') + ' couldn’t be stored on this phone. It may be full.' : 'Plan restored');
       };
       $('#rs-file', sc).addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (!f) return; if (f.size > 400e6) { msg.textContent = 'That file is too big to be a backup.'; return; } const r = new FileReader(); r.onload = () => apply(String(r.result)); r.onerror = () => { msg.textContent = 'Couldn’t read that file.'; }; r.readAsText(f); });
       sc.addEventListener('click', e => { if (e.target.closest('[data-b="paste"]')) apply($('#rs-text', sc).value); });
