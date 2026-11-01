@@ -4,3 +4,4 @@ Disallow: /apps/budget/
 Disallow: /apps/credentials/
 Disallow: /apps/wedding-planner/
 Disallow: /apps/small-business/
+Disallow: /legal/
