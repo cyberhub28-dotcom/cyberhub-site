@@ -1,0 +1,2 @@
+/* Test-only hook. build.py adds this only with --test; buyers never get it. */
+window.__cred = { get state() { return S; }, loadSample: id => { S = sample(id); S.look = undefined; walletFocus = null; askLast = null; commit(); go("home"); }, get P() { return P; }, finishCard, understandCred, kitRules, onboard, prog: id => prog(ruleOf(id)), go, runAsk, understandLog, events, pace, suggestSplit, credStatus, get tab() { return tab; } };

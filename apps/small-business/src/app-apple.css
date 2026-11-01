@@ -1,0 +1,296 @@
+/* ---------- Small Business on the Apple pass: this app's own parts (goes after the shared PART 2) ---------- */
+/* icon squares: solid system color, white glyph */
+.ic { color: #fff }
+.ic.av { background: var(--c2, var(--brand)) }
+.li.addrow .ic { color: var(--brand) }
+.check { margin: -7px -4px -7px -8px }
+.check span { border: 1.5px solid var(--ink-4); background: transparent; width: 24px; height: 24px }
+.check.on span { background: var(--ok-fill); border-color: var(--ok-fill) }
+
+/* page head subtitle */
+.pagehead .psub { margin: 2px 0 0; font-size: var(--t-body); color: var(--ink-3); line-height: 1.3 }
+.pagehead .psub:empty { display: none }
+
+/* example data bar */
+.sample-bar { margin-top: 4px; border-radius: var(--r-lg); font-size: var(--t-sub); font-weight: 400; min-height: 44px; padding: 10px 12px 10px 16px; background: var(--warn-soft); color: var(--ink) }
+.sample-bar b { font-weight: 600; color: var(--warn) }
+.sample-bar .chev { color: var(--ink-3) }
+
+/* the big card on Home */
+.hero { margin-top: 14px; border-radius: 22px; padding: 18px 18px 16px; box-shadow: none; color: #fff; background: linear-gradient(165deg, var(--hero-2), var(--hero) 70%) }
+.hero .tex { display: none }
+.hero .in { gap: 14px }
+.hero .lbl { font-size: var(--t-sub); font-weight: 600; color: var(--hero-ink-2) }
+.hero .big { font-family: var(--f-display); font-size: clamp(2.6rem, 13vw, 3.4rem); font-weight: 700; margin: 6px 0 2px; color: #fff }
+.hero .big small { font-size: .36em; font-weight: 600 }
+.hero .what { font-family: var(--f-serif); font-size: var(--t-title3); font-weight: 600; color: #fff }
+.hero .sub { font-size: var(--t-sub); color: var(--hero-ink-2); opacity: 1 }
+.hero .then { background: rgba(255,255,255,.12); border-radius: 16px; padding: 2px 8px }
+.hero .then div { font-size: var(--t-sub); padding: 9px 6px }
+.hero .then div + div { border-top: .5px solid rgba(255,255,255,.18) }
+.hero .then b { color: #fff; font-weight: 600 }
+.hero .then small { color: var(--hero-ink-2); opacity: 1; font-size: var(--t-foot) }
+
+/* Quick Add: one capsule field with example capsules under it */
+.qa { margin-top: 14px; background: none; box-shadow: none; padding: 0; border-radius: 0; overflow: visible }
+.qa .ask, .ask { margin: 0; background: var(--surface); border: 0; border-radius: 999px; padding: 4px 4px 4px 14px; min-height: 50px; box-shadow: inset 0 0 0 1px var(--card-edge); gap: 10px }
+.qa .ask:focus-within, .ask:focus-within { background: var(--surface); box-shadow: 0 0 0 2px var(--brand) }
+.ask .lead { width: 20px; height: 20px; color: var(--ink-3); flex: none; display: grid; place-items: center }
+.ask .lead svg { width: 20px; height: 20px }
+.ask input { font-size: var(--t-body) }
+.ask button { border-radius: 50%; width: 42px; min-width: 42px; height: 42px }
+.ask button svg { width: 18px; height: 18px }
+.ask-ex, .qa .ask-ex { padding: 10px 16px 0; margin: 0 -16px; gap: 8px }
+.ask-ex button, .qa .ask-ex button { background: var(--surface); box-shadow: inset 0 0 0 1px var(--card-edge); font-size: var(--t-sub); font-weight: 400; color: var(--ink); min-height: 34px; padding: 7px 14px; border-radius: 999px }
+.ask-out, .qa .ask-out { background: var(--surface); box-shadow: inset 0 0 0 1px var(--card-edge); border-radius: var(--r-lg); padding: 14px 16px; margin-top: 10px; font-size: var(--t-sub) }
+.ask-out .acts .btn { min-height: 40px; font-size: var(--t-sub) }
+.addask { background: var(--sheet-cell); border-radius: 22px; padding: 12px; margin-bottom: 4px }
+.addask .ask { background: var(--fill); box-shadow: none; border: 0 }
+.addask .ask:focus-within { background: var(--sheet-cell); box-shadow: 0 0 0 2px var(--brand) }
+.addask .ask-ex { padding: 10px 12px 0; margin: 0 -12px }
+.addask .ask-ex button { background: var(--fill); box-shadow: none }
+.addask .ask-out { background: var(--fill); box-shadow: none }
+.addask > small { font-size: var(--t-foot) }
+
+/* the + menu */
+.addhd { margin: 20px 16px 7px }
+.addgrid { gap: 10px }
+.addtile { background: var(--sheet-cell); border-radius: 22px; font-size: var(--t-foot); font-weight: 500; min-height: 86px; box-shadow: none; color: var(--ink) }
+.addtile .ic { width: 38px; height: 38px; border-radius: 10px; color: #fff }
+.addtile .ic svg { width: 21px; height: 21px }
+
+/* back-up reminder */
+.backup-nudge { box-shadow: inset 0 0 0 1px var(--card-edge); border-radius: var(--r-lg); padding: 12px 6px 12px 16px }
+.backup-nudge .ic { background: var(--info-fill); color: #fff }
+.backup-nudge p { font-size: var(--t-sub) }
+.backup-nudge p b { font-size: var(--t-body); font-weight: 600 }
+.backup-nudge .lnk { font-size: var(--t-sub); font-weight: 400 }
+.backup-nudge .x { background: var(--fill); width: 28px; height: 28px; font-size: 1rem; margin: 0 6px 0 0 }
+
+/* client cards: Wallet style */
+.wcard { border-radius: 16px; box-shadow: inset 0 0 0 .5px rgba(255,255,255,.18), 0 -4px 12px rgba(0,0,0,.12) }
+.wcard::before { background: linear-gradient(180deg, rgba(255,255,255,.1), transparent 3rem) }
+.wcard .w2 b { font-family: var(--f-serif); font-size: var(--t-title3); font-weight: 600 }
+.wcard .w1 small, .wcard .w3 .ex small { font-size: var(--t-cap2); text-transform: none; letter-spacing: normal }
+.wcard .w3 .no { font-size: var(--t-foot); letter-spacing: normal }
+.wcard .w3 .ex b, .wcard .w2 span { font-size: var(--t-sub) }
+.wcard .w3 .ex b.big { font-family: var(--f-display); font-size: var(--t-title3) }
+.wcard.setup { box-shadow: inset 0 0 0 1px var(--card-edge), 0 -4px 12px rgba(0,0,0,.08) }
+.wcard.setup .add { font-size: var(--t-sub) }
+
+/* client focus: a back capsule above the card */
+.vtools { display: flex; margin: 0 0 10px }
+.vtools[hidden] { display: none }
+.backpill { display: inline-flex; align-items: center; gap: 4px; border: 0; border-radius: 999px; background: var(--fill); color: var(--brand); font-size: var(--t-sub); font-weight: 500; min-height: 36px; padding: 0 14px 0 10px }
+
+/* segmented control: iOS 26 capsule */
+.segc { background: var(--fill); border-radius: 999px; padding: 2px; gap: 0 }
+.segc button { border-radius: 999px; font-size: var(--t-foot); font-weight: 500; color: var(--ink); min-height: 32px }
+.segc button.on { background: var(--seg-on); font-weight: 600; box-shadow: 0 3px 8px rgba(0,0,0,.12), 0 3px 1px rgba(0,0,0,.04) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .segc button.on { background: var(--seg-on) } }
+:root[data-theme="dark"] .segc button.on { background: var(--seg-on) }
+
+/* cards: flat, round, a faint edge; numbers in the display face, titles in serif */
+.stats, .pstats, .latecard, .mrate, .bsum, .pcard, .ringcard, .wdet, .cact, .tile, .setupcard, .dayempty, .cal, details.keep, .card.keep, .rule { box-shadow: inset 0 0 0 1px var(--card-edge); border-radius: var(--r-lg) }
+.latecard { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--warn-fill) 45%, transparent) }
+.stats b, .pstats b, .tile b, .timer .tt b, .docbig > b { font-family: var(--f-display); font-weight: 700 }
+.stats b, .pstats b { font-size: var(--t-title2) }
+.stats small, .pstats small { font-size: var(--t-foot) }
+.stats > div + div::before, .pstats > div + div::before { width: .5px; background: var(--line) }
+.mhd { margin: 24px 4px 8px }
+.mhd b { font-family: var(--f-serif); font-size: var(--t-title3); font-weight: 600 }
+.mhd span { font-size: var(--t-sub) }
+.pcard .kh { font-size: var(--t-sub); font-weight: 600; color: var(--ink-3); text-transform: none; letter-spacing: normal }
+.timer .tt small { font-size: var(--t-foot) }
+.timer .tt b { font-size: var(--t-title1) }
+.timer .tt span { font-size: var(--t-sub) }
+.timer.on .tbtn { background: var(--warn-soft); color: var(--warn) }
+.ringcard .timer { border-top: .5px solid var(--line) }
+.taxcard .est { font-size: var(--t-cap) }
+.cact { min-height: 64px; font-size: var(--t-foot); font-weight: 500; border-radius: 22px; color: var(--brand) }
+.kv { border-radius: 16px; border: 0; gap: .5px; box-shadow: inset 0 0 0 .5px var(--line) }
+.kv small { font-size: var(--t-cap); font-weight: 500 }
+.kv b { font-weight: 500 }
+.sheet .kv { background: var(--line) }
+.sheet .kv div { background: var(--sheet-cell) }
+.wdet .rule, .wdet .list { background: var(--fill) }
+
+/* calendar */
+.cal { padding: 14px 8px 10px }
+.calhd h2 { font-family: var(--f-serif); font-size: var(--t-title3); font-weight: 600 }
+.calhd h2 span, :root:not([data-theme="light"]) .calhd h2 span, :root[data-theme="light"] .calhd h2 span { color: var(--ink) }
+.calhd small { font-size: var(--t-foot) }
+.calnav { background: var(--fill); color: var(--brand) }
+.caltoday, :root:not([data-theme="light"]) .caltoday, :root[data-theme="light"] .caltoday { background: var(--fill); color: var(--brand); font-size: var(--t-sub); font-weight: 600 }
+.calwd { font-size: var(--t-cap) }
+.cday .n { font-size: var(--t-body); font-weight: 400 }
+.cday.today .n { color: var(--brand); font-weight: 600 }
+.dayhd b { font-family: var(--f-serif); font-size: var(--t-title3); font-weight: 600 }
+.dayhd span { font-size: var(--t-sub) }
+.dayempty { font-size: var(--t-sub) }
+
+/* sheets: X on the left, title in the middle, check (or a short word) on the right */
+.snav { grid-template-columns: minmax(44px, 1fr) minmax(0, auto) minmax(44px, 1fr) }
+.snav > :first-child { justify-self: start }
+.snav > :last-child { justify-self: end }
+.snav h3 { white-space: normal; text-wrap: balance; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.2 }
+.sbtn.txt { width: auto; padding: 0 14px; border-radius: 999px; font-size: var(--t-body); font-weight: 600; white-space: nowrap }
+.sheet .lead, .sheet > p { color: var(--ink-3); font-size: var(--t-sub) }
+.sheet-actions .btn + .btn { margin-top: 0 }
+
+/* grouped rows: anything inside a group gets a hairline above it */
+.fgroup > * { position: relative }
+.fgroup > .field + .field::before { display: none }
+.fgroup > * + *::before { content: ""; position: absolute; left: 16px; right: 0; top: 0; height: 1px; background: var(--line); transform: scaleY(.5); transform-origin: top; z-index: 1 }
+.fgroup > div:not(.field):not(.checks) { background: var(--sheet-cell) }
+.fgroup .checks { border-radius: 0; background: transparent }
+.fgroup > .field:has(> .checks) > label { padding-top: 12px }
+.field { flex-wrap: wrap }
+.field > .flabel { flex: none; font-size: var(--t-body); color: var(--ink); padding: 12px 0 }
+.field .hint, .field > small { flex-basis: 100%; padding: 0 0 10px; margin: -6px 0 0; font-size: var(--t-foot); color: var(--ink-3); text-align: left }
+.checks label span small { display: block; font-size: var(--t-foot); color: var(--ink-3) }
+.field .moneyin { flex: 1; min-width: 0; display: flex; justify-content: flex-end; align-items: center; gap: 2px }
+.field .moneyin i { position: static; transform: none; color: var(--ink-3); font-size: var(--t-body) }
+.field .moneyin input { flex: 1; min-width: 0; padding-left: 0 }
+.field:has(> textarea) { flex-direction: column; align-items: stretch; gap: 0 }
+.field:has(> textarea) > label { padding-bottom: 0 }
+.field textarea { border: 0; border-radius: 0; background: transparent; padding: 8px 0 12px; font-size: var(--t-body); color: var(--ink); min-height: 80px; resize: vertical; text-align: left }
+.field textarea:focus { outline: none; background: transparent; border: 0 }
+.field.addr { display: block; padding: 0 16px }
+.field.addr > label, .field.addr > legend { display: block; padding: 12px 0 4px; max-width: none; font-size: var(--t-sub); font-weight: 600; color: var(--ink-3) }
+.field.addr input { display: block; width: 100%; text-align: left; border-top: .5px solid var(--line) }
+.field.addr .addr3 { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, .7fr) minmax(0, .9fr); gap: 10px }
+.field:has(> .packs), .field.packfield { flex-direction: column; align-items: stretch; gap: 0; background: transparent; padding: 0 }
+.field.packfield > label, .field:has(> .packs) > label { font-size: var(--t-sub); font-weight: 600; color: var(--ink-3); padding: 0 16px 7px; max-width: none }
+
+/* invoice lines, totals, the big amount on a document */
+.flabel.itemshd { display: block; margin: 0 16px 7px; font-size: var(--t-sub); font-weight: 600; color: var(--ink-3) }
+.itrow { background: var(--sheet-cell); border-radius: 22px; padding: 12px; gap: 8px }
+.itrow input { border: 0; background: var(--fill); border-radius: 12px; font-size: var(--t-body) }
+.itrow input:focus { box-shadow: 0 0 0 2px var(--brand); border: 0 }
+.itrow .moneyin i { color: var(--ink-3) }
+.tots { background: var(--sheet-cell); border-radius: 22px; padding: 12px 16px }
+.tots > div { font-size: var(--t-sub) }
+.tots > div.tt { font-size: var(--t-body); border-top: .5px solid var(--line) }
+.docbig > b { font-size: var(--t-large) }
+.docbig > span, .docbig > div small { font-size: var(--t-sub) }
+.svc button { background: var(--sheet-cell); box-shadow: none; border-radius: 999px; font-size: var(--t-sub); padding: 7px 14px }
+.svc button small { font-size: var(--t-cap) }
+.remacts .btn { border-radius: 22px; font-size: var(--t-foot); min-height: 62px; background: var(--sheet-cell); color: var(--brand) }
+.packs { gap: 0; background: var(--sheet-cell); border-radius: 22px; overflow: hidden }
+.pack { border: 0; border-radius: 0; background: transparent; min-height: 56px; padding: 10px 16px; position: relative; color: var(--ink) }
+.pack + .pack::before { content: ""; position: absolute; left: 58px; right: 0; top: 0; height: 1px; background: var(--line); transform: scaleY(.5); transform-origin: top }
+.pack.on { box-shadow: none; background: color-mix(in srgb, var(--brand) 10%, transparent) }
+.pack .tx small { font-size: var(--t-sub) }
+.stepdots i { background: var(--ink-4) }
+.stepdots i.on { background: var(--brand) }
+
+/* tab bar badge sits on the icon */
+.tabbar a { position: relative }
+.tabbar .badge { top: 4px; left: calc(50% + 7px); background: var(--warn-fill); font-size: var(--t-cap2) }
+.tabbar .badge.dotb { background: var(--info-fill) }
+
+/* menu footer */
+.about { font-size: var(--t-foot) }
+details.keep summary b { font-size: var(--t-body) }
+.btnrow .btn { min-height: 46px; font-size: var(--t-sub) }
+.chips button.on { color: var(--brand-ink) }
+
+/* small headers above a group, an "add" row, the receipt photo box */
+.sheet > .flabel { display: block; margin: 0 16px 7px; font-size: var(--t-sub); font-weight: 600; color: var(--ink-3) }
+.addline { background: var(--sheet-cell); border-radius: 22px; padding: 0 16px; min-height: 46px; margin: 10px 0 22px; font-size: var(--t-body); font-weight: 400 }
+.addline svg { width: 20px; height: 20px }
+.field:has(> .rcbox) { padding: 12px 16px }
+.field > .rcbox { flex: 1; min-width: 0 }
+.rcadd { border: 0; background: var(--fill); border-radius: 16px; color: var(--brand) }
+.rcadd b { font-weight: 500 }
+.rcbox img { border: 0; border-radius: 14px }
+.field.addr { border: 0; margin: 0; min-width: 0; padding: 0 16px 2px }
+.field.addr > legend { float: left; width: 100% }
+.field.addr > legend + * , .field.addr > legend ~ input { clear: both }
+.field.addr .addr3 input { border-top: .5px solid var(--line) }
+.field.packfield > .flabel { display: block; font-size: var(--t-sub); font-weight: 600; color: var(--ink-3); padding: 0 16px 7px }
+.field.packfield > .hint { padding: 7px 16px 0; margin: 0 }
+.sheet > .field.packfield { background: transparent; margin-bottom: 22px }
+.fgroup .field.addr #f_apt, .fgroup .field.addr .addr3, .sheet .field.addr #f_apt, .sheet .field.addr .addr3 { margin-top: 0 }
+.field.addr > legend { margin: 0 }
+.field.addr .addr3 input { padding-left: 0; padding-right: 0 }
+
+/* ---------- Tools tab and the tools' sheets ---------- */
+.calcout { background: var(--sheet-cell); border-radius: 22px; padding: 16px 16px 14px; margin-bottom: 22px; text-align: center }
+.calcout:empty { display: none }
+.cbig small { display: block; font-size: var(--t-sub); font-weight: 600; color: var(--ink-3) }
+.cbig b { display: block; font-family: var(--f-display); font-size: var(--t-large); font-weight: 700; line-height: 1.15; margin-top: 2px; color: var(--brand) }
+.cbig b small { display: inline; font-size: .5em; font-weight: 600; color: var(--ink-3); margin-left: 2px }
+.cbig.bad b { color: var(--danger) }
+.cbig.good b { color: var(--ok) }
+.cbig > span { display: block; margin-top: 4px; font-size: var(--t-sub); color: var(--ink-2); text-wrap: balance }
+.crows { margin-top: 12px; padding-top: 4px; border-top: .5px solid var(--line); text-align: left }
+.crow { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0 0; font-size: var(--t-sub); color: var(--ink-2) }
+.crow span { min-width: 0 }
+.crow b { font-weight: 500; color: var(--ink); white-space: nowrap }
+.crow.strong span, .crow.strong b { font-weight: 600; color: var(--ink) }
+.crow.good b { color: var(--ok) }
+.crow.bad b { color: var(--danger) }
+.crule { display: block; height: 0; border-top: .5px solid var(--line); margin: 9px 0 2px }
+.cnote { margin: 12px 0 0; font-size: var(--t-foot); color: var(--ink-3); line-height: 1.35; text-align: left }
+.fnote { margin: 14px 16px 0; font-size: var(--t-foot); color: var(--ink-3); line-height: 1.35 }
+.tacts { display: grid; gap: 10px; margin: 4px 0 0 }
+.tacts .btn { width: 100% }
+.sheet .li.addrow.tlink { width: 100%; background: var(--sheet-cell); border-radius: 22px; margin-bottom: 22px; border: 0 }
+.qrbox { background: #fff; border-radius: 22px; padding: 14px; margin: 0 auto 22px; width: min(260px, 100%); aspect-ratio: 1; display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--card-edge) }
+.qrbox[hidden] { display: none }
+.qrbox img { width: 100%; height: auto; image-rendering: pixelated; display: block }
+.qrwait { color: #6E6E73; font-size: var(--t-sub); text-align: center; padding: 0 10px }
+.bizcard { position: relative; overflow: hidden; border-radius: 18px; padding: 18px 18px 16px; margin-bottom: 22px; color: #fff; background: linear-gradient(160deg, var(--hero-2), var(--hero)); display: grid; gap: 2px; box-shadow: 0 6px 18px rgba(0,0,0,.14) }
+.bizcard .bm-ic { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: rgba(255,255,255,.16); margin-bottom: 10px }
+.bizcard .bm-ic svg { width: 23px; height: 23px }
+.bizcard b { font-family: var(--f-serif); font-size: var(--t-title2); font-weight: 600 }
+.bizcard span:not(.bm-ic) { font-size: var(--t-body) }
+.bizcard small { font-size: var(--t-sub); color: rgba(255,255,255,.76); margin-top: 6px }
+.sheet > .checks { margin-bottom: 4px }
+
+/* Home: Needs You Today */
+.trow { padding: 0 }
+.trow .li-main { padding-left: 16px }
+.tsnooze { flex: none; width: 44px; align-self: stretch; border: 0; background: transparent; color: var(--ink-4); display: grid; place-items: center; padding: 0 }
+.tsnooze svg { width: 14px; height: 14px }
+.tsnooze:active { color: var(--ink-3) }
+.allset { display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 56px }
+.allset .tx b { font-weight: 600 }
+/* Home: this week's money */
+.weekcard { display: block; text-decoration: none; color: var(--ink); padding: 16px 18px 15px; border-radius: var(--r-lg); background: var(--surface) }
+.weekcard > small { display: block; font-size: var(--t-sub); font-weight: 600; color: var(--ink-3) }
+.weekcard > b { display: block; font-family: var(--f-display); font-size: 2.35rem; font-weight: 700; line-height: 1.12; margin: 2px 0 8px }
+.weekcard > b.neg { color: var(--danger) }
+.wio { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: var(--t-sub); color: var(--ink-2) }
+.wio i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px }
+.wcmp { display: block; margin-top: 8px; padding-top: 9px; border-top: .5px solid var(--line); font-size: var(--t-foot); color: var(--ink-3) }
+.wcmp em { font-style: normal; font-weight: 600 }
+.wcmp em.up { color: var(--ok) }
+.wcmp em.down { color: var(--danger) }
+/* Home: tool shortcuts */
+.qtools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px }
+.qtool { display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 10px 12px; border: 0; border-radius: 20px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--card-edge); color: var(--ink); text-decoration: none; text-align: left; font-size: var(--t-sub); font-weight: 500; line-height: 1.2 }
+.qtool .ic { flex: none }
+.qtool span:not(.ic) { min-width: 0 }
+
+/* ---------- launch checks: every tap target at least 44 x 44 points. The look stays the same;
+   an invisible layer around small buttons makes them easier to hit. ---------- */
+.menubtn, .hdrbtn, .backup-nudge .x, .search button, .chips button, #ceChips button, .seg button, .segc button, .segctl button,
+.smallbtn, .toast button, .ask-ex button, .ask-out .acts .btn, .pagehead .pill button, .ilines .li.sub, .gbtn, .glassbtn, .lnk { position: relative; }
+.menubtn::after, .hdrbtn::after, .ask-out .acts .btn::after, .ilines .li.sub::after { content: ""; position: absolute; inset: -2px; }
+.backup-nudge .x::after { content: ""; position: absolute; inset: -8px; }
+.search button::after { content: ""; position: absolute; inset: -7px; }
+.pagehead .pill button::after { content: ""; position: absolute; inset: -4px; }
+.chips button::after, #ceChips button::after, .smallbtn::after, .toast button::after, .ask-ex button::after { content: ""; position: absolute; left: 0; right: 0; top: -5px; bottom: -5px; }
+.seg button::after, .segc button::after, .segctl button::after { content: ""; position: absolute; left: 0; right: 0; top: -7px; bottom: -7px; }
+.gbtn { width: 44px; }
+.gbtn::after, .glassbtn::after { content: ""; position: absolute; left: 0; right: 0; top: -4px; bottom: -4px; }
+.lnk::after { content: ""; position: absolute; left: -4px; right: -4px; top: -12px; bottom: -12px; }
+/* the larger tap areas must not be cut off: segmented buttons show their whole tap area, and the scrolling chip rows
+   leave room above and below the chips for it (the negative margin keeps the layout the same) */
+.segc button { overflow: visible; text-overflow: clip; }
+.ask-ex, .qa .ask-ex, .addask .ask-ex { padding-bottom: 6px; margin-bottom: -6px; }
+.chips { padding-bottom: 6px; margin-bottom: -4px; }
+.backup-nudge.kept { grid-template-columns: auto minmax(0, 1fr); padding-right: 16px; }
