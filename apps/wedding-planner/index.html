@@ -1981,9 +1981,16 @@ body::before{background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-bac
 .topbar .bar-title{position:absolute;left:50%;top:50%;translate:-50% -50%;font:600 var(--t-body)/1.2 var(--f-body);color:var(--ink);
   max-width:calc(100vw - 210px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
 .topbar.titled .bar-title{opacity:1}
+/* the page's gray line (like "230 days to go") shows small under the bar title once it has slid under the bar */
+.bar-title .bt-t{display:block;overflow:hidden;text-overflow:ellipsis}
+.bar-title .bt-s{display:block;font-size:var(--t-cap);font-weight:400;line-height:1.2;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;max-height:0;opacity:0;transition:max-height .2s,opacity .2s}
+.topbar.dated .bar-title .bt-s{max-height:1.3em;opacity:1}
 
 /* page head: big centered title in the New York serif, a gray line under it, then any page buttons */
-main .phead{display:flex;flex-direction:column;align-items:center;text-align:center;flex-wrap:nowrap;gap:0;margin:0;padding:2px 0 16px;opacity:var(--ph-fade,1)}
+main .phead{display:flex;flex-direction:column;align-items:center;text-align:center;flex-wrap:nowrap;gap:0;margin:0;padding:2px 0 16px}
+main .phead h1{opacity:var(--h1-fade,1)}
+main .phead p{opacity:var(--p-fade,1)}
+main .phead .actions{opacity:var(--act-fade,1)}
 main .phead>div:first-child{flex:none;max-width:100%}
 main .phead .eyebrow{display:none}
 main .phead h1{font:600 var(--t-large)/1.15 var(--f-serif)!important;margin:0;color:var(--ink);text-wrap:balance}
@@ -2175,6 +2182,28 @@ main{padding-bottom:calc(62px + max(14px,env(safe-area-inset-bottom,0px)) + 40px
 .phead .actions{padding-top:4px;padding-bottom:6px;margin-top:4px}
 .chips{padding-top:4px}
 @media (max-width:359px){.segc a,.segc button{font-size:.76rem;padding-left:3px;padding-right:3px}}
+
+/* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
+   because both need a screen at least 600 wide and 500 tall. From 900 wide the side menu takes over, as before. ---------- */
+@media (min-width:600px) and (max-width:899px) and (min-height:500px){
+  /* tab bar: a centered capsule, with the soft fade under it reaching both edges so the page reads cleanly as it scrolls behind */
+  .tabbar{left:50%;right:auto;width:min(560px,calc(100% - 32px));transform:translateX(-50%);bottom:0;padding:0 0 max(14px,calc(env(safe-area-inset-bottom,0px) - 13px))}
+  .tabbar::before{display:block;inset:-30px calc(50% - 50vw) 0}
+  main{padding-bottom:calc(62px + max(14px,calc(env(safe-area-inset-bottom,0px) - 13px)) + 48px)}
+  .toast{bottom:calc(62px + max(14px,calc(env(safe-area-inset-bottom,0px) - 13px)) + 16px)}
+}
+/* cards side by side once each column gets about 300 wide (before, this started at 780) */
+@media (min-width:680px) and (min-height:500px){
+  .cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+  .cols>.card+.card,.cols>section+section{margin-top:0}
+}
+@media (min-width:600px) and (min-height:500px){
+  /* forms open as a centered card instead of a sheet from the bottom */
+  .scrim{align-items:center}
+  .sheet{border-radius:var(--r-sheet);max-height:min(86vh,calc(100% - 48px));padding-bottom:20px}
+  .sheet-head::before{display:none}
+  .sheet-head h3,.sheet-head .btn{margin-top:0}
+}
 
 </style>
 </head>
@@ -2771,9 +2800,14 @@ let skipHash = '', menuFrom = 'home';
 /* Like the Credentials Tracker: a thin line under the top bar once you scroll, and the page name after a bit more. */
 function onScroll() {
   const b = $('#topbar'); if (!b) return; const y = window.scrollY; b.classList.toggle('scrolled', y > 6);
-  const h1 = $('#main .phead h1'), ph = h1 && h1.closest('.phead');
-  b.classList.toggle('titled', h1 ? h1.getBoundingClientRect().bottom < b.getBoundingClientRect().bottom - 4 : y > 70);
-  if (ph) ph.style.setProperty('--ph-fade', Math.max(0, Math.min(1, 1 - y / 80)).toFixed(2));
+  const h1 = $('#main .phead h1'), ph = h1 && h1.closest('.phead'), bb = b.getBoundingClientRect().bottom;
+  b.classList.toggle('titled', h1 ? h1.getBoundingClientRect().bottom < bb - 4 : y > 70);
+  /* the big title, the gray line and the page buttons stay fully clear until they slide under the bar, then fade there */
+  const fade = el => { if (!el) return 1; const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
+  const p = ph && $('p', ph), pf = p && p.textContent.trim() ? fade(p) : 1;
+  if (ph) { ph.style.setProperty('--h1-fade', fade(h1).toFixed(2)); ph.style.setProperty('--p-fade', pf.toFixed(2)); ph.style.setProperty('--act-fade', fade($('.actions', ph)).toFixed(2)); }
+  const sub = $('#barSub'); if (sub) sub.textContent = p ? p.textContent.trim() : '';
+  b.classList.toggle('dated', !!p && !!p.textContent.trim() && pf < .5);
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 function readRoute() { const h = (location.hash || '').replace('#', ''); route = VIEWS.some(v => v.k === h) || EXTRA.includes(h) ? h : 'home'; }
@@ -2815,7 +2849,7 @@ function shell() {
         '<header class="topbar" id="topbar"><div class="wrap"><div class="tb-left">' +
           (isMenu ? '<a class="glassbtn" href="#' + (route === 'more' ? menuFrom : 'more') + '" aria-label="' + (route === 'more' ? 'Back' : 'Back to Menu') + '">' + SYM.back + '</a>'
             : '<a class="brandmark" href="#home" aria-label="Wedding Command Center, go to Home"><span class="bm-ic">' + RINGS + '</span><span class="bm-tx">Wedding<br>Command Center</span></a>') +
-          '</div><div class="bar-title" aria-hidden="true">' + esc(tcaseText(title)) + '</div>' +
+          '</div><div class="bar-title" aria-hidden="true"><span class="bt-t">' + esc(tcaseText(title)) + '</span><small class="bt-s" id="barSub"></small></div>' +
           '<div class="tb-group" role="group" aria-label="Actions"><a class="gbtn mbtn' + (isMenu ? ' on' : '') + '" href="#' + (route === 'more' ? menuFrom : 'more') + '" aria-label="' + (route === 'more' ? 'Close Menu' : 'Menu: settings, backup and help') + '">' + SYM.dots + (needsBackup() && !isMenu ? '<i class="mdot"></i>' : '') + '</a>' +
           '<button type="button" class="gbtn add" data-act="add-menu" aria-label="Add something">' + SYM.plus + '</button></div></div></header>' +
         '<main id="main" tabindex="-1"></main>' +

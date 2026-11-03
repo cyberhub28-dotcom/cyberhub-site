@@ -150,9 +150,13 @@ function onScroll() {
   const y = window.scrollY, b = $("#topbar");
   b.classList.toggle("scrolled", y > 6);
   /* the small title shows once the big one has scrolled under the bar */
-  const h1 = $("#pageTitle"), ph = $("#pagehead");
-  b.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < b.getBoundingClientRect().bottom - 4);
-  if (ph) ph.style.setProperty("--ph-fade", Math.max(0, Math.min(1, 1 - y / 80)).toFixed(2));
+  const h1 = $("#pageTitle"), ph = $("#pagehead"), sub = $("#pageSub"), bb = b.getBoundingClientRect().bottom;
+  b.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < bb - 4);
+  /* the big title and the gray line stay fully clear until they slide under the bar, then fade out there */
+  const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
+  if (ph && h1) ph.style.setProperty("--h1-fade", fade(h1).toFixed(2));
+  const sf = sub && !sub.hidden && sub.textContent ? fade(sub) : 1; if (ph) ph.style.setProperty("--sub-fade", sf.toFixed(2));
+  b.classList.toggle("dated", sf < .5);
 }
 window.addEventListener("scroll", onScroll, { passive: true });
 /* the running timer counts up on screen */

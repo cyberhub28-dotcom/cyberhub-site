@@ -105,10 +105,19 @@ $("#qClear").onclick = e => { e.preventDefault(); ceQ = ""; $("#q").value = ""; 
 function onScroll() {
   const y = window.scrollY, b = $("#topbar");
   b.classList.toggle("scrolled", y > 6);
-  /* the big centered title slides under the bar, then a small one fades into the bar */
+  /* the big centered title slides under the bar, then a small one fades into the bar.
+     The title and the line under it stay fully clear until they slide under the bar, then fade out there,
+     and that line then shows small under the bar title. */
   const v = tab && document.getElementById("v-" + tab), lt = v && v.querySelector(".lt"), h1 = lt && lt.querySelector("h1");
-  if (h1) { const bt = $("#barTitle"); if (bt.textContent !== h1.textContent) bt.textContent = h1.textContent;
-    b.classList.toggle("titled", h1.getBoundingClientRect().bottom < b.getBoundingClientRect().bottom - 4); lt.style.setProperty("--ph-fade", Math.max(0, Math.min(1, 1 - y / 70)).toFixed(2)); }
+  if (h1) { const bb = b.getBoundingClientRect().bottom, bt = $("#barTitleT"), bs = $("#barSub");
+    const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb) / r.height)) : 1; };
+    if (bt.textContent !== h1.textContent) bt.textContent = h1.textContent;
+    b.classList.toggle("titled", h1.getBoundingClientRect().bottom < bb - 4);
+    lt.style.setProperty("--h1-fade", fade(h1).toFixed(2));
+    const sub = [...lt.querySelectorAll("small, p")].find(el => el.getClientRects().length && el.textContent.trim());
+    const sf = sub ? fade(sub) : 1; lt.style.setProperty("--sub-fade", sf.toFixed(2));
+    const st = sub ? sub.textContent.trim() : ""; if (bs.textContent !== st) bs.textContent = st;
+    b.classList.toggle("dated", !!sub && sf < .5); }
 }
 window.addEventListener("scroll", onScroll, { passive: true });
 

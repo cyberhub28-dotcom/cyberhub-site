@@ -43,7 +43,7 @@
 :root[data-theme="dark"][data-accent="graphite"] { --brand: #A9B6C8; --brand-ink: #111720 }
 
 @supports (font: -apple-system-body) { html { font: -apple-system-body } }
-html { -webkit-text-size-adjust: 100% }
+html { -webkit-text-size-adjust: 100%; background-color: var(--bg) }
 * { box-sizing: border-box }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: .94rem; line-height: 1.42; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; -webkit-tap-highlight-color: transparent }
 button, input, select, textarea { font: inherit; color: inherit }

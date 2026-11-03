@@ -406,7 +406,7 @@ const STYLES = `
 :root[data-theme="dark"][data-accent="graphite"] { --brand: #A9B6C8; --brand-ink: #111720 }
 
 @supports (font: -apple-system-body) { html { font: -apple-system-body } }
-html { -webkit-text-size-adjust: 100% }
+html { -webkit-text-size-adjust: 100%; background-color: var(--bg) }
 * { box-sizing: border-box }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: .94rem; line-height: 1.42; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; -webkit-tap-highlight-color: transparent }
 button, input, select, textarea { font: inherit; color: inherit }
@@ -1844,6 +1844,47 @@ details.keep summary b { font-size: var(--t-body) }
 .chips { padding-bottom: 6px; margin-bottom: -4px; }
 .backup-nudge.kept { grid-template-columns: auto minmax(0, 1fr); padding-right: 16px; }
 
+/* ---------- page head: the big title and the gray line under it stay fully clear until they slide under the bar,
+   then fade out there; the gray line then shows small under the bar title ---------- */
+.pagehead h1 { opacity: var(--h1-fade, 1) }
+.pagehead .psub { opacity: var(--sub-fade, 1) }
+.bar-title .bt-t { display: block; overflow: hidden; text-overflow: ellipsis }
+.bar-title .bt-s { display: block; font-family: var(--f-body); font-size: var(--t-cap); font-weight: 400; line-height: 1.2; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; max-height: 0; opacity: 0; transition: max-height .2s, opacity .2s }
+.topbar.dated .bar-title .bt-s { max-height: 1.3em; opacity: 1 }
+
+/* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
+   because both need a screen at least 600 wide and 500 tall. ---------- */
+.hgrid, .hcol, .hg-col { display: contents }
+@media (min-width: 600px) and (min-height: 500px) {
+  /* tab bar: a centered capsule, with a soft fade under it so the page reads cleanly as it scrolls behind */
+  .tabbar { left: 50%; right: auto; width: min(560px, calc(100% - 32px)); transform: translateX(-50%); bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0; border-radius: 0; box-shadow: none }
+  .tabbar::before { display: block; inset: -30px calc(50% - 50vw) calc(-1 * max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
+  main { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) }
+  .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) }
+  /* the big number and the what's-next list side by side */
+  .hero { padding: 24px }
+  .hero .in { grid-template-columns: 1.1fr 1fr; align-items: center }
+  .hero-go { grid-column: 1 / -1 }
+  /* Home tool shortcuts in one row */
+  .qtools { grid-template-columns: repeat(4, minmax(0, 1fr)) }
+  /* Clients, Money, Calendar, Tools and Menu sit in a centered column instead of hugging the left edge */
+  #clientTools, #clientsBody { max-width: 680px; margin-left: auto; margin-right: auto }
+  .pseg { margin-left: auto; margin-right: auto }
+  .page { padding-left: max(16px, env(safe-area-inset-left, 0px), calc((100% - 640px) / 2)); padding-right: max(16px, env(safe-area-inset-right, 0px), calc((100% - 640px) / 2)) }
+  #moreBody { margin-left: auto; margin-right: auto }
+}
+@media (min-width: 860px) and (min-height: 500px) {
+  /* Home in two columns: the money card and what needs you on the left, quick add, this week and tools on the right */
+  .hgrid, #homeGroups { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; align-items: start }
+  .hcol, .hg-col { display: block; min-width: 0 }
+  .hcol-a .hero .in { grid-template-columns: minmax(0, 1fr) }
+  .hcol-a .hero-go { grid-column: auto }
+  .hcol-b .qtools { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  /* the card scroller stops at the middle gap instead of running under the other column */
+  .hg-col:first-child .wscroll { margin-right: 0; padding-right: 0; scroll-padding-right: 0 }
+  .hg-col + .hg-col .wscroll { margin-left: 0; padding-left: 0; scroll-padding-left: 0 }
+}
+
 </style>
 
 <header class="topbar" id="topbar">
@@ -1852,7 +1893,7 @@ details.keep summary b { font-size: var(--t-body) }
       <a class="brandmark press" id="brandmark" href="#home" aria-label="Small Business, go to Home"><span class="bm-ic" id="bmIc"></span><span class="bm-tx">Small<br>Business</span></a>
       <button type="button" class="glassbtn press" id="backBtn" aria-label="Back" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" style="fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/></svg></button>
     </div>
-    <div class="bar-title" id="barTitle" aria-hidden="true"></div>
+    <div class="bar-title" id="barTitle" aria-hidden="true"><span class="bt-t" id="barTitleT"></span><small class="bt-s" id="barSub"></small></div>
     <div class="tb-group" role="group" aria-label="Actions">
       <button type="button" class="gbtn press" id="menuBtn" aria-label="Menu: settings, backup and help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9" style="fill:currentColor"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor"/><circle cx="18.5" cy="12" r="1.9" style="fill:currentColor"/></svg></button>
       <button type="button" class="gbtn add press" id="fab" aria-label="Add"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v15M4.5 12h15" style="fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round"/></svg></button>
@@ -1864,13 +1905,16 @@ details.keep summary b { font-size: var(--t-body) }
   <div class="pagehead" id="pagehead"><h1 id="pageTitle">Home</h1><p class="psub" id="pageSub"></p></div>
   <section class="view" id="v-home" aria-label="Home">
     <div id="sampleBar"></div>
+    <div class="hgrid"><div class="hcol hcol-a">
     <a class="hero press" id="hero" href="#money"></a>
     <div class="group" id="h-today"></div>
     <div id="nudge"></div>
+    </div><div class="hcol hcol-b">
     <div id="askWrap"></div>
     <div class="group" id="h-week"></div>
     <div class="group" id="h-tools"></div>
-    <div id="homeGroups">
+    </div></div>
+    <div id="homeGroups"><div class="hg-col" id="hgA">
       <div class="group" id="h-owed"></div>
       <div class="group" id="h-next"></div>
       <div class="group" id="h-time"></div>
@@ -1879,7 +1923,7 @@ details.keep summary b { font-size: var(--t-body) }
       <div class="group" id="h-best"></div>
       <div class="group" id="h-tax"></div>
       <div class="group" id="h-miles"></div>
-    </div>
+    </div><div class="hg-col" id="hgB"></div></div>
   </section>
 
   <section class="view" id="v-clients" aria-label="Clients" hidden>
@@ -2526,11 +2570,28 @@ function applyLook(L) {
   if (L.theme === "light" || L.theme === "dark") root.setAttribute("data-theme", L.theme); else root.removeAttribute("data-theme");
   root.setAttribute("data-pack", P.id);
   /* each business type lays Home out its own way: its sections, in its order */
-  const hid = new Set(L.hidden), order = P.home.map(h => h[0]), box = $("#homeGroups");
-  order.forEach(k => { const el = $("#h-" + k); if (el) box.appendChild(el); });
-  HOME_IDS.forEach(k => { const el = $("#h-" + k); if (el) el.hidden = hid.has(k) || !order.includes(k); });
+  const hid = new Set(L.hidden);
+  HOME_IDS.forEach(k => { const el = $("#h-" + k); if (el) el.hidden = hid.has(k) || !P.home.some(h => h[0] === k); });
+  placeGroups();
   try { document.title = S.profile.biz || "Small Business"; } catch (e) {}
+  syncBarColor();
 }
+/* Home's sections in this business type's order. On the open foldable iPhone or iPad they deal into two columns
+   (first left, second right, and so on); on phones they stay in one column */
+const wideQ = window.matchMedia ? window.matchMedia("(min-width: 860px) and (min-height: 500px)") : null;
+function placeGroups() {
+  const a = $("#hgA"), b = $("#hgB"); if (!a || !b || typeof P === "undefined" || !P) return;
+  const wide = !!(wideQ && wideQ.matches); let n = 0;
+  P.home.forEach(h => { const el = $("#h-" + h[0]); if (!el) return; (wide && !el.hidden && n++ % 2 ? b : a).appendChild(el); });
+}
+try { if (wideQ) { if (wideQ.addEventListener) wideQ.addEventListener("change", placeGroups); else if (wideQ.addListener) wideQ.addListener(placeGroups); } } catch (e) {}
+/* the phone's own bars (and the side strip on iPhone Duo, which Safari fills with the page's background color)
+   match the app's background, including when Appearance is set to Light or Dark by hand */
+function syncBarColor() {
+  try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(); if (!bg) return;
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", bg)); } catch (e) {}
+}
+try { const dq = window.matchMedia("(prefers-color-scheme: dark)"); if (dq.addEventListener) dq.addEventListener("change", syncBarColor); else if (dq.addListener) dq.addListener(syncBarColor); } catch (e) {}
 const homeTitle = k => (P.home.find(h => h[0] === k) || [0, k])[1];
 /* one page head for every tab: a big centered title with a gray line under it; the title slides into the bar on scroll */
 const SUBS = {};
@@ -2538,8 +2599,8 @@ function setSub(t, s) { SUBS[t] = s || ""; if (t === (typeof tab === "undefined"
 function setTitles() {
   const t = (typeof tab === "undefined" ? null : tab) || "home", s = SUBS[t] || "";
   const title = t === "home" ? (S.profile.biz || "Small Business") : t === "clients" ? Wd(P.clients, 1) : { money: "Money", cal: "Calendar", tools: "Tools", more: "Menu" }[t] || "";
-  const pt = $("#pageTitle"), bt = $("#barTitle"), ps = $("#pageSub");
-  if (pt) pt.textContent = title; if (bt) bt.textContent = title; if (ps) { ps.textContent = s; ps.hidden = !s; }
+  const pt = $("#pageTitle"), bt = $("#barTitleT"), bs = $("#barSub"), ps = $("#pageSub");
+  if (pt) pt.textContent = title; if (bt) bt.textContent = title; if (bs) bs.textContent = s; if (ps) { ps.textContent = s; ps.hidden = !s; }
 }
 
 /* ---------- render ---------- */
@@ -4863,9 +4924,13 @@ function onScroll() {
   const y = window.scrollY, b = $("#topbar");
   b.classList.toggle("scrolled", y > 6);
   /* the small title shows once the big one has scrolled under the bar */
-  const h1 = $("#pageTitle"), ph = $("#pagehead");
-  b.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < b.getBoundingClientRect().bottom - 4);
-  if (ph) ph.style.setProperty("--ph-fade", Math.max(0, Math.min(1, 1 - y / 80)).toFixed(2));
+  const h1 = $("#pageTitle"), ph = $("#pagehead"), sub = $("#pageSub"), bb = b.getBoundingClientRect().bottom;
+  b.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < bb - 4);
+  /* the big title and the gray line stay fully clear until they slide under the bar, then fade out there */
+  const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
+  if (ph && h1) ph.style.setProperty("--h1-fade", fade(h1).toFixed(2));
+  const sf = sub && !sub.hidden && sub.textContent ? fade(sub) : 1; if (ph) ph.style.setProperty("--sub-fade", sf.toFixed(2));
+  b.classList.toggle("dated", sf < .5);
 }
 window.addEventListener("scroll", onScroll, { passive: true });
 /* the running timer counts up on screen */

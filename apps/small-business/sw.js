@@ -3,7 +3,7 @@
    Only the app's own files are kept: its page, PDF and QR tools, icons and manifest. Any other page in this folder
    (or anywhere else) is never saved or served from here, and nothing from the key server is ever stored.
    build.py sets the cache name from the shipped files and this helper, so every update gets a fresh copy. */
-const CACHE = "smallbiz-9dfc8d2bb3";
+const CACHE = "smallbiz-171ecac132";
 const FILES = ["./", "./index.html", "./lib/jspdf.umd.min.js", "./lib/qrcode.js", "./manifest.webmanifest", "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png"];
 self.addEventListener("install", e => {
   /* one missing file must not stop the rest from being saved */
