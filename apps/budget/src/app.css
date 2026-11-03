@@ -1,16 +1,15 @@
-
 /* Paycheck Budget, in the same family look as the Credentials Tracker: the same neutrals, system font,
    weights, spacing, hairline dividers, sheets you pull down, wallet cards, single rings and Menu.
    Each money type keeps one color everywhere. */
 :root {
-  /* iOS system colors. The -t ones are Apple's darker versions, for text on white. */
+  /* iOS system colors. The -t ones are Apple's darker versions, for text on white (green and orange a touch darker so small text passes 4.5:1 on the gray page too). */
   --sys-red: #FF383C; --sys-orange: #FF9500; --sys-yellow: #FFCC00; --sys-green: #34C759; --sys-mint: #00C7BE;
   --sys-teal: #30B0C7; --sys-cyan: #32ADE6; --sys-blue: #0088FF; --sys-indigo: #5856D6; --sys-purple: #AF52DE; --sys-pink: #FF2D55;
-  --sys-red-t: #D70015; --sys-orange-t: #C93400; --sys-green-t: #248A3D; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
+  --sys-red-t: #D70015; --sys-orange-t: #B83000; --sys-green-t: #1F7F37; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
   --sys-indigo-t: #3634A3; --sys-purple-t: #8944AB; --sys-pink-t: #D30F45;
   /* grouped backgrounds, labels, fills and separators */
   --bg: #F2F2F7; --surface: #FFFFFF; --surface-2: #EEEEF2; --sheet-bg: #F2F2F7; --sheet-cell: #FFFFFF;
-  --ink: #000000; --ink-2: #3C3C43; --ink-3: #6E6E73; --ink-4: #C4C4C7;
+  --ink: #000000; --ink-2: #3C3C43; --ink-3: #69696E; --ink-4: #C4C4C7;
   --fill: rgba(118,118,128,.12); --fill-2: rgba(118,118,128,.2); --hl: #E5E5EA; --seg-on: #FFFFFF; --switch-off: #E9E9EA;
   --line: #C6C6C8;
   --glass: color-mix(in srgb, #FFFFFF 74%, transparent);
@@ -22,7 +21,7 @@
   --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --t-large: 2rem; --t-title1: 1.647rem; --t-title2: 1.294rem; --t-title3: 1.176rem; --t-body: 1rem; --t-callout: .941rem;
   --t-sub: .882rem; --t-foot: .765rem; --t-cap: .706rem; --t-cap2: .647rem;
-  --r-lg: 26px; --r-md: 12px; --r-sheet: 28px;
+  --r-lg: 26px; --r-md: 12px; --r-sheet: 32px;
   --spring: cubic-bezier(.32,.72,0,1);
   --f-serif: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
   --card-edge: rgba(0,0,0,.05);
@@ -93,7 +92,7 @@
 
 /* Dynamic Type: on iPhone the page follows the phone's text size; sizes below are in rem. */
 @supports (font: -apple-system-body) { html { font: -apple-system-body } }
-html { -webkit-text-size-adjust: 100% }
+html { -webkit-text-size-adjust: 100%; background-color: var(--bg) }
 * { box-sizing: border-box }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: .9375rem; line-height: 1.42; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; -webkit-tap-highlight-color: transparent }
 button, input, select, textarea { font: inherit; color: inherit }
@@ -456,14 +455,18 @@ details.keep[open] summary { margin-bottom: 2px }
   .addbtn .ring { box-shadow: 0 8px 20px color-mix(in srgb, var(--brand) 40%, transparent) } main { padding-bottom: 130px } }
 
 /* sheets: slide up, pull down by the top to close */
-.scrim { position: fixed; inset: 0; background: rgba(10,16,30,.4); z-index: 40; opacity: 0; transition: opacity .32s ease; display: flex; align-items: flex-end; justify-content: center }
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.28); z-index: 40; opacity: 0; transition: opacity .32s ease; display: flex; align-items: flex-end; justify-content: center; touch-action: none;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(8px, env(safe-area-inset-right, 0px)) 8px max(8px, env(safe-area-inset-left, 0px)) }
 .scrim.show { opacity: 1 }
-.sheet { background: var(--surface); width: 100%; max-width: 520px; border-radius: 22px 22px 0 0; padding: 8px 20px calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateY(100%); transition: transform .5s cubic-bezier(.32,.72,0,1); max-height: 92vh; max-height: 92dvh; overflow-y: auto; overscroll-behavior: contain; box-shadow: 0 -8px 30px rgba(0,0,0,.12) }
+.sheet { width: 100%; max-width: 520px; max-height: 100%; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; border-radius: var(--r-sheet);
+  padding: 6px 16px calc(max(0px, env(safe-area-inset-bottom, 0px) - 8px) + 18px);
+  background: color-mix(in srgb, var(--sheet-bg) 80%, transparent); -webkit-backdrop-filter: blur(30px) saturate(1.8); backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow: 0 0 0 .5px var(--glass-line), 0 10px 40px rgba(0,0,0,.18);
+  transform: translateY(calc(100% + 40px)); transition: transform .5s cubic-bezier(.32,.72,0,1) }
 .sheet.dragging { transition: none }
 .sheet.swap > *:not(.grab) { animation: swapIn .32s cubic-bezier(.32,.72,0,1) both }
 @keyframes swapIn { from { opacity: 0; transform: translateX(22px) } to { opacity: 1; transform: none } }
 .scrim.show .sheet { transform: none }
-@media (min-width: 640px) { .scrim { align-items: center } .sheet { border-radius: 24px; padding-bottom: 20px; transform: translateY(30px) scale(.98) } }
 .grab { width: 36px; height: 5px; border-radius: 9px; background: var(--line); margin: 0 auto 14px; position: relative }
 .grab::after { content: ""; position: absolute; inset: -14px -60px }
 /* the top of a sheet is a handle: the browser must not scroll it, or the pull-down gets cancelled on phones */
@@ -570,7 +573,7 @@ button.li:active, a.li:active, .li-main:active { background: var(--hl) }
 .group-h h2 i { display: none }
 .group-h .tot { font-size: var(--t-sub); font-weight: 600 }
 .group-h .tot small { font-size: var(--t-foot); font-weight: 400; color: var(--ink-3) }
-.group-h a, .group-h .lnk { font-size: var(--t-body); font-weight: 400; color: var(--brand); padding: 6px 0 6px 8px }
+.group-h a, .group-h .lnk { font-size: var(--t-body); font-weight: 400; color: var(--brand); padding: 0 0 0 8px; min-height: 44px; margin: -6px 0 -6px auto }
 .group-h a .chev, .group-h .lnk .chev { display: none }
 .list, .card { box-shadow: none; border-radius: var(--r-lg) }
 .li { min-height: 44px; padding: 10px 16px; gap: 12px }
@@ -611,9 +614,6 @@ button.li:active, a.li:active, .li-main:active { background: var(--hl) }
 .chips button.on { background: var(--brand); color: var(--brand-ink) }
 
 /* sheets: a grabber, then a nav bar with a close circle, the title, and a check circle to save */
-.scrim { background: rgba(0,0,0,.28) }
-.sheet { background: var(--sheet-bg); border-radius: var(--r-sheet) var(--r-sheet) 0 0; padding: 6px 16px calc(24px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -2px 20px rgba(0,0,0,.12) }
-@media (min-width: 640px) { .sheet { border-radius: var(--r-sheet) } }
 .grab { width: 36px; height: 5px; background: var(--ink-4); margin: 0 auto 4px }
 .snav { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 8px; min-height: 52px; margin: 0 0 14px; touch-action: none }
 .snav h3 { margin: 0; text-align: center; font-family: var(--f-body); font-size: var(--t-body); font-weight: 600; letter-spacing: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
@@ -686,7 +686,9 @@ button.li:active, a.li:active, .li-main:active { background: var(--hl) }
 .topbar.titled .bar-title { opacity: 1 }
 
 /* page head: big centered title (New York serif), the paycheck dates under it */
-.pagehead { text-align: center; padding: 2px 0 14px; opacity: var(--ph-fade, 1) }
+.pagehead { text-align: center; padding: 2px 0 14px }
+.pagehead h1 { opacity: var(--h1-fade, 1) }
+.pagehead .pill { opacity: var(--pill-fade, 1) }
 .pagehead h1 { font-family: var(--f-serif); font-size: var(--t-large); font-weight: 600; line-height: 1.15; margin: 0; color: var(--ink); text-wrap: balance }
 .pagehead .pill { display: inline-flex; align-items: center; margin-top: 2px; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0 }
 .pagehead .pill button:not(.label) { width: 36px; height: 36px; color: var(--ink-3); border-radius: 50% }
@@ -768,6 +770,9 @@ body { background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, v
 /* when the small title shows, the app name steps aside so the title has room */
 .brandmark .bm-tx { transition: opacity .2s }
 .topbar.titled .brandmark .bm-tx { opacity: 0 }
+.bar-title .bt-t { display: block; overflow: hidden; text-overflow: ellipsis }
+.bar-title .bt-s { display: block; font-size: var(--t-cap); font-weight: 400; line-height: 1.2; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; max-height: 0; opacity: 0; transition: max-height .2s, opacity .2s }
+.topbar.dated .bar-title .bt-s { max-height: 1.3em; opacity: 1 }
 .topbar .bar-title { max-width: calc(100vw - 210px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 
 /* small phones (iPhone SE, mini) with bigger text */
@@ -809,12 +814,12 @@ body { background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, v
 .mini b { font-size: var(--t-title3); font-weight: 600 }
 /* Quick add: one rounded field on the page, examples under it */
 .qa { margin-top: 14px; background: none; box-shadow: none; padding: 0; border-radius: 0; overflow: visible }
-.qa .ask, .ask { background: var(--surface); border: 0; border-radius: 999px; padding: 4px 4px 4px 14px; min-height: 50px; box-shadow: none; gap: 10px }
+.qa .ask, .ask { background: var(--surface); border: 0; border-radius: 999px; padding: 4px 4px 4px 14px; min-height: 52px; box-shadow: none; gap: 10px }
 .qa .ask:focus-within { background: var(--surface); box-shadow: 0 0 0 2px var(--brand) }
 .ask .lead { width: 20px; height: 20px; color: var(--ink-3); flex: none; display: grid; place-items: center }
 .ask .lead svg { width: 20px; height: 20px }
-.ask input { font-size: var(--t-body) }
-.ask button { border-radius: 50%; width: 42px; min-width: 42px; height: 42px }
+.ask input { font-size: var(--t-body); min-height: 44px }
+.ask button { border-radius: 50%; width: 44px; min-width: 44px; height: 44px }
 .ask button svg { width: 18px; height: 18px }
 .ask-ex { padding: 10px 16px 0; margin: 0 -16px; gap: 8px }
 .ask-ex button { background: var(--surface); font-size: var(--t-sub); font-weight: 400; color: var(--ink); min-height: 34px; padding: 7px 14px }
@@ -914,3 +919,46 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
 .keptbar b { display: block; color: var(--danger); margin-bottom: 2px }
 .kb-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px }
 .kb-btns .btn { min-height: 44px; padding: 0 16px; flex: none; width: auto; text-decoration: none; display: inline-flex; align-items: center }
+
+/* ---------- every window is a frosted glass card (iOS 26 sheet), see the sheet styles above ----------
+   It floats 8 points in from the edges and rises from the bottom of the screen you're looking at, wherever you've
+   scrolled; the page behind stays where it was. Same on every screen size: no centered pop-up windows. */
+:root { --glass-line: rgba(0,0,0,.06) }
+:root[data-theme="dark"] { --glass-line: rgba(255,255,255,.12) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --glass-line: rgba(255,255,255,.12) } }
+@media (min-width: 600px) and (min-height: 500px) { .scrim { padding-bottom: 14px } }
+@media (prefers-reduced-transparency: reduce) { .sheet { background: var(--sheet-bg); -webkit-backdrop-filter: none; backdrop-filter: none } }
+@media (prefers-contrast: more) { .sheet { box-shadow: 0 0 0 1px var(--line), 0 10px 40px rgba(0,0,0,.18) } }
+
+/* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
+   because both need a screen at least 600 wide and 500 tall. ---------- */
+.hgrid, .hcol { display: contents }
+@media (min-width: 600px) and (min-height: 500px) {
+  /* the page scrolls inside the app instead of the whole screen moving. On the open iPhone Duo the whole
+     screen moving let the tab bar and top bar slide away with the page; this keeps them put */
+  html { height: 100%; overflow: hidden; padding: 0 }
+  body { height: 100%; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); scroll-padding-top: env(safe-area-inset-top, 0px);
+    /* one plain background, so the iPhone Duo's side strip (which takes the page color) matches the page */
+    background: var(--bg) }
+  /* tab bar: a centered capsule, with a soft fade under it so the page reads cleanly as it scrolls behind */
+  .tabbar { left: 0; right: 0; margin: 0 auto; width: min(560px, calc(100% - 32px)); transform: none; bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0 }
+  .tabbar::before { display: block; inset: -30px calc(50% - 50vw) calc(-1 * max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
+  main { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) }
+  .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) }
+  /* Left to Spend: the number and the payday facts side by side */
+  .hero { padding: 24px }
+  .hero .in { grid-template-columns: 1.2fr 1fr; align-items: center }
+  .hero-go { grid-column: 1 / -1 }
+  #moreBody { margin: 0 auto }
+}
+@media (min-width: 860px) and (min-height: 500px) {
+  /* Home in two columns: your money on the left, what's coming up on the right */
+  .hgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; align-items: start }
+  .hcol { display: block; min-width: 0 }
+  .hcol-b .cols { grid-template-columns: minmax(0, 1fr) }
+  .hcol-b > .cols > .col:first-child > .group { margin-top: 14px }
+  .hcol-a .hero .in { grid-template-columns: minmax(0, 1fr) }
+  .hcol-a .hero-go { grid-column: auto }
+  .hcol-a .wscroll { margin-right: 0; padding-right: 0; scroll-padding-right: 0 }
+}

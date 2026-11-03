@@ -309,14 +309,14 @@ const STYLES = `
    weights, spacing, hairline dividers, sheets you pull down, wallet cards, single rings and Menu.
    Each money type keeps one color everywhere. */
 :root {
-  /* iOS system colors. The -t ones are Apple's darker versions, for text on white. */
+  /* iOS system colors. The -t ones are Apple's darker versions, for text on white (green and orange a touch darker so small text passes 4.5:1 on the gray page too). */
   --sys-red: #FF383C; --sys-orange: #FF9500; --sys-yellow: #FFCC00; --sys-green: #34C759; --sys-mint: #00C7BE;
   --sys-teal: #30B0C7; --sys-cyan: #32ADE6; --sys-blue: #0088FF; --sys-indigo: #5856D6; --sys-purple: #AF52DE; --sys-pink: #FF2D55;
-  --sys-red-t: #D70015; --sys-orange-t: #C93400; --sys-green-t: #248A3D; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
+  --sys-red-t: #D70015; --sys-orange-t: #B83000; --sys-green-t: #1F7F37; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
   --sys-indigo-t: #3634A3; --sys-purple-t: #8944AB; --sys-pink-t: #D30F45;
   /* grouped backgrounds, labels, fills and separators */
   --bg: #F2F2F7; --surface: #FFFFFF; --surface-2: #EEEEF2; --sheet-bg: #F2F2F7; --sheet-cell: #FFFFFF;
-  --ink: #000000; --ink-2: #3C3C43; --ink-3: #6E6E73; --ink-4: #C4C4C7;
+  --ink: #000000; --ink-2: #3C3C43; --ink-3: #69696E; --ink-4: #C4C4C7;
   --fill: rgba(118,118,128,.12); --fill-2: rgba(118,118,128,.2); --hl: #E5E5EA; --seg-on: #FFFFFF; --switch-off: #E9E9EA;
   --line: #C6C6C8;
   --glass: color-mix(in srgb, #FFFFFF 74%, transparent);
@@ -328,7 +328,7 @@ const STYLES = `
   --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --t-large: 2rem; --t-title1: 1.647rem; --t-title2: 1.294rem; --t-title3: 1.176rem; --t-body: 1rem; --t-callout: .941rem;
   --t-sub: .882rem; --t-foot: .765rem; --t-cap: .706rem; --t-cap2: .647rem;
-  --r-lg: 26px; --r-md: 12px; --r-sheet: 28px;
+  --r-lg: 26px; --r-md: 12px; --r-sheet: 32px;
   --spring: cubic-bezier(.32,.72,0,1);
   --f-serif: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
   --card-edge: rgba(0,0,0,.05);
@@ -762,14 +762,18 @@ details.keep[open] summary { margin-bottom: 2px }
   .addbtn .ring { box-shadow: 0 8px 20px color-mix(in srgb, var(--brand) 40%, transparent) } main { padding-bottom: 130px } }
 
 /* sheets: slide up, pull down by the top to close */
-.scrim { position: fixed; inset: 0; background: rgba(10,16,30,.4); z-index: 40; opacity: 0; transition: opacity .32s ease; display: flex; align-items: flex-end; justify-content: center }
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.28); z-index: 40; opacity: 0; transition: opacity .32s ease; display: flex; align-items: flex-end; justify-content: center; touch-action: none;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(8px, env(safe-area-inset-right, 0px)) 8px max(8px, env(safe-area-inset-left, 0px)) }
 .scrim.show { opacity: 1 }
-.sheet { background: var(--surface); width: 100%; max-width: 520px; border-radius: 22px 22px 0 0; padding: 8px 20px calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateY(100%); transition: transform .5s cubic-bezier(.32,.72,0,1); max-height: 92vh; max-height: 92dvh; overflow-y: auto; overscroll-behavior: contain; box-shadow: 0 -8px 30px rgba(0,0,0,.12) }
+.sheet { width: 100%; max-width: 520px; max-height: 100%; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; border-radius: var(--r-sheet);
+  padding: 6px 16px calc(max(0px, env(safe-area-inset-bottom, 0px) - 8px) + 18px);
+  background: color-mix(in srgb, var(--sheet-bg) 80%, transparent); -webkit-backdrop-filter: blur(30px) saturate(1.8); backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow: 0 0 0 .5px var(--glass-line), 0 10px 40px rgba(0,0,0,.18);
+  transform: translateY(calc(100% + 40px)); transition: transform .5s cubic-bezier(.32,.72,0,1) }
 .sheet.dragging { transition: none }
 .sheet.swap > *:not(.grab) { animation: swapIn .32s cubic-bezier(.32,.72,0,1) both }
 @keyframes swapIn { from { opacity: 0; transform: translateX(22px) } to { opacity: 1; transform: none } }
 .scrim.show .sheet { transform: none }
-@media (min-width: 640px) { .scrim { align-items: center } .sheet { border-radius: 24px; padding-bottom: 20px; transform: translateY(30px) scale(.98) } }
 .grab { width: 36px; height: 5px; border-radius: 9px; background: var(--line); margin: 0 auto 14px; position: relative }
 .grab::after { content: ""; position: absolute; inset: -14px -60px }
 /* the top of a sheet is a handle: the browser must not scroll it, or the pull-down gets cancelled on phones */
@@ -876,7 +880,7 @@ button.li:active, a.li:active, .li-main:active { background: var(--hl) }
 .group-h h2 i { display: none }
 .group-h .tot { font-size: var(--t-sub); font-weight: 600 }
 .group-h .tot small { font-size: var(--t-foot); font-weight: 400; color: var(--ink-3) }
-.group-h a, .group-h .lnk { font-size: var(--t-body); font-weight: 400; color: var(--brand); padding: 6px 0 6px 8px }
+.group-h a, .group-h .lnk { font-size: var(--t-body); font-weight: 400; color: var(--brand); padding: 0 0 0 8px; min-height: 44px; margin: -6px 0 -6px auto }
 .group-h a .chev, .group-h .lnk .chev { display: none }
 .list, .card { box-shadow: none; border-radius: var(--r-lg) }
 .li { min-height: 44px; padding: 10px 16px; gap: 12px }
@@ -917,9 +921,6 @@ button.li:active, a.li:active, .li-main:active { background: var(--hl) }
 .chips button.on { background: var(--brand); color: var(--brand-ink) }
 
 /* sheets: a grabber, then a nav bar with a close circle, the title, and a check circle to save */
-.scrim { background: rgba(0,0,0,.28) }
-.sheet { background: var(--sheet-bg); border-radius: var(--r-sheet) var(--r-sheet) 0 0; padding: 6px 16px calc(24px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -2px 20px rgba(0,0,0,.12) }
-@media (min-width: 640px) { .sheet { border-radius: var(--r-sheet) } }
 .grab { width: 36px; height: 5px; background: var(--ink-4); margin: 0 auto 4px }
 .snav { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 8px; min-height: 52px; margin: 0 0 14px; touch-action: none }
 .snav h3 { margin: 0; text-align: center; font-family: var(--f-body); font-size: var(--t-body); font-weight: 600; letter-spacing: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
@@ -1120,12 +1121,12 @@ body { background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, v
 .mini b { font-size: var(--t-title3); font-weight: 600 }
 /* Quick add: one rounded field on the page, examples under it */
 .qa { margin-top: 14px; background: none; box-shadow: none; padding: 0; border-radius: 0; overflow: visible }
-.qa .ask, .ask { background: var(--surface); border: 0; border-radius: 999px; padding: 4px 4px 4px 14px; min-height: 50px; box-shadow: none; gap: 10px }
+.qa .ask, .ask { background: var(--surface); border: 0; border-radius: 999px; padding: 4px 4px 4px 14px; min-height: 52px; box-shadow: none; gap: 10px }
 .qa .ask:focus-within { background: var(--surface); box-shadow: 0 0 0 2px var(--brand) }
 .ask .lead { width: 20px; height: 20px; color: var(--ink-3); flex: none; display: grid; place-items: center }
 .ask .lead svg { width: 20px; height: 20px }
-.ask input { font-size: var(--t-body) }
-.ask button { border-radius: 50%; width: 42px; min-width: 42px; height: 42px }
+.ask input { font-size: var(--t-body); min-height: 44px }
+.ask button { border-radius: 50%; width: 44px; min-width: 44px; height: 44px }
 .ask button svg { width: 18px; height: 18px }
 .ask-ex { padding: 10px 16px 0; margin: 0 -16px; gap: 8px }
 .ask-ex button { background: var(--surface); font-size: var(--t-sub); font-weight: 400; color: var(--ink); min-height: 34px; padding: 7px 14px }
@@ -1226,12 +1227,29 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
 .kb-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px }
 .kb-btns .btn { min-height: 44px; padding: 0 16px; flex: none; width: auto; text-decoration: none; display: inline-flex; align-items: center }
 
+/* ---------- every window is a frosted glass card (iOS 26 sheet), see the sheet styles above ----------
+   It floats 8 points in from the edges and rises from the bottom of the screen you're looking at, wherever you've
+   scrolled; the page behind stays where it was. Same on every screen size: no centered pop-up windows. */
+:root { --glass-line: rgba(0,0,0,.06) }
+:root[data-theme="dark"] { --glass-line: rgba(255,255,255,.12) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --glass-line: rgba(255,255,255,.12) } }
+@media (min-width: 600px) and (min-height: 500px) { .scrim { padding-bottom: 14px } }
+@media (prefers-reduced-transparency: reduce) { .sheet { background: var(--sheet-bg); -webkit-backdrop-filter: none; backdrop-filter: none } }
+@media (prefers-contrast: more) { .sheet { box-shadow: 0 0 0 1px var(--line), 0 10px 40px rgba(0,0,0,.18) } }
+
 /* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
    because both need a screen at least 600 wide and 500 tall. ---------- */
 .hgrid, .hcol { display: contents }
 @media (min-width: 600px) and (min-height: 500px) {
+  /* the page scrolls inside the app instead of the whole screen moving. On the open iPhone Duo the whole
+     screen moving let the tab bar and top bar slide away with the page; this keeps them put */
+  html { height: 100%; overflow: hidden; padding: 0 }
+  body { height: 100%; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); scroll-padding-top: env(safe-area-inset-top, 0px);
+    /* one plain background, so the iPhone Duo's side strip (which takes the page color) matches the page */
+    background: var(--bg) }
   /* tab bar: a centered capsule, with a soft fade under it so the page reads cleanly as it scrolls behind */
-  .tabbar { left: 50%; right: auto; width: min(560px, calc(100% - 32px)); transform: translateX(-50%); bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0 }
+  .tabbar { left: 0; right: 0; margin: 0 auto; width: min(560px, calc(100% - 32px)); transform: none; bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0 }
   .tabbar::before { display: block; inset: -30px calc(50% - 50vw) calc(-1 * max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
   main { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) }
   .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) }
@@ -1239,8 +1257,6 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
   .hero { padding: 24px }
   .hero .in { grid-template-columns: 1.2fr 1fr; align-items: center }
   .hero-go { grid-column: 1 / -1 }
-  /* lists side by side */
-  .cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start }
   #moreBody { margin: 0 auto }
 }
 @media (min-width: 860px) and (min-height: 500px) {
@@ -1361,6 +1377,14 @@ const uid = () => Math.random().toString(36).slice(2, 9);
 /* own keys only, so words like "constructor" or "__proto__" in a saved file never match a built-in */
 const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
 const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* on big screens the page scrolls inside the body (see the big-screen styles); phones scroll the window as always */
+const shellQ = window.matchMedia ? matchMedia("(min-width: 600px) and (min-height: 500px)") : null;
+const inShell = () => !!(shellQ && shellQ.matches);
+const getY = () => inShell() ? document.body.scrollTop : window.scrollY;
+function scrollToY(top, smooth) {
+  const s = inShell() ? document.body : window;
+  try { s.scrollTo(smooth ? { top, behavior: "smooth" } : { top, left: 0 }); } catch (e) { if (s === window) window.scrollTo(0, top); else s.scrollTop = top; }
+}
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } } };
 
 /* ---------- dates (local noon avoids daylight-saving drift) ---------- */
@@ -1466,10 +1490,6 @@ const HERO_TEX = `<svg class="tex" viewBox="0 0 400 300" preserveAspectRatio="xM
   <path d="M0 250 C 70 215, 130 290, 210 250 S 340 205, 400 232 L400 300 L0 300 Z" style="fill:var(--hero-ink);opacity:.05"/>
   <path d="M0 272 C 90 245, 170 300, 260 268 S 360 248, 400 262 L400 300 L0 300 Z" style="fill:var(--hero-ink);opacity:.05"/>
   <g style="fill:var(--hero-ink)"><circle cx="300" cy="96" r="2" style="opacity:.35"/><circle cx="332" cy="140" r="1.5" style="opacity:.25"/><circle cx="262" cy="40" r="1.5" style="opacity:.3"/></g></svg>`;
-const ART_EMPTY = color => `<svg viewBox="0 0 120 80" aria-hidden="true"><ellipse cx="60" cy="72" rx="40" ry="5" style="fill:var(--line)"/>
-  <rect x="30" y="16" width="60" height="46" rx="10" style="fill:var(--surface-2);stroke:var(--line);stroke-width:2"/>
-  <path d="M42 32h28M42 42h20" style="stroke:var(--line);stroke-width:4;stroke-linecap:round"/>
-  <circle cx="86" cy="20" r="10" style="fill:${color}"/><path d="M81.5 20.5l3 3 5.5-6" style="fill:none;stroke:var(--surface);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/></svg>`;
 const empty = (color, text) => `<div class="empty">${text}</div>`;
 
 /* ---------- state ---------- */
@@ -2131,11 +2151,11 @@ function openSheet(title, fields, onSave, onDelete, extraHtml, saveLabel, onClos
     y0 = e.clientY; t0 = Date.now(); dy = 0; form.classList.add("dragging");
     try { form.setPointerCapture(e.pointerId); } catch (x) {}
   });
-  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy}px)`; scrim.style.backgroundColor = `rgba(10,16,30,${Math.max(0, .4 - dy / 900)})`; });
+  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy}px)`; scrim.style.backgroundColor = `rgba(0,0,0,${Math.max(0, .28 - dy / 1300).toFixed(3)})`; });
   const endDrag = () => {
     if (y0 == null) return; const v = dy / Math.max(1, Date.now() - t0); y0 = null;
     form.classList.remove("dragging"); scrim.style.backgroundColor = "";
-    if (dy > 120 || (dy > 30 && v > .6)) { form.style.transform = "translateY(100%)"; close(); }
+    if (dy > 120 || (dy > 30 && v > .6)) { form.style.transform = "translateY(calc(100% + 40px))"; close(); }
     else form.style.transform = "";
   };
   form.addEventListener("pointerup", endDrag); form.addEventListener("pointercancel", endDrag);
@@ -2922,7 +2942,7 @@ let tab = null, menuFrom = "home"; const scrollPos = {};
 function show(t) {
   if (!TABS.includes(t)) t = "home";
   if (t === tab) return;
-  const prev = tab; if (prev) scrollPos[prev] = window.scrollY;
+  const prev = tab; if (prev) scrollPos[prev] = getY();
   if (sheetClose) sheetClose(true);
   TABS.forEach(x => { document.getElementById("v-" + x).hidden = x !== t; });
   tab = t;
@@ -2933,13 +2953,13 @@ function show(t) {
   $("#pill").hidden = !usesPill; $("#pagehead").classList.toggle("nopill", !usesPill); setTitles();
   const v = $("#v-" + t);
   if (prev && !reduce) { v.classList.remove("enter-l", "enter-r"); void v.offsetWidth; v.classList.add(TABS.indexOf(t) > TABS.indexOf(prev) ? "enter-r" : "enter-l"); }
-  window.scrollTo(0, scrollPos[t] || 0);
+  scrollToY(scrollPos[t] || 0);
   onScroll();
   if (t === "activity") renderTrend();
   requestAnimationFrame(() => requestAnimationFrame(() => { fillIn(v); countAll(v); }));
 }
 function go(t) {
-  if (t === tab) { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); return; }
+  if (t === tab) { scrollToY(0, !reduce); return; }
   try { history.pushState({ tab: t }, "", "#" + t); } catch (e) {}
   show(t);
 }
@@ -3023,20 +3043,24 @@ $("#menuBtn").onclick = () => go(tab === "more" ? menuFrom : "more");
 $("#backBtn").onclick = () => go(menuFrom);
 $("#q").addEventListener("input", e => { actQ = e.target.value; $("#qClear").hidden = !actQ; const p = periodAt(sel); renderLog(p, calc(p)); });
 $("#qClear").onclick = e => { e.preventDefault(); actQ = ""; $("#q").value = ""; $("#qClear").hidden = true; const p = periodAt(sel); renderLog(p, calc(p)); $("#q").focus(); };
-let lastY = window.scrollY;
+let lastY = getY();
 function onScroll() {
-  const y = window.scrollY, bar = $("#topbar");
+  const y = getY(), bar = $("#topbar");
   lastY = y;
   bar.classList.toggle("scrolled", y > 6);
   const ph = $("#pagehead"), h1 = $("#pageTitle"), pill = $("#pill"), bb = bar.getBoundingClientRect().bottom;
-  bar.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < bb - 4);
-  /* the big title and the dates stay fully clear until they slide under the bar, then fade out there */
-  const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
-  if (ph && h1) ph.style.setProperty("--h1-fade", fade(h1).toFixed(2));
-  const pf = pill && !pill.hidden ? fade(pill) : 1; if (ph) ph.style.setProperty("--pill-fade", pf.toFixed(2));
-  bar.classList.toggle("dated", !!pill && !pill.hidden && pf < .5);
+  /* the big title fades out over the first few points of scrolling and the bar title takes over, so the big
+     title never slides under the app name at the top left (a fast flick on iPhone can outrun a slower fade) */
+  const hf = h1 ? Math.max(0, Math.min(1, (h1.getBoundingClientRect().top - bb + 12) / 14)) : 1;
+  bar.classList.toggle("titled", !!h1 && hf < .05);
+  if (ph && h1) ph.style.setProperty("--h1-fade", hf.toFixed(2));
+  /* the dates hand over to the small line under the bar title in one quick step, so the two never show at once */
+  const pf = pill && !pill.hidden ? Math.max(0, Math.min(1, (pill.getBoundingClientRect().top - bb + 6) / 12)) : 1; if (ph) ph.style.setProperty("--pill-fade", pf.toFixed(2));
+  bar.classList.toggle("dated", !!pill && !pill.hidden && pf < .05);
 }
 window.addEventListener("scroll", onScroll, { passive: true });
+document.body.addEventListener("scroll", onScroll, { passive: true });
+if (shellQ) { if (shellQ.addEventListener) shellQ.addEventListener("change", onScroll); else if (shellQ.addListener) shellQ.addListener(onScroll); }
 /* open foldable / iPad: Goals and Debts moves to the left column so the two columns come out even; on phones it stays in its usual place */
 const wideQ = window.matchMedia ? window.matchMedia("(min-width: 860px) and (min-height: 500px)") : null;
 function placeWallet() { const w = $("#homeWallet"), a = $(".hcol-a"), b = $(".hcol-b"); if (!w || !a || !b) return;
