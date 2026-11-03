@@ -9,11 +9,28 @@ function applyLook(L) {
   if (L.theme === "light" || L.theme === "dark") root.setAttribute("data-theme", L.theme); else root.removeAttribute("data-theme");
   root.setAttribute("data-pack", P.id);
   /* each business type lays Home out its own way: its sections, in its order */
-  const hid = new Set(L.hidden), order = P.home.map(h => h[0]), box = $("#homeGroups");
-  order.forEach(k => { const el = $("#h-" + k); if (el) box.appendChild(el); });
-  HOME_IDS.forEach(k => { const el = $("#h-" + k); if (el) el.hidden = hid.has(k) || !order.includes(k); });
+  const hid = new Set(L.hidden);
+  HOME_IDS.forEach(k => { const el = $("#h-" + k); if (el) el.hidden = hid.has(k) || !P.home.some(h => h[0] === k); });
+  placeGroups();
   try { document.title = S.profile.biz || "Small Business"; } catch (e) {}
+  syncBarColor();
 }
+/* Home's sections in this business type's order. On the open foldable iPhone or iPad they deal into two columns
+   (first left, second right, and so on); on phones they stay in one column */
+const wideQ = window.matchMedia ? window.matchMedia("(min-width: 860px) and (min-height: 500px)") : null;
+function placeGroups() {
+  const a = $("#hgA"), b = $("#hgB"); if (!a || !b || typeof P === "undefined" || !P) return;
+  const wide = !!(wideQ && wideQ.matches); let n = 0;
+  P.home.forEach(h => { const el = $("#h-" + h[0]); if (!el) return; (wide && !el.hidden && n++ % 2 ? b : a).appendChild(el); });
+}
+try { if (wideQ) { if (wideQ.addEventListener) wideQ.addEventListener("change", placeGroups); else if (wideQ.addListener) wideQ.addListener(placeGroups); } } catch (e) {}
+/* the phone's own bars (and the side strip on iPhone Duo, which Safari fills with the page's background color)
+   match the app's background, including when Appearance is set to Light or Dark by hand */
+function syncBarColor() {
+  try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(); if (!bg) return;
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", bg)); } catch (e) {}
+}
+try { const dq = window.matchMedia("(prefers-color-scheme: dark)"); if (dq.addEventListener) dq.addEventListener("change", syncBarColor); else if (dq.addListener) dq.addListener(syncBarColor); } catch (e) {}
 const homeTitle = k => (P.home.find(h => h[0] === k) || [0, k])[1];
 /* one page head for every tab: a big centered title with a gray line under it; the title slides into the bar on scroll */
 const SUBS = {};
@@ -21,8 +38,8 @@ function setSub(t, s) { SUBS[t] = s || ""; if (t === (typeof tab === "undefined"
 function setTitles() {
   const t = (typeof tab === "undefined" ? null : tab) || "home", s = SUBS[t] || "";
   const title = t === "home" ? (S.profile.biz || "Small Business") : t === "clients" ? Wd(P.clients, 1) : { money: "Money", cal: "Calendar", tools: "Tools", more: "Menu" }[t] || "";
-  const pt = $("#pageTitle"), bt = $("#barTitle"), ps = $("#pageSub");
-  if (pt) pt.textContent = title; if (bt) bt.textContent = title; if (ps) { ps.textContent = s; ps.hidden = !s; }
+  const pt = $("#pageTitle"), bt = $("#barTitleT"), bs = $("#barSub"), ps = $("#pageSub");
+  if (pt) pt.textContent = title; if (bt) bt.textContent = title; if (bs) bs.textContent = s; if (ps) { ps.textContent = s; ps.hidden = !s; }
 }
 
 /* ---------- render ---------- */

@@ -399,7 +399,7 @@ const STYLES = `
 
 /* Dynamic Type: on iPhone the page follows the phone's text size; sizes below are in rem. */
 @supports (font: -apple-system-body) { html { font: -apple-system-body } }
-html { -webkit-text-size-adjust: 100% }
+html { -webkit-text-size-adjust: 100%; background-color: var(--bg) }
 * { box-sizing: border-box }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: .9375rem; line-height: 1.42; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; -webkit-tap-highlight-color: transparent }
 button, input, select, textarea { font: inherit; color: inherit }
@@ -992,7 +992,9 @@ button.li:active, a.li:active, .li-main:active { background: var(--hl) }
 .topbar.titled .bar-title { opacity: 1 }
 
 /* page head: big centered title (New York serif), the paycheck dates under it */
-.pagehead { text-align: center; padding: 2px 0 14px; opacity: var(--ph-fade, 1) }
+.pagehead { text-align: center; padding: 2px 0 14px }
+.pagehead h1 { opacity: var(--h1-fade, 1) }
+.pagehead .pill { opacity: var(--pill-fade, 1) }
 .pagehead h1 { font-family: var(--f-serif); font-size: var(--t-large); font-weight: 600; line-height: 1.15; margin: 0; color: var(--ink); text-wrap: balance }
 .pagehead .pill { display: inline-flex; align-items: center; margin-top: 2px; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0 }
 .pagehead .pill button:not(.label) { width: 36px; height: 36px; color: var(--ink-3); border-radius: 50% }
@@ -1074,6 +1076,9 @@ body { background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 9%, v
 /* when the small title shows, the app name steps aside so the title has room */
 .brandmark .bm-tx { transition: opacity .2s }
 .topbar.titled .brandmark .bm-tx { opacity: 0 }
+.bar-title .bt-t { display: block; overflow: hidden; text-overflow: ellipsis }
+.bar-title .bt-s { display: block; font-size: var(--t-cap); font-weight: 400; line-height: 1.2; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; max-height: 0; opacity: 0; transition: max-height .2s, opacity .2s }
+.topbar.dated .bar-title .bt-s { max-height: 1.3em; opacity: 1 }
 .topbar .bar-title { max-width: calc(100vw - 210px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 
 /* small phones (iPhone SE, mini) with bigger text */
@@ -1220,6 +1225,34 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
 .keptbar b { display: block; color: var(--danger); margin-bottom: 2px }
 .kb-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px }
 .kb-btns .btn { min-height: 44px; padding: 0 16px; flex: none; width: auto; text-decoration: none; display: inline-flex; align-items: center }
+
+/* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
+   because both need a screen at least 600 wide and 500 tall. ---------- */
+.hgrid, .hcol { display: contents }
+@media (min-width: 600px) and (min-height: 500px) {
+  /* tab bar: a centered capsule, with a soft fade under it so the page reads cleanly as it scrolls behind */
+  .tabbar { left: 50%; right: auto; width: min(560px, calc(100% - 32px)); transform: translateX(-50%); bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0 }
+  .tabbar::before { display: block; inset: -30px calc(50% - 50vw) calc(-1 * max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
+  main { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) }
+  .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) }
+  /* Left to Spend: the number and the payday facts side by side */
+  .hero { padding: 24px }
+  .hero .in { grid-template-columns: 1.2fr 1fr; align-items: center }
+  .hero-go { grid-column: 1 / -1 }
+  /* lists side by side */
+  .cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start }
+  #moreBody { margin: 0 auto }
+}
+@media (min-width: 860px) and (min-height: 500px) {
+  /* Home in two columns: your money on the left, what's coming up on the right */
+  .hgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; align-items: start }
+  .hcol { display: block; min-width: 0 }
+  .hcol-b .cols { grid-template-columns: minmax(0, 1fr) }
+  .hcol-b > .cols > .col:first-child > .group { margin-top: 14px }
+  .hcol-a .hero .in { grid-template-columns: minmax(0, 1fr) }
+  .hcol-a .hero-go { grid-column: auto }
+  .hcol-a .wscroll { margin-right: 0; padding-right: 0; scroll-padding-right: 0 }
+}
 </style>
 
 <header class="topbar" id="topbar">
@@ -1228,7 +1261,7 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
       <a class="brandmark press" id="brandmark" href="#home" aria-label="Paycheck Budget, go to Home"><span class="bm-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v17M16.2 7.6c-.7-1.5-2.3-2.3-4.2-2.3-2.4 0-4.1 1.3-4.1 3.1 0 1.9 1.7 2.6 4.1 3.1 2.5.5 4.2 1.3 4.2 3.2 0 1.9-1.8 3.2-4.2 3.2-2.1 0-3.7-.9-4.4-2.4" style="fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round"/></svg></span><span class="bm-tx">Paycheck<br>Budget</span></a>
       <button type="button" class="glassbtn press" id="backBtn" aria-label="Back" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" style="fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/></svg></button>
     </div>
-    <div class="bar-title" id="barTitle" aria-hidden="true"></div>
+    <div class="bar-title" id="barTitle" aria-hidden="true"><span class="bt-t" id="barTitleT"></span><small class="bt-s" id="barSub"></small></div>
     <div class="tb-group" role="group" aria-label="Actions">
       <button type="button" class="gbtn press" id="menuBtn" aria-label="Menu: settings, backup and help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9" style="fill:currentColor"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor"/><circle cx="18.5" cy="12" r="1.9" style="fill:currentColor"/></svg></button>
       <button type="button" class="gbtn add press" id="fab" aria-label="Add"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v15M4.5 12h15" style="fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round"/></svg></button>
@@ -1246,16 +1279,19 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
   </div>
   <section class="view" id="v-home" aria-label="Home">
     <div id="sampleBar"></div>
+    <div class="hgrid"><div class="hcol hcol-a">
     <a class="hero press" id="hero" href="#budget"></a>
     <div id="recap"></div>
     <div id="nudge"></div>
     <div id="askWrap"></div>
+    </div><div class="hcol hcol-b">
     <div class="cols">
       <div class="col"><div class="group" id="homeDue"></div></div>
       <div class="col"><div class="group" id="homeRings"></div></div>
     </div>
     <div class="group" id="homeWallet"></div>
     <div class="group" id="homeRecent"></div>
+    </div></div>
   </section>
 
   <section class="view" id="v-budget" aria-label="Budget" hidden>
@@ -1631,7 +1667,7 @@ function render() {
   const p = periodAt(sel), c = calc(p);
   const lbl = sel === 0 ? "This paycheck" : sel === -1 ? "Last paycheck" : sel === 1 ? "Next paycheck" : sel < 0 ? `${-sel} paychecks ago` : `In ${sel} paychecks`;
   const pl = $("#periodLabel");
-  pl.innerHTML = `${short(p.start)} – ${short(p.end)}${sel !== 0 ? `<small>${lbl} · Tap for Now</small>` : ""}`; curLbl = lbl; setTitles();
+  pl.innerHTML = `${short(p.start)} – ${short(p.end)}${sel !== 0 ? `<small>${lbl} · Tap for Now</small>` : ""}`; curLbl = lbl; setTitles(); $("#barSub").textContent = `${short(p.start)} – ${short(p.end)}`;
   pl.setAttribute("aria-label", `${short(p.start)} to ${short(p.end)}, ${lbl}${sel !== 0 ? ". Tap to go back to this paycheck" : ""}`);
   renderHome(p, c, lbl); renderBudget(p, c); renderActivity(p, c); renderCal(); renderMore(); renderNudge();
   requestAnimationFrame(() => requestAnimationFrame(() => { fillIn(document); countAll(document); }));
@@ -2255,12 +2291,20 @@ function settingsForm() {
 const ACCENTS = [["evergreen", "Evergreen", "#0F6B61"], ["ocean", "Ocean", "#1F5FAF"], ["plum", "Plum", "#6B3FA0"], ["rose", "Rose", "#B23A5E"], ["sunset", "Sunset", "#B9521B"], ["graphite", "Graphite", "#334155"]];
 const SECTIONS = [["askWrap", "Quick Add"], ["homeDue", "Due Soon"], ["homeRings", "Spending Rings"], ["homeWallet", "Goal and Debt Cards"], ["homeRecent", "Recent Purchases"], ["bGoals", "Savings Goals"], ["bDebts", "Debt Payments"], ["bSplit", "50/30/20 Check"], ["aDonut", "Where It Went"], ["aTrend", "Activity: 12-paycheck chart"]];
 const look = () => { const L = Object.assign({ accent: "evergreen", name: "", theme: "auto", hidden: [] }, S.look || {}); if (!Array.isArray(L.hidden)) L.hidden = []; return L; };
+/* the phone's own bars (and the side strip on iPhone Duo, which Safari fills with the page's background color)
+   match the app's background, including when Appearance is set to Light or Dark by hand */
+function syncBarColor() {
+  try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(); if (!bg) return;
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", bg)); } catch (e) {}
+}
+try { const dq = window.matchMedia("(prefers-color-scheme: dark)"); if (dq.addEventListener) dq.addEventListener("change", syncBarColor); else if (dq.addListener) dq.addListener(syncBarColor); } catch (e) {}
 function applyLook(L) {
   L = L || look(); const root = document.documentElement;
   if (L.accent && L.accent !== "evergreen") root.setAttribute("data-accent", L.accent); else root.removeAttribute("data-accent");
   if (L.theme === "light" || L.theme === "dark") root.setAttribute("data-theme", L.theme); else root.removeAttribute("data-theme");
   const hid = new Set(L.hidden);
   SECTIONS.forEach(([id]) => { const el = document.getElementById(id); if (el) el.hidden = hid.has(id); });
+  syncBarColor();
   const name = String(L.name || "").trim();
   try { document.title = name ? name + "'s Budget" : "Paycheck Budget"; } catch (e) {}
 }
@@ -2872,7 +2916,7 @@ const TITLES = { home: "Home", budget: "Budget", activity: "Activity", calendar:
 let curLbl = "This paycheck";
 function setTitles() {
   const t = tab || "home", s = t === "home" ? curLbl.replace(/(^|\s)([a-z])/g, (m, a, c) => a + c.toUpperCase()) : TITLES[t];
-  const pt = $("#pageTitle"), bt = $("#barTitle"); if (pt) pt.textContent = s; if (bt) bt.textContent = s;
+  const pt = $("#pageTitle"), bt = $("#barTitleT"); if (pt) pt.textContent = s; if (bt) bt.textContent = s;
 }
 let tab = null, menuFrom = "home"; const scrollPos = {};
 function show(t) {
@@ -2984,9 +3028,20 @@ function onScroll() {
   const y = window.scrollY, bar = $("#topbar");
   lastY = y;
   bar.classList.toggle("scrolled", y > 6);
-  const ph = $("#pagehead"), h1 = $("#pageTitle"); bar.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < bar.getBoundingClientRect().bottom - 4); if (ph) ph.style.setProperty("--ph-fade", Math.max(0, Math.min(1, 1 - y / 70)).toFixed(2));
+  const ph = $("#pagehead"), h1 = $("#pageTitle"), pill = $("#pill"), bb = bar.getBoundingClientRect().bottom;
+  bar.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < bb - 4);
+  /* the big title and the dates stay fully clear until they slide under the bar, then fade out there */
+  const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
+  if (ph && h1) ph.style.setProperty("--h1-fade", fade(h1).toFixed(2));
+  const pf = pill && !pill.hidden ? fade(pill) : 1; if (ph) ph.style.setProperty("--pill-fade", pf.toFixed(2));
+  bar.classList.toggle("dated", !!pill && !pill.hidden && pf < .5);
 }
 window.addEventListener("scroll", onScroll, { passive: true });
+/* open foldable / iPad: Goals and Debts moves to the left column so the two columns come out even; on phones it stays in its usual place */
+const wideQ = window.matchMedia ? window.matchMedia("(min-width: 860px) and (min-height: 500px)") : null;
+function placeWallet() { const w = $("#homeWallet"), a = $(".hcol-a"), b = $(".hcol-b"); if (!w || !a || !b) return;
+  if (wideQ && wideQ.matches) { if (w.parentNode !== a) a.appendChild(w); } else if (w.parentNode !== b) b.insertBefore(w, $("#homeRecent")); }
+placeWallet(); if (wideQ) { if (wideQ.addEventListener) wideQ.addEventListener("change", placeWallet); else if (wideQ.addListener) wideQ.addListener(placeWallet); }
 let rsz, lastW = window.innerWidth; window.addEventListener("resize", () => { clearTimeout(rsz); rsz = setTimeout(() => { if (window.innerWidth !== lastW) { lastW = window.innerWidth; renderTrend(); } }, 150); });
 document.addEventListener("keydown", e => { if (sheetClose || /input|select|textarea/i.test(e.target.tagName || "") || !$("#pill") || $("#pill").hidden) return; if (e.key === "ArrowLeft") shiftP(-1); if (e.key === "ArrowRight") shiftP(1); });
 

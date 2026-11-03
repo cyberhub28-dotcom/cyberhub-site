@@ -5,6 +5,13 @@ const look = () => { const L = Object.assign({ accent: P.accent || "navy", theme
 /* to-do and notes live beside the calendar now, not on Home */
 const ON_CAL = ["todo", "notes"];
 const HOME_IDS = { ce: "homeCE", todo: "homeTodo", practice: "homePractice", creds: "homeCreds", notes: "homeNotes" };
+/* the phone's own bars (and the side strip on iPhone Duo, which Safari fills with the page's background color)
+   match the app's background, also when Appearance is set to Light or Dark by hand */
+function syncBarColor() {
+  try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim(); if (!bg) return;
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", bg)); } catch (e) {}
+}
+try { const dq = window.matchMedia("(prefers-color-scheme: dark)"); if (dq.addEventListener) dq.addEventListener("change", syncBarColor); else if (dq.addListener) dq.addListener(syncBarColor); } catch (e) {}
 function applyLook(L) {
   L = L || look(); const root = document.documentElement;
   if (L.accent && L.accent !== "navy") root.setAttribute("data-accent", L.accent); else root.removeAttribute("data-accent");
@@ -15,6 +22,9 @@ function applyLook(L) {
   const hid = new Set(L.hidden), order = P.home.map(h => h[0]).filter(k => !ON_CAL.includes(k)), box = document.getElementById("homeGroups");
   order.forEach(k => { const el = document.getElementById(HOME_IDS[k]); if (el && box) box.appendChild(el); });
   Object.entries(HOME_IDS).forEach(([k, id]) => { const el = document.getElementById(id); if (el) el.hidden = hid.has(k) || !order.includes(k); });
+  /* the first section you can see lines up with the top of the left column on big screens */
+  if (box) { let top = true; [...box.children].forEach(el => { el.classList.toggle("hfirst", top && !el.hidden); if (!el.hidden) top = false; }); }
+  syncBarColor();
   const name = String(S.profile.name || "").trim().split(" ")[0];
   try { document.title = name ? name + "'s Credentials" : P.appName; } catch (e) {}
 }

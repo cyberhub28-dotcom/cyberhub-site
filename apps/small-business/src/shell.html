@@ -321,7 +321,7 @@ const STYLES = `
       <a class="brandmark press" id="brandmark" href="#home" aria-label="Small Business, go to Home"><span class="bm-ic" id="bmIc"></span><span class="bm-tx">Small<br>Business</span></a>
       <button type="button" class="glassbtn press" id="backBtn" aria-label="Back" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" style="fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/></svg></button>
     </div>
-    <div class="bar-title" id="barTitle" aria-hidden="true"></div>
+    <div class="bar-title" id="barTitle" aria-hidden="true"><span class="bt-t" id="barTitleT"></span><small class="bt-s" id="barSub"></small></div>
     <div class="tb-group" role="group" aria-label="Actions">
       <button type="button" class="gbtn press" id="menuBtn" aria-label="Menu: settings, backup and help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9" style="fill:currentColor"/><circle cx="12" cy="12" r="1.9" style="fill:currentColor"/><circle cx="18.5" cy="12" r="1.9" style="fill:currentColor"/></svg></button>
       <button type="button" class="gbtn add press" id="fab" aria-label="Add"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5v15M4.5 12h15" style="fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round"/></svg></button>
@@ -333,13 +333,16 @@ const STYLES = `
   <div class="pagehead" id="pagehead"><h1 id="pageTitle">Home</h1><p class="psub" id="pageSub"></p></div>
   <section class="view" id="v-home" aria-label="Home">
     <div id="sampleBar"></div>
+    <div class="hgrid"><div class="hcol hcol-a">
     <a class="hero press" id="hero" href="#money"></a>
     <div class="group" id="h-today"></div>
     <div id="nudge"></div>
+    </div><div class="hcol hcol-b">
     <div id="askWrap"></div>
     <div class="group" id="h-week"></div>
     <div class="group" id="h-tools"></div>
-    <div id="homeGroups">
+    </div></div>
+    <div id="homeGroups"><div class="hg-col" id="hgA">
       <div class="group" id="h-owed"></div>
       <div class="group" id="h-next"></div>
       <div class="group" id="h-time"></div>
@@ -348,7 +351,7 @@ const STYLES = `
       <div class="group" id="h-best"></div>
       <div class="group" id="h-tax"></div>
       <div class="group" id="h-miles"></div>
-    </div>
+    </div><div class="hg-col" id="hgB"></div></div>
   </section>
 
   <section class="view" id="v-clients" aria-label="Clients" hidden>

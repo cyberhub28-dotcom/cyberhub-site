@@ -18,9 +18,14 @@ let skipHash = '', menuFrom = 'home';
 /* Like the Credentials Tracker: a thin line under the top bar once you scroll, and the page name after a bit more. */
 function onScroll() {
   const b = $('#topbar'); if (!b) return; const y = window.scrollY; b.classList.toggle('scrolled', y > 6);
-  const h1 = $('#main .phead h1'), ph = h1 && h1.closest('.phead');
-  b.classList.toggle('titled', h1 ? h1.getBoundingClientRect().bottom < b.getBoundingClientRect().bottom - 4 : y > 70);
-  if (ph) ph.style.setProperty('--ph-fade', Math.max(0, Math.min(1, 1 - y / 80)).toFixed(2));
+  const h1 = $('#main .phead h1'), ph = h1 && h1.closest('.phead'), bb = b.getBoundingClientRect().bottom;
+  b.classList.toggle('titled', h1 ? h1.getBoundingClientRect().bottom < bb - 4 : y > 70);
+  /* the big title, the gray line and the page buttons stay fully clear until they slide under the bar, then fade there */
+  const fade = el => { if (!el) return 1; const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
+  const p = ph && $('p', ph), pf = p && p.textContent.trim() ? fade(p) : 1;
+  if (ph) { ph.style.setProperty('--h1-fade', fade(h1).toFixed(2)); ph.style.setProperty('--p-fade', pf.toFixed(2)); ph.style.setProperty('--act-fade', fade($('.actions', ph)).toFixed(2)); }
+  const sub = $('#barSub'); if (sub) sub.textContent = p ? p.textContent.trim() : '';
+  b.classList.toggle('dated', !!p && !!p.textContent.trim() && pf < .5);
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 function readRoute() { const h = (location.hash || '').replace('#', ''); route = VIEWS.some(v => v.k === h) || EXTRA.includes(h) ? h : 'home'; }
@@ -62,7 +67,7 @@ function shell() {
         '<header class="topbar" id="topbar"><div class="wrap"><div class="tb-left">' +
           (isMenu ? '<a class="glassbtn" href="#' + (route === 'more' ? menuFrom : 'more') + '" aria-label="' + (route === 'more' ? 'Back' : 'Back to Menu') + '">' + SYM.back + '</a>'
             : '<a class="brandmark" href="#home" aria-label="Wedding Command Center, go to Home"><span class="bm-ic">' + RINGS + '</span><span class="bm-tx">Wedding<br>Command Center</span></a>') +
-          '</div><div class="bar-title" aria-hidden="true">' + esc(tcaseText(title)) + '</div>' +
+          '</div><div class="bar-title" aria-hidden="true"><span class="bt-t">' + esc(tcaseText(title)) + '</span><small class="bt-s" id="barSub"></small></div>' +
           '<div class="tb-group" role="group" aria-label="Actions"><a class="gbtn mbtn' + (isMenu ? ' on' : '') + '" href="#' + (route === 'more' ? menuFrom : 'more') + '" aria-label="' + (route === 'more' ? 'Close Menu' : 'Menu: settings, backup and help') + '">' + SYM.dots + (needsBackup() && !isMenu ? '<i class="mdot"></i>' : '') + '</a>' +
           '<button type="button" class="gbtn add" data-act="add-menu" aria-label="Add something">' + SYM.plus + '</button></div></div></header>' +
         '<main id="main" tabindex="-1"></main>' +

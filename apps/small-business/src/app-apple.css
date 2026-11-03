@@ -294,3 +294,44 @@ details.keep summary b { font-size: var(--t-body) }
 .ask-ex, .qa .ask-ex, .addask .ask-ex { padding-bottom: 6px; margin-bottom: -6px; }
 .chips { padding-bottom: 6px; margin-bottom: -4px; }
 .backup-nudge.kept { grid-template-columns: auto minmax(0, 1fr); padding-right: 16px; }
+
+/* ---------- page head: the big title and the gray line under it stay fully clear until they slide under the bar,
+   then fade out there; the gray line then shows small under the bar title ---------- */
+.pagehead h1 { opacity: var(--h1-fade, 1) }
+.pagehead .psub { opacity: var(--sub-fade, 1) }
+.bar-title .bt-t { display: block; overflow: hidden; text-overflow: ellipsis }
+.bar-title .bt-s { display: block; font-family: var(--f-body); font-size: var(--t-cap); font-weight: 400; line-height: 1.2; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; max-height: 0; opacity: 0; transition: max-height .2s, opacity .2s }
+.topbar.dated .bar-title .bt-s { max-height: 1.3em; opacity: 1 }
+
+/* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
+   because both need a screen at least 600 wide and 500 tall. ---------- */
+.hgrid, .hcol, .hg-col { display: contents }
+@media (min-width: 600px) and (min-height: 500px) {
+  /* tab bar: a centered capsule, with a soft fade under it so the page reads cleanly as it scrolls behind */
+  .tabbar { left: 50%; right: auto; width: min(560px, calc(100% - 32px)); transform: translateX(-50%); bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0; border-radius: 0; box-shadow: none }
+  .tabbar::before { display: block; inset: -30px calc(50% - 50vw) calc(-1 * max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
+  main { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) }
+  .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) }
+  /* the big number and the what's-next list side by side */
+  .hero { padding: 24px }
+  .hero .in { grid-template-columns: 1.1fr 1fr; align-items: center }
+  .hero-go { grid-column: 1 / -1 }
+  /* Home tool shortcuts in one row */
+  .qtools { grid-template-columns: repeat(4, minmax(0, 1fr)) }
+  /* Clients, Money, Calendar, Tools and Menu sit in a centered column instead of hugging the left edge */
+  #clientTools, #clientsBody { max-width: 680px; margin-left: auto; margin-right: auto }
+  .pseg { margin-left: auto; margin-right: auto }
+  .page { padding-left: max(16px, env(safe-area-inset-left, 0px), calc((100% - 640px) / 2)); padding-right: max(16px, env(safe-area-inset-right, 0px), calc((100% - 640px) / 2)) }
+  #moreBody { margin-left: auto; margin-right: auto }
+}
+@media (min-width: 860px) and (min-height: 500px) {
+  /* Home in two columns: the money card and what needs you on the left, quick add, this week and tools on the right */
+  .hgrid, #homeGroups { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; align-items: start }
+  .hcol, .hg-col { display: block; min-width: 0 }
+  .hcol-a .hero .in { grid-template-columns: minmax(0, 1fr) }
+  .hcol-a .hero-go { grid-column: auto }
+  .hcol-b .qtools { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  /* the card scroller stops at the middle gap instead of running under the other column */
+  .hg-col:first-child .wscroll { margin-right: 0; padding-right: 0; scroll-padding-right: 0 }
+  .hg-col + .hg-col .wscroll { margin-left: 0; padding-left: 0; scroll-padding-left: 0 }
+}
