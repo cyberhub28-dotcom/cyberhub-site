@@ -51,6 +51,25 @@ Every tap that opens something (a form, a picker, a question, a "restore this ba
 - The page background (html, body, theme-color) matches the app background, because Safari fills the Duo side strip with it.
 - Respect all four safe areas (notch, home bar, landscape sides).
 
+## 8b. Duo / foldable (Safari 27.1, researched Nov 5)
+Sizes Safari gives a page (CSS pixels, from WebKit's Safari 27.1 notes, webkit.org/blog/18486):
+- Folded, upright: 382 wide, about 580 to 618 tall. Folded, sideways: 594 x about 368 to 406. Treat both as a phone.
+- Open, upright: 669 x about 867 to 902. Open, sideways: 951 x about 585 to 620.
+- Open with two Safari windows side by side: 385 each. Treat as a phone.
+- Inside a preview frame (claude.ai) it is less, about 669 x 690 upright and 951 x 440 sideways.
+- Folding and unfolding resizes the page, it doesn't reload it. Lay out with CSS media queries, never by checking for the device; the Duo says it's a plain "iPhone".
+
+Rules:
+- Use `100dvh` (with `100vh` before it as a fallback) for anything sized to the screen. Safari's `100vh` is the tallest size, with its toolbars hidden, so a `100vh` side menu or tray runs under the toolbar.
+- Use height as well as width. Open sideways is wide but short (about 585, 440 in a frame). A side menu or tray that can be taller than that scrolls inside itself (`overflow-y:auto`) and gets a tighter version under about 760 tall. Never let it spill past its own edge.
+- Taps stay 44 points in side menus too.
+- The outer screen has a strip of Safari controls on one side. Pages can't draw under it; Safari fills it with the page background, so match html, body and theme-color to the app background (rule 8).
+- Use separate left and right safe-area padding; the two sides can differ.
+- No seam rules yet. The fold-aware tools (Viewport Segments, Device Posture) are behind a Safari setting and off for buyers, so plain single-screen layouts are the plan.
+- Preview frame: on a touch screen the frame can run past what Safari shows, cutting off a bottom tab bar. Add the `framed` class to html when `window.self !== window.top`, and only then lift the tab bar higher. Safari and the Home Screen never get that class.
+- Landscape = side rail. On a touch screen 900 wide or more (open Duo sideways, iPad), drop the left side menu and the bottom tab bar. The same tab icons become a Liquid Glass rail down the right edge (frosted pill, icons only, 52pt taps, current tab lit), anchored at the bottom. The ... and + buttons move into their own glass pill at the top of that edge. Page switchers (like Guest list | Seating) show, since there is no side menu. Keep the page layouts as they are: no two-pane rework. A mouse-and-keyboard screen keeps the side menu.
+- Test widths: 382, 594 x 380, 669 x 690 and 867, 951 x 440 and 585. Upright open stays the bottom tab bar.
+
 ## 9. Data
 - Buyer data stays on the device. Every app has Backup and Restore, and a restore asks first in a sheet.
 
@@ -61,3 +80,5 @@ Every tap that opens something (a form, a picker, a question, a "restore this ba
 4. Add the big-screen body scroller and test folded, open, sideways and a regular iPhone.
 5. Open every window while scrolled to the bottom of every screen and check it lands at the bottom of the screen with the page unmoved.
 6. Test Backup and Restore.
+7. Check the Duo sizes in section 8b: nothing sized with a bare 100vh, side menus and trays fit or scroll at 951 x 440, and the tab bar is fully on screen at 669 wide.
+8. Open Duo sideways: the right-hand glass rail shows instead of the side menu, every tab works, and the ... and + pill sits at the top.

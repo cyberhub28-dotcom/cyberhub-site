@@ -30,16 +30,28 @@ function toast(msg, undo) {
 }
 function lock(on) { document.documentElement.classList.toggle('locked', !!($('.scrim') || on)); }
 
+/* A question ("Delete this file?", "Replace your plan?") opens the same frosted glass card as every other window:
+   it rises from the bottom of the screen you're looking at, with the answer buttons at the bottom. */
 function askConfirm(title, message, okLabel, danger) {
   return new Promise(res => {
-    const sc = document.createElement('div'); sc.className = 'scrim center show'; sc.style.zIndex = 120;
-    sc.innerHTML = '<div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="dlg-t"><h3 id="dlg-t">' + esc(title) + '</h3><p>' + esc(message) + '</p><div class="actions"><button class="btn" type="button" data-r="0">Cancel</button><button class="btn ' + (danger ? 'danger solid' : 'primary') + '" type="button" data-r="1">' + esc(okLabel || 'OK') + '</button></div></div>';
-    const done = v => { sc.remove(); lock(); document.removeEventListener('keydown', key); res(v); };
+    const opener = document.activeElement;
+    const sc = document.createElement('div'); sc.className = 'scrim confirm'; sc.style.zIndex = 120;
+    sc.innerHTML = '<div class="sheet dialog" role="alertdialog" aria-modal="true" aria-labelledby="dlg-t" aria-describedby="dlg-m"><h3 id="dlg-t">' + esc(title) + '</h3><p id="dlg-m">' + esc(message) + '</p><div class="actions"><button class="btn ' + (danger ? 'danger solid' : 'primary') + '" type="button" data-r="1">' + esc(okLabel || 'OK') + '</button><button class="btn" type="button" data-r="0">Cancel</button></div></div>';
+    let over = false;
+    const done = v => {
+      if (over) return; over = true;
+      document.removeEventListener('keydown', key);
+      sc.className = 'scrim-gone confirm show'; lock();
+      if (reduceMotion()) sc.remove(); else { requestAnimationFrame(() => sc.classList.remove('show')); setTimeout(() => sc.remove(), 460); }
+      try { if (opener && opener.isConnected && opener.focus) opener.focus({ preventScroll: true }); } catch (e) {}
+      res(v);
+    };
     const key = e => { if (e.key === 'Escape') done(false); };
     sc.addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (b) done(b.dataset.r === '1'); else if (e.target === sc) done(false); });
     document.addEventListener('keydown', key);
     document.body.appendChild(sc); lock(true);
-    sc.querySelector('[data-r="1"]').focus();
+    if (reduceMotion()) sc.classList.add('show'); else requestAnimationFrame(() => requestAnimationFrame(() => sc.classList.add('show')));
+    sc.querySelector('[data-r="1"]').focus({ preventScroll: true });
   });
 }
 
@@ -96,6 +108,7 @@ function openSheet(opts) {
   const sheet = $('.sheet', sc);
   const flat = []; fields.forEach(f => f.row ? flat.push(...f.row) : flat.push(f));
   let closed = false;
+  const opener = document.activeElement;
   const close = () => {
     if (closed) return; closed = true;
     document.removeEventListener('keydown', onKey);
@@ -103,6 +116,8 @@ function openSheet(opts) {
     sc.className = 'scrim-gone show'; sheetGoneAt = Date.now(); lock();
     setTimeout(() => { if (!sc.parentNode) return; if (reduceMotion()) { sc.remove(); return; } sc.classList.remove('show'); sheet.style.transform = ''; setTimeout(() => sc.remove(), 460); }, 90);
     if (opts.onClose) opts.onClose();
+    /* focus goes back to the button that opened the window */
+    setTimeout(() => { try { if (!$('.scrim') && opener && opener.isConnected && opener.focus && opener !== document.body) opener.focus({ preventScroll: true }); } catch (e) {} }, 0);
   };
   const values = () => readFields(flat, sc);
   const refreshShow = () => { const v = values(); flat.forEach(f => { if (f.showIf) { const el = $('.field[data-k="' + f.k + '"]', sc); if (el) el.hidden = !f.showIf(v); } }); };
@@ -111,11 +126,18 @@ function openSheet(opts) {
     for (const f of flat) if (f.required && !v[f.k]) { const el = $('#f-' + f.k, sc); el.focus(); el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 400); return; }
     if (opts.onSave(v, sc) !== false) close();
   };
-  const onKey = e => { if (e.key === 'Escape' && !$('.scrim.center')) close(); };
+  const onKey = e => { if (e.key === 'Escape' && !$('.scrim.confirm')) close(); };
   sc.addEventListener('click', e => {
     if (e.target === sc || e.target.closest('[data-x]')) return close();
     if (e.target.closest('[data-save]')) return save();
-    if (e.target.closest('[data-del]')) { opts.onDelete(close); return; }
+    const dr = e.target.closest('[data-del]');
+    if (dr) {
+      /* delete takes two taps: the first turns the row red and asks again, the second deletes (then a toast offers Undo) */
+      if (opts.deleteAsks || dr.classList.contains('armed')) { clearTimeout(dr._t); opts.onDelete(close); return; }
+      dr.classList.add('armed'); dr.textContent = tcaseText('Tap again to ' + ((opts.deleteLabel || 'Delete').split(' ')[0].toLowerCase() === 'remove' ? 'remove' : 'delete'));
+      dr._t = setTimeout(() => { dr.classList.remove('armed'); dr.textContent = tcaseText(opts.deleteLabel || 'Delete'); }, 4000);
+      return;
+    }
     const sb = e.target.closest('.seg button');
     if (sb) { const seg = sb.parentElement; seg.dataset.value = sb.dataset.v; $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(b === sb))); refreshShow(); }
   });

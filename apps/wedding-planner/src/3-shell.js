@@ -12,22 +12,35 @@ const VIEWS = [
 const EXTRA = ['more', 'help', 'style'];
 const EXTRA_TITLES = { more: 'Menu', help: 'How to use', style: 'Look & style' };
 function go(k) { route = k; try { if (location.hash !== '#' + k) { skipHash = '#' + k; location.hash = k; } } catch (e) { skipHash = ''; } $$('.scrim').forEach(s => s.remove()); lock(); render(); toTop(); }
+/* On big screens (the open foldable iPhone, iPad) the page scrolls inside the body, so the top bar and tab bar stay put.
+   Phones never match, because both need a screen at least 600 wide and 500 tall. getY and scrollToY pick the right scroller. */
+const shellQ = window.matchMedia ? matchMedia('(min-width:600px) and (min-height:500px)') : null;
+const inShell = () => !!(shellQ && shellQ.matches);
+const getY = () => inShell() ? document.body.scrollTop : (window.scrollY || 0);
+function scrollToY(y) { try { if (inShell()) document.body.scrollTop = y; else window.scrollTo(0, y); } catch (e) {} }
 /* Some phone frames ignore window.scrollTo, so set every scroller we know about. */
 function toTop() { try { window.scrollTo(0, 0); } catch (e) {} const se = document.scrollingElement || document.documentElement; if (se) se.scrollTop = 0; if (document.body) document.body.scrollTop = 0; }
 let skipHash = '', menuFrom = 'home';
 /* Like the Credentials Tracker: a thin line under the top bar once you scroll, and the page name after a bit more. */
 function onScroll() {
-  const b = $('#topbar'); if (!b) return; const y = window.scrollY; b.classList.toggle('scrolled', y > 6);
+  const b = $('#topbar'); if (!b) return; const y = getY(); b.classList.toggle('scrolled', y > 6);
   const h1 = $('#main .phead h1'), ph = h1 && h1.closest('.phead'), bb = b.getBoundingClientRect().bottom;
-  b.classList.toggle('titled', h1 ? h1.getBoundingClientRect().bottom < bb - 4 : y > 70);
-  /* the big title, the gray line and the page buttons stay fully clear until they slide under the bar, then fade there */
-  const fade = el => { if (!el) return 1; const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
-  const p = ph && $('p', ph), pf = p && p.textContent.trim() ? fade(p) : 1;
-  if (ph) { ph.style.setProperty('--h1-fade', fade(h1).toFixed(2)); ph.style.setProperty('--p-fade', pf.toFixed(2)); ph.style.setProperty('--act-fade', fade($('.actions', ph)).toFixed(2)); }
-  const sub = $('#barSub'); if (sub) sub.textContent = p ? p.textContent.trim() : '';
-  b.classList.toggle('dated', !!p && !!p.textContent.trim() && pf < .5);
+  /* the big title fades out over the first few points as it reaches the bar and the small bar title takes over,
+     so the two never show at once (a fast flick on iPhone can outrun a slower fade) */
+  const hf = h1 ? Math.max(0, Math.min(1, (h1.getBoundingClientRect().top - bb + 12) / 14)) : 1;
+  b.classList.toggle('titled', h1 ? hf < .05 : y > 70);
+  /* the gray line ("230 days to go") hands over to the small line under the bar title in one quick step, so it never shows twice */
+  const p = ph && $('p', ph), hasP = !!(p && p.textContent.trim());
+  const pf = hasP ? Math.max(0, Math.min(1, (p.getBoundingClientRect().top - bb + 6) / 12)) : 1;
+  const act = ph && $('.actions', ph), r = act && act.getBoundingClientRect();
+  const af = r && r.height ? Math.max(0, Math.min(1, (r.top - bb + 6) / 12)) : 1;
+  if (ph) { ph.style.setProperty('--h1-fade', hf.toFixed(2)); ph.style.setProperty('--p-fade', pf.toFixed(2)); ph.style.setProperty('--act-fade', af.toFixed(2)); }
+  const sub = $('#barSub'); if (sub) sub.textContent = hasP ? p.textContent.trim() : '';
+  b.classList.toggle('dated', hasP && pf < .05);
 }
 window.addEventListener('scroll', onScroll, { passive: true });
+document.body.addEventListener('scroll', onScroll, { passive: true });
+if (shellQ) { if (shellQ.addEventListener) shellQ.addEventListener('change', onScroll); else if (shellQ.addListener) shellQ.addListener(onScroll); }
 function readRoute() { const h = (location.hash || '').replace('#', ''); route = VIEWS.some(v => v.k === h) || EXTRA.includes(h) ? h : 'home'; }
 
 /* Phone: four tabs and a + in the middle. Guests holds the list and seating; Vendors holds the wallet and budget. */
@@ -107,7 +120,7 @@ function liftHeads(main) {
 }
 function render() {
   if (!S) { renderWelcome(); return; }
-  const y = window.scrollY;
+  const y = getY();
   const keepScroll = render.last === route;
   shell();
   const main = $('#main');
@@ -131,7 +144,7 @@ function render() {
   try { const ph = $('.phead', main); if (ph && ph.parentNode === main) { let at = ph; [...main.children].filter(c => c !== ph && (c.compareDocumentPosition(ph) & Node.DOCUMENT_POSITION_FOLLOWING)).forEach(c => { at.after(c); at = c; }); } } catch (e) {}
   try { tcase(main); } catch (e) {}
   document.title = (route === 'home' ? '' : ((VIEWS.find(v => v.k === route) || {}).label || EXTRA_TITLES[route] || 'Menu') + ' · ') + 'Wedding Command Center';
-  if (keepScroll) window.scrollTo(0, y);
+  if (keepScroll) scrollToY(y);
   render.last = route;
   onScroll();
   lock();

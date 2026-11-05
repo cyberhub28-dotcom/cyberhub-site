@@ -79,7 +79,7 @@ function pickRestore() {
         /* try the screens with the backup first: if they can't open it, keep what's on the phone */
         try { render(); } catch (e) { S = before; P = p0; try { render(); } catch (e2) {} return "That backup couldn't be opened. Nothing was changed."; }
         clientFocus = null; askLast = null; askPending = null;
-        commit(); later(() => { go("home"); window.scrollTo(0, 0); });
+        commit(); later(() => { go("home"); scrollToY(0); });
         IMG.clear().then(() => Promise.all(good.map(k => IMG.put(k, src[k]).then(ok => ok ? null : k)))).then(bad => {
           bad = bad.filter(Boolean);
           if (bad.length) { S.expenses.forEach(e => { if (bad.includes(e.photo)) e.photo = ""; }); commit(); toast(`Restored from ${when}. Some receipt photos couldn't be saved.`); }

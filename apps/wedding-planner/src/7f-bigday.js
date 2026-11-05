@@ -237,8 +237,8 @@ function pdfInfo() {
 }
 
 Object.assign(EXTRA_ACTS, {
-  'bd-open': el => { bdOpen = el.dataset.k; if (route !== 'bigday') go('bigday'); else { render(); window.scrollTo(0, 0); } },
-  'bd-close': () => { bdOpen = null; render(); window.scrollTo(0, 0); },
+  'bd-open': el => { bdOpen = el.dataset.k; if (route !== 'bigday') go('bigday'); else { render(); toTop(); } },
+  'bd-close': () => { bdOpen = null; render(); toTop(); },
   'day-add': () => editDay(null), 'day-edit': el => editDay(el.dataset.id), 'pdf-day': pdfDay,
   'party-add': () => editParty(null), 'party-edit': el => editParty(el.dataset.id),
   'song-add': el => editSong(null, el.dataset.m), 'song-edit': el => editSong(el.dataset.id), 'share-music': () => shareText('Our wedding music', musicText()),

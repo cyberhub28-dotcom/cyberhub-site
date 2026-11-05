@@ -245,7 +245,7 @@ function autoScroll() {
   let dy = 0;
   if (drag.y < edge + 50) dy = -Math.ceil((edge + 50 - drag.y) / 6);
   else if (drag.y > h - edge - 70) dy = Math.ceil((drag.y - (h - edge - 70)) / 6);
-  if (dy) { window.scrollBy(0, dy); moveGhost(); }
+  if (dy) { scrollToY(getY() + dy); moveGhost(); }
   requestAnimationFrame(autoScroll);
 }
 function dragMove(e) {
@@ -367,7 +367,7 @@ function editCat(id) {
         if (!ok) return; const snap = snapshot(); S.budget.items = S.budget.items.filter(i => i.cat !== c.id); S.budget.cats = S.budget.cats.filter(x => x !== c); close(); commit(); toast('Category deleted', () => restoreSnapshot(snap));
       });
     } : null,
-    deleteLabel: 'Delete category'
+    deleteLabel: 'Delete category', deleteAsks: true
   });
 }
 function editTotal() {

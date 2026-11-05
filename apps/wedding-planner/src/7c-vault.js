@@ -91,7 +91,7 @@ function docForm(d, url, isNew) {
       commit(); toast(isNew ? 'Saved to your files' : 'Saved');
     },
     onDelete: isNew ? null : close => { askConfirm('Delete this file?', 'It will be removed from this device. A backup you saved earlier still has it.', 'Delete', true).then(ok => { if (!ok) return; S.docs = S.docs.filter(x => x !== d); IMG.del('doc:' + d.id); delete THUMB[d.id]; close(); commit(); toast('File deleted'); }); },
-    deleteLabel: 'Delete file'
+    deleteLabel: 'Delete file', deleteAsks: true
   });
 }
 async function shareDoc(d) {

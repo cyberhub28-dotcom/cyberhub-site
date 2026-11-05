@@ -129,7 +129,7 @@ let askLast = null;
 function renderAsk() {
   const ex = P.askEx();
   $("#askWrap").innerHTML = `<section class="qa" aria-label="Quick add">
-    <form class="ask" id="askForm" role="search"><span class="lead">${ICON.plus}</span><label class="sr" for="askIn">Quick add: type a course, a date or a question</label><input id="askIn" type="text" enterkeyhint="go" autocomplete="off" placeholder="Quick Add"><button type="submit" aria-label="Go">${ICON.send}</button></form>
+    <form class="ask" id="askForm" role="search"><span class="lead">${ICON.plus}</span><label class="sr" for="askIn">Quick add: type a course, a date or a question</label><input id="askIn" type="text" enterkeyhint="go" autocomplete="off" placeholder="Quick add"><button type="submit" aria-label="Go">${ICON.send}</button></form>
     ${askLast ? "" : `<div class="ask-ex">${ex.map(x => `<button type="button" data-ask="${esc(x)}">${esc(x)}</button>`).join("")}</div>`}<div id="askOut">${askLast || ""}</div></section>`;
   $("#askForm").onsubmit = e => { e.preventDefault(); runAsk($("#askIn").value); };
 }

@@ -218,7 +218,7 @@ function clientDetail(c) {
     <div class="mhd"><b>${esc(tc(P.job))} History</b><span class="num">${jobs.length}</span></div><div class="list">${jobs.slice(0, 12).map(j => jobRow(j, true)).join("") || empty("var(--info)", "No " + P.jobs + " yet.")}</div>
     ${rest.length ? `<div class="wpile" aria-label="Other ${esc(P.clients)}">${rest.map(x => clientCard(x, "client-done")).join("")}</div>` : ""}</div>`;
 }
-function openClient(id) { clientFocus = id; if (sheetClose) sheetClose(true); if (tab === "clients") { renderClients(); fillIn($("#v-clients")); window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); } else { scrollPos.clients = 0; go("clients"); renderClients(); fillIn($("#v-clients")); } }
+function openClient(id) { clientFocus = id; if (sheetClose) sheetClose(true); if (tab === "clients") { renderClients(); fillIn($("#v-clients")); scrollToY(0, true); } else { scrollPos.clients = 0; go("clients"); renderClients(); fillIn($("#v-clients")); } }
 
 /* --- money: invoices --- */
 let invFilter = "open";

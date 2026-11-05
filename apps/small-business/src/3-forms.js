@@ -126,11 +126,11 @@ function openSheet(title, html, onSave, o) {
     y0 = e.clientY; t0 = Date.now(); dy = 0; form.classList.add("dragging");
     try { form.setPointerCapture(e.pointerId); } catch (x) {}
   });
-  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy}px)`; scrim.style.backgroundColor = `rgba(10,16,30,${Math.max(0, .4 - dy / 900)})`; });
+  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy}px)`; scrim.style.backgroundColor = `rgba(0,0,0,${Math.max(0, .28 - dy / 1300).toFixed(3)})`; });
   const endDrag = () => {
     if (y0 == null) return; const v = dy / Math.max(1, Date.now() - t0); y0 = null;
     form.classList.remove("dragging"); scrim.style.backgroundColor = "";
-    if (dy > 120 || (dy > 30 && v > .6)) { form.style.transform = "translateY(100%)"; close(); }
+    if (dy > 120 || (dy > 30 && v > .6)) { form.style.transform = "translateY(calc(100% + 40px))"; close(); }
     else form.style.transform = "";
   };
   form.addEventListener("pointerup", endDrag); form.addEventListener("pointercancel", endDrag);
@@ -619,7 +619,7 @@ function onboard() {
     Object.assign(S.profile, { owner: draft.owner, biz: draft.biz, type: draft.type, phone: draft.phone, email: draft.email, setAside: P.setAside }, draft.addr);
     if (useBudget) Object.entries(P.budget).forEach(([k, v]) => { if (v) S.budget.cats[k] = v; });
     askLast = null; askPending = null; clientFocus = null;
-    commit(); go("home"); window.scrollTo(0, 0);
+    commit(); go("home"); scrollToY(0);
     toast("You're set. Add your first " + P.client + ".", () => clientForm(), "Add");
   };
   const step4 = () => openSheet("Start with a budget?", `<div class="list">${P.cats.filter(id => P.budget[id]).map(id => `<div class="li"><i class="dot" style="background:${catColor(id)}"></i><span class="tx"><b>${esc(catName(id))}</b></span><span class="amt num">${money(P.budget[id])}</span></div>`).join("")}

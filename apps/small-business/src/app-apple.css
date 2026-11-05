@@ -307,8 +307,15 @@ details.keep summary b { font-size: var(--t-body) }
    because both need a screen at least 600 wide and 500 tall. ---------- */
 .hgrid, .hcol, .hg-col { display: contents }
 @media (min-width: 600px) and (min-height: 500px) {
+  /* the page scrolls inside the app instead of the whole screen moving. On the open iPhone Duo the whole
+     screen moving let the tab bar and top bar slide away with the page; this keeps them put */
+  html { height: 100%; overflow: hidden; padding: 0 }
+  body { height: 100%; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); scroll-padding-top: env(safe-area-inset-top, 0px);
+    /* one plain background, so the iPhone Duo's side strip (which takes the page color) matches the page */
+    background: var(--bg) }
   /* tab bar: a centered capsule, with a soft fade under it so the page reads cleanly as it scrolls behind */
-  .tabbar { left: 50%; right: auto; width: min(560px, calc(100% - 32px)); transform: translateX(-50%); bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0; border-radius: 0; box-shadow: none }
+  .tabbar { left: 0; right: 0; margin: 0 auto; width: min(560px, calc(100% - 32px)); transform: none; bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0; border-radius: 0; box-shadow: none }
   .tabbar::before { display: block; inset: -30px calc(50% - 50vw) calc(-1 * max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
   main { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) }
   .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) }
@@ -316,8 +323,6 @@ details.keep summary b { font-size: var(--t-body) }
   .hero { padding: 24px }
   .hero .in { grid-template-columns: 1.1fr 1fr; align-items: center }
   .hero-go { grid-column: 1 / -1 }
-  /* Home tool shortcuts in one row */
-  .qtools { grid-template-columns: repeat(4, minmax(0, 1fr)) }
   /* Clients, Money, Calendar, Tools and Menu sit in a centered column instead of hugging the left edge */
   #clientTools, #clientsBody { max-width: 680px; margin-left: auto; margin-right: auto }
   .pseg { margin-left: auto; margin-right: auto }
@@ -330,8 +335,92 @@ details.keep summary b { font-size: var(--t-body) }
   .hcol, .hg-col { display: block; min-width: 0 }
   .hcol-a .hero .in { grid-template-columns: minmax(0, 1fr) }
   .hcol-a .hero-go { grid-column: auto }
-  .hcol-b .qtools { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   /* the card scroller stops at the middle gap instead of running under the other column */
   .hg-col:first-child .wscroll { margin-right: 0; padding-right: 0; scroll-padding-right: 0 }
   .hg-col + .hg-col .wscroll { margin-left: 0; padding-left: 0; scroll-padding-left: 0 }
+}
+
+/* ---------- every window is a frosted glass card (iOS 26 sheet) ----------
+   It floats 8 points in from the edges and rises from the bottom of the screen you're looking at, wherever you've
+   scrolled; the page behind stays where it was. Same on every screen size: no centered pop-up windows. */
+:root { --r-sheet: 32px; --glass-line: rgba(0,0,0,.06) }
+:root[data-theme="dark"] { --glass-line: rgba(255,255,255,.12) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --glass-line: rgba(255,255,255,.12) } }
+.scrim { background: rgba(0,0,0,.28); align-items: flex-end; touch-action: none;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(8px, env(safe-area-inset-right, 0px)) 8px max(8px, env(safe-area-inset-left, 0px)) }
+.sheet { width: 100%; max-width: 520px; max-height: 100%; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
+  border-radius: var(--r-sheet); padding: 6px 16px calc(max(0px, env(safe-area-inset-bottom, 0px) - 8px) + 18px);
+  background: color-mix(in srgb, var(--sheet-bg) 80%, transparent); -webkit-backdrop-filter: blur(30px) saturate(1.8); backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow: 0 0 0 .5px var(--glass-line), 0 10px 40px rgba(0,0,0,.18);
+  transform: translateY(calc(100% + 40px)) }
+.scrim.show .sheet { transform: none }
+.sheet.dragging { transition: none }
+@media (min-width: 640px) { .scrim { align-items: flex-end } .sheet { border-radius: var(--r-sheet); padding-bottom: calc(max(0px, env(safe-area-inset-bottom, 0px) - 8px) + 18px); transform: translateY(calc(100% + 40px)) } .scrim.show .sheet { transform: none } }
+@media (min-width: 600px) and (min-height: 500px) { .scrim { padding-bottom: 14px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)) } }
+@media (prefers-reduced-transparency: reduce) { .sheet { background: var(--sheet-bg); -webkit-backdrop-filter: none; backdrop-filter: none } }
+@media (prefers-contrast: more) { .sheet { box-shadow: 0 0 0 1px var(--line), 0 10px 40px rgba(0,0,0,.18) } }
+
+/* ---------- readable colors: gray text and small green and orange text pass 4.5:1 on the gray page too (light mode;
+   dark mode keeps its own brighter colors) ---------- */
+:root { --ink-3: #69696E; --sys-orange-t: #B83000; --sys-green-t: #1F7F37 }
+
+/* ---------- tap sizes: every button, link and box at least 44 x 44 points ---------- */
+.group-h a, .group-h .lnk { padding: 0 0 0 8px; min-height: 44px; margin: -6px 0 -6px auto }
+.qa .ask, .ask { min-height: 52px }
+.ask input { min-height: 44px }
+.ask button { width: 44px; min-width: 44px; height: 44px }
+.alloc input, .itrow input { min-height: 44px }
+.reveal, .calnav, .caltoday, .it-del, .backpill { position: relative }
+.reveal::after { content: ""; position: absolute; left: -4px; right: -4px; top: -8px; bottom: -8px }
+.calnav::after { content: ""; position: absolute; inset: -4px }
+.caltoday::after { content: ""; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px }
+.it-del { width: 44px; height: 44px }
+.backpill::after { content: ""; position: absolute; left: 0; right: 0; top: -4px; bottom: -4px }
+
+/* ---------- iPhone Duo (Safari 27.1): open upright the page is about 669 x 870, open sideways about 951 x 585, and folding
+   resizes the page without reloading it, so everything here is CSS that follows the size. Inside a preview frame
+   (claude.ai) on a touch screen the frame can run a little past what Safari shows, so lift the tab bar, the toasts and the
+   bottom of the windows clear of it there. Safari and the Home Screen never get the "framed" class. ---------- */
+@media (min-width: 600px) and (max-width: 899px) and (min-height: 500px) and (pointer: coarse) {
+  html.framed .tabbar { bottom: 62px }
+  html.framed .tabbar::before { inset: -30px calc(50% - 50vw) -62px }
+  html.framed main { padding-bottom: calc(130px + 48px + env(safe-area-inset-bottom, 0px)) }
+  html.framed .toast { bottom: calc(100px + 48px + env(safe-area-inset-bottom, 0px)) }
+  html.framed .scrim { padding-bottom: 62px }
+}
+html.framed, html.framed body { overscroll-behavior-y: none }
+
+/* ---------- held sideways on a wide screen (the open iPhone Duo, iPad): the tabs become a glass column of icons down the
+   right side, with the Menu and Add buttons at the top of the same column, like the iPhone's own apps. Only the bar moves;
+   every page keeps its layout. Regular iPhones never get the "rail" class (see railQ in 1-core.js). ---------- */
+html.rail { height: 100%; overflow: hidden; padding: 0 }
+html.rail body { height: 100%; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); scroll-padding-top: env(safe-area-inset-top, 0px);
+  /* room on the right for the column, so nothing ever sits under it */
+  padding-right: calc(80px + env(safe-area-inset-right, 0px)); background: var(--bg) }
+html.rail .tabbar { left: auto; right: max(12px, env(safe-area-inset-right, 0px)); top: auto; bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  width: 64px; margin: 0; transform: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: none }
+html.rail .tabbar::before { display: none }
+html.rail .tabbar .in { flex-direction: column; width: 64px; height: auto; max-width: none; margin: 0; padding: 5px; gap: 2px; border-radius: 32px }
+/* icons only: the name stays as what VoiceOver reads */
+html.rail .tabbar a { flex: none; width: 54px; height: 54px; font-size: 0; gap: 0; border-radius: 999px }
+html.rail .tabbar a svg { width: 26px; height: 26px }
+html.rail .tabbar .badge { top: 5px; left: auto; right: 5px; font-size: var(--t-cap2) }
+html.rail .tabbar .badge.dotb { width: 10px; min-width: 10px; height: 10px; padding: 0 }
+/* Menu and Add: a matching glass column at the top right */
+html.rail .topbar, html.rail .topbar.scrolled { -webkit-backdrop-filter: none; backdrop-filter: none; transform: none }
+html.rail .tb-group { position: fixed; z-index: 31; top: calc(env(safe-area-inset-top, 0px) + 12px); right: max(12px, env(safe-area-inset-right, 0px));
+  flex-direction: column; width: 64px; height: auto; padding: 5px 0; gap: 2px; border-radius: 32px }
+html.rail .gbtn { width: 54px; height: 50px }
+html.rail main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)) }
+html.rail .toast { left: calc(50% - 40px); bottom: calc(24px + env(safe-area-inset-bottom, 0px)) }
+/* short screens: a little smaller so both columns fit with room between them */
+@media (max-height: 520px) {
+  html.rail .tabbar a { width: 54px; height: 48px }
+  html.rail .gbtn { height: 44px }
+}
+/* in a preview frame on a touch screen the frame can run past what shows at the bottom, so there the icons sit just under
+   Menu and Add instead, where none can be cut off */
+@media (pointer: coarse) {
+  html.rail.framed .tabbar { top: calc(env(safe-area-inset-top, 0px) + 136px); bottom: auto }
 }

@@ -42,7 +42,7 @@ function renderWelcome(step) {
     e.preventDefault();
     const d = $('#w-d').value;
     kitDraft = { a: $('#w-a').value.trim().slice(0, 60), b: $('#w-b').value.trim().slice(0, 60), date: parseDay(d) ? d : '', size: 'm', budget: 0, vendors: KIT_ON.slice(), vibe: 'classic' };
-    renderWelcome(2); window.scrollTo(0, 0);
+    renderWelcome(2); toTop();
   });
   $('#w-sample').onclick = () => { S = samplePlan(); persist(); applyTheme(); go('home'); };
   $('#w-restore').onclick = () => restoreSheet(true);

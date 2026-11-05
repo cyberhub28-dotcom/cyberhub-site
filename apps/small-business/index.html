@@ -1856,8 +1856,15 @@ details.keep summary b { font-size: var(--t-body) }
    because both need a screen at least 600 wide and 500 tall. ---------- */
 .hgrid, .hcol, .hg-col { display: contents }
 @media (min-width: 600px) and (min-height: 500px) {
+  /* the page scrolls inside the app instead of the whole screen moving. On the open iPhone Duo the whole
+     screen moving let the tab bar and top bar slide away with the page; this keeps them put */
+  html { height: 100%; overflow: hidden; padding: 0 }
+  body { height: 100%; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); scroll-padding-top: env(safe-area-inset-top, 0px);
+    /* one plain background, so the iPhone Duo's side strip (which takes the page color) matches the page */
+    background: var(--bg) }
   /* tab bar: a centered capsule, with a soft fade under it so the page reads cleanly as it scrolls behind */
-  .tabbar { left: 50%; right: auto; width: min(560px, calc(100% - 32px)); transform: translateX(-50%); bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0; border-radius: 0; box-shadow: none }
+  .tabbar { left: 0; right: 0; margin: 0 auto; width: min(560px, calc(100% - 32px)); transform: none; bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px)); padding: 0; border-radius: 0; box-shadow: none }
   .tabbar::before { display: block; inset: -30px calc(50% - 50vw) calc(-1 * max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
   main { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)) }
   .toast { bottom: calc(100px + env(safe-area-inset-bottom, 0px)) }
@@ -1865,8 +1872,6 @@ details.keep summary b { font-size: var(--t-body) }
   .hero { padding: 24px }
   .hero .in { grid-template-columns: 1.1fr 1fr; align-items: center }
   .hero-go { grid-column: 1 / -1 }
-  /* Home tool shortcuts in one row */
-  .qtools { grid-template-columns: repeat(4, minmax(0, 1fr)) }
   /* Clients, Money, Calendar, Tools and Menu sit in a centered column instead of hugging the left edge */
   #clientTools, #clientsBody { max-width: 680px; margin-left: auto; margin-right: auto }
   .pseg { margin-left: auto; margin-right: auto }
@@ -1879,10 +1884,94 @@ details.keep summary b { font-size: var(--t-body) }
   .hcol, .hg-col { display: block; min-width: 0 }
   .hcol-a .hero .in { grid-template-columns: minmax(0, 1fr) }
   .hcol-a .hero-go { grid-column: auto }
-  .hcol-b .qtools { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   /* the card scroller stops at the middle gap instead of running under the other column */
   .hg-col:first-child .wscroll { margin-right: 0; padding-right: 0; scroll-padding-right: 0 }
   .hg-col + .hg-col .wscroll { margin-left: 0; padding-left: 0; scroll-padding-left: 0 }
+}
+
+/* ---------- every window is a frosted glass card (iOS 26 sheet) ----------
+   It floats 8 points in from the edges and rises from the bottom of the screen you're looking at, wherever you've
+   scrolled; the page behind stays where it was. Same on every screen size: no centered pop-up windows. */
+:root { --r-sheet: 32px; --glass-line: rgba(0,0,0,.06) }
+:root[data-theme="dark"] { --glass-line: rgba(255,255,255,.12) }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --glass-line: rgba(255,255,255,.12) } }
+.scrim { background: rgba(0,0,0,.28); align-items: flex-end; touch-action: none;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(8px, env(safe-area-inset-right, 0px)) 8px max(8px, env(safe-area-inset-left, 0px)) }
+.sheet { width: 100%; max-width: 520px; max-height: 100%; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
+  border-radius: var(--r-sheet); padding: 6px 16px calc(max(0px, env(safe-area-inset-bottom, 0px) - 8px) + 18px);
+  background: color-mix(in srgb, var(--sheet-bg) 80%, transparent); -webkit-backdrop-filter: blur(30px) saturate(1.8); backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow: 0 0 0 .5px var(--glass-line), 0 10px 40px rgba(0,0,0,.18);
+  transform: translateY(calc(100% + 40px)) }
+.scrim.show .sheet { transform: none }
+.sheet.dragging { transition: none }
+@media (min-width: 640px) { .scrim { align-items: flex-end } .sheet { border-radius: var(--r-sheet); padding-bottom: calc(max(0px, env(safe-area-inset-bottom, 0px) - 8px) + 18px); transform: translateY(calc(100% + 40px)) } .scrim.show .sheet { transform: none } }
+@media (min-width: 600px) and (min-height: 500px) { .scrim { padding-bottom: 14px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)) } }
+@media (prefers-reduced-transparency: reduce) { .sheet { background: var(--sheet-bg); -webkit-backdrop-filter: none; backdrop-filter: none } }
+@media (prefers-contrast: more) { .sheet { box-shadow: 0 0 0 1px var(--line), 0 10px 40px rgba(0,0,0,.18) } }
+
+/* ---------- readable colors: gray text and small green and orange text pass 4.5:1 on the gray page too (light mode;
+   dark mode keeps its own brighter colors) ---------- */
+:root { --ink-3: #69696E; --sys-orange-t: #B83000; --sys-green-t: #1F7F37 }
+
+/* ---------- tap sizes: every button, link and box at least 44 x 44 points ---------- */
+.group-h a, .group-h .lnk { padding: 0 0 0 8px; min-height: 44px; margin: -6px 0 -6px auto }
+.qa .ask, .ask { min-height: 52px }
+.ask input { min-height: 44px }
+.ask button { width: 44px; min-width: 44px; height: 44px }
+.alloc input, .itrow input { min-height: 44px }
+.reveal, .calnav, .caltoday, .it-del, .backpill { position: relative }
+.reveal::after { content: ""; position: absolute; left: -4px; right: -4px; top: -8px; bottom: -8px }
+.calnav::after { content: ""; position: absolute; inset: -4px }
+.caltoday::after { content: ""; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px }
+.it-del { width: 44px; height: 44px }
+.backpill::after { content: ""; position: absolute; left: 0; right: 0; top: -4px; bottom: -4px }
+
+/* ---------- iPhone Duo (Safari 27.1): open upright the page is about 669 x 870, open sideways about 951 x 585, and folding
+   resizes the page without reloading it, so everything here is CSS that follows the size. Inside a preview frame
+   (claude.ai) on a touch screen the frame can run a little past what Safari shows, so lift the tab bar, the toasts and the
+   bottom of the windows clear of it there. Safari and the Home Screen never get the "framed" class. ---------- */
+@media (min-width: 600px) and (max-width: 899px) and (min-height: 500px) and (pointer: coarse) {
+  html.framed .tabbar { bottom: 62px }
+  html.framed .tabbar::before { inset: -30px calc(50% - 50vw) -62px }
+  html.framed main { padding-bottom: calc(130px + 48px + env(safe-area-inset-bottom, 0px)) }
+  html.framed .toast { bottom: calc(100px + 48px + env(safe-area-inset-bottom, 0px)) }
+  html.framed .scrim { padding-bottom: 62px }
+}
+html.framed, html.framed body { overscroll-behavior-y: none }
+
+/* ---------- held sideways on a wide screen (the open iPhone Duo, iPad): the tabs become a glass column of icons down the
+   right side, with the Menu and Add buttons at the top of the same column, like the iPhone's own apps. Only the bar moves;
+   every page keeps its layout. Regular iPhones never get the "rail" class (see railQ in 1-core.js). ---------- */
+html.rail { height: 100%; overflow: hidden; padding: 0 }
+html.rail body { height: 100%; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); scroll-padding-top: env(safe-area-inset-top, 0px);
+  /* room on the right for the column, so nothing ever sits under it */
+  padding-right: calc(80px + env(safe-area-inset-right, 0px)); background: var(--bg) }
+html.rail .tabbar { left: auto; right: max(12px, env(safe-area-inset-right, 0px)); top: auto; bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  width: 64px; margin: 0; transform: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: none }
+html.rail .tabbar::before { display: none }
+html.rail .tabbar .in { flex-direction: column; width: 64px; height: auto; max-width: none; margin: 0; padding: 5px; gap: 2px; border-radius: 32px }
+/* icons only: the name stays as what VoiceOver reads */
+html.rail .tabbar a { flex: none; width: 54px; height: 54px; font-size: 0; gap: 0; border-radius: 999px }
+html.rail .tabbar a svg { width: 26px; height: 26px }
+html.rail .tabbar .badge { top: 5px; left: auto; right: 5px; font-size: var(--t-cap2) }
+html.rail .tabbar .badge.dotb { width: 10px; min-width: 10px; height: 10px; padding: 0 }
+/* Menu and Add: a matching glass column at the top right */
+html.rail .topbar, html.rail .topbar.scrolled { -webkit-backdrop-filter: none; backdrop-filter: none; transform: none }
+html.rail .tb-group { position: fixed; z-index: 31; top: calc(env(safe-area-inset-top, 0px) + 12px); right: max(12px, env(safe-area-inset-right, 0px));
+  flex-direction: column; width: 64px; height: auto; padding: 5px 0; gap: 2px; border-radius: 32px }
+html.rail .gbtn { width: 54px; height: 50px }
+html.rail main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)) }
+html.rail .toast { left: calc(50% - 40px); bottom: calc(24px + env(safe-area-inset-bottom, 0px)) }
+/* short screens: a little smaller so both columns fit with room between them */
+@media (max-height: 520px) {
+  html.rail .tabbar a { width: 54px; height: 48px }
+  html.rail .gbtn { height: 44px }
+}
+/* in a preview frame on a touch screen the frame can run past what shows at the bottom, so there the icons sit just under
+   Menu and Add instead, where none can be cut off */
+@media (pointer: coarse) {
+  html.rail.framed .tabbar { top: calc(env(safe-area-inset-top, 0px) + 136px); bottom: auto }
 }
 
 </style>
@@ -1996,6 +2085,26 @@ const own = (o, k) => o != null && typeof k === "string" && Object.prototype.has
 const BUILTIN = k => k === "__proto__" || k in Object.prototype;
 const uid = () => Math.random().toString(36).slice(2, 9);
 const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* running inside a preview frame (not Safari or the Home Screen)? A few spacing tweaks use this */
+try { if (window.self !== window.top) document.documentElement.classList.add("framed"); } catch (e) { document.documentElement.classList.add("framed"); }
+/* on big screens (open foldable iPhone, iPad) the page scrolls inside the body so the top bar and tab bar stay put;
+   phones scroll the whole window as always. Read and set the scroll only through these two. */
+const shellQ = window.matchMedia ? matchMedia("(min-width: 600px) and (min-height: 500px)") : null;
+/* held sideways on a wide screen (the open iPhone Duo, iPad) the tabs move to a glass column of icons down the right side,
+   like the iPhone's own apps. Regular iPhones held sideways are under 500 tall, so they keep the bar at the bottom. In a
+   preview frame (claude.ai) the open Duo held sideways is only about 440 tall, so there 380 is enough */
+const railQ = window.matchMedia ? matchMedia("(min-width: 900px) and (min-height: 500px) and (orientation: landscape)") : null;
+const railQf = window.matchMedia ? matchMedia("(min-width: 900px) and (min-height: 380px) and (orientation: landscape)") : null;
+const isRail = () => !!((railQ && railQ.matches) || (document.documentElement.classList.contains("framed") && railQf && railQf.matches));
+function setRail() { document.documentElement.classList.toggle("rail", isRail()); }
+setRail();
+try { [railQ, railQf].forEach(q => { if (!q) return; if (q.addEventListener) q.addEventListener("change", setRail); else if (q.addListener) q.addListener(setRail); }); } catch (e) {}
+const inShell = () => !!(shellQ && shellQ.matches) || document.documentElement.classList.contains("rail");
+const getY = () => inShell() ? document.body.scrollTop : window.scrollY;
+function scrollToY(top, smooth) {
+  const s = inShell() ? document.body : window;
+  try { s.scrollTo(smooth && !reduce ? { top, behavior: "smooth" } : { top, left: 0 }); } catch (e) { if (s === window) window.scrollTo(0, top); else s.scrollTop = top; }
+}
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
 
 /* ---------- dates (local noon avoids daylight-saving drift) ---------- */
@@ -2779,7 +2888,7 @@ function clientDetail(c) {
     <div class="mhd"><b>${esc(tc(P.job))} History</b><span class="num">${jobs.length}</span></div><div class="list">${jobs.slice(0, 12).map(j => jobRow(j, true)).join("") || empty("var(--info)", "No " + P.jobs + " yet.")}</div>
     ${rest.length ? `<div class="wpile" aria-label="Other ${esc(P.clients)}">${rest.map(x => clientCard(x, "client-done")).join("")}</div>` : ""}</div>`;
 }
-function openClient(id) { clientFocus = id; if (sheetClose) sheetClose(true); if (tab === "clients") { renderClients(); fillIn($("#v-clients")); window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); } else { scrollPos.clients = 0; go("clients"); renderClients(); fillIn($("#v-clients")); } }
+function openClient(id) { clientFocus = id; if (sheetClose) sheetClose(true); if (tab === "clients") { renderClients(); fillIn($("#v-clients")); scrollToY(0, true); } else { scrollPos.clients = 0; go("clients"); renderClients(); fillIn($("#v-clients")); } }
 
 /* --- money: invoices --- */
 let invFilter = "open";
@@ -3151,11 +3260,11 @@ function openSheet(title, html, onSave, o) {
     y0 = e.clientY; t0 = Date.now(); dy = 0; form.classList.add("dragging");
     try { form.setPointerCapture(e.pointerId); } catch (x) {}
   });
-  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy}px)`; scrim.style.backgroundColor = `rgba(10,16,30,${Math.max(0, .4 - dy / 900)})`; });
+  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy}px)`; scrim.style.backgroundColor = `rgba(0,0,0,${Math.max(0, .28 - dy / 1300).toFixed(3)})`; });
   const endDrag = () => {
     if (y0 == null) return; const v = dy / Math.max(1, Date.now() - t0); y0 = null;
     form.classList.remove("dragging"); scrim.style.backgroundColor = "";
-    if (dy > 120 || (dy > 30 && v > .6)) { form.style.transform = "translateY(100%)"; close(); }
+    if (dy > 120 || (dy > 30 && v > .6)) { form.style.transform = "translateY(calc(100% + 40px))"; close(); }
     else form.style.transform = "";
   };
   form.addEventListener("pointerup", endDrag); form.addEventListener("pointercancel", endDrag);
@@ -3644,7 +3753,7 @@ function onboard() {
     Object.assign(S.profile, { owner: draft.owner, biz: draft.biz, type: draft.type, phone: draft.phone, email: draft.email, setAside: P.setAside }, draft.addr);
     if (useBudget) Object.entries(P.budget).forEach(([k, v]) => { if (v) S.budget.cats[k] = v; });
     askLast = null; askPending = null; clientFocus = null;
-    commit(); go("home"); window.scrollTo(0, 0);
+    commit(); go("home"); scrollToY(0);
     toast("You're set. Add your first " + P.client + ".", () => clientForm(), "Add");
   };
   const step4 = () => openSheet("Start with a budget?", `<div class="list">${P.cats.filter(id => P.budget[id]).map(id => `<div class="li"><i class="dot" style="background:${catColor(id)}"></i><span class="tx"><b>${esc(catName(id))}</b></span><span class="amt num">${money(P.budget[id])}</span></div>`).join("")}
@@ -3763,7 +3872,7 @@ function pickRestore() {
         /* try the screens with the backup first: if they can't open it, keep what's on the phone */
         try { render(); } catch (e) { S = before; P = p0; try { render(); } catch (e2) {} return "That backup couldn't be opened. Nothing was changed."; }
         clientFocus = null; askLast = null; askPending = null;
-        commit(); later(() => { go("home"); window.scrollTo(0, 0); });
+        commit(); later(() => { go("home"); scrollToY(0); });
         IMG.clear().then(() => Promise.all(good.map(k => IMG.put(k, src[k]).then(ok => ok ? null : k)))).then(bad => {
           bad = bad.filter(Boolean);
           if (bad.length) { S.expenses.forEach(e => { if (bad.includes(e.photo)) e.photo = ""; }); commit(); toast(`Restored from ${when}. Some receipt photos couldn't be saved.`); }
@@ -4780,7 +4889,7 @@ let tab = null, menuFrom = "home"; const scrollPos = {};
 function show(t) {
   if (!TABS.includes(t)) t = "home";
   if (t === tab) return;
-  const prev = tab; if (prev) scrollPos[prev] = window.scrollY;
+  const prev = tab; if (prev) scrollPos[prev] = getY();
   if (prev === "clients" && clientFocus) { clientFocus = null; renderClients(); }
   if (sheetClose) sheetClose(true);
   TABS.forEach(x => { document.getElementById("v-" + x).hidden = x !== t; });
@@ -4792,19 +4901,19 @@ function show(t) {
   setTitles();
   const v = $("#v-" + t);
   if (prev && !reduce) { v.classList.remove("enter-l", "enter-r"); void v.offsetWidth; v.classList.add(TABS.indexOf(t) > TABS.indexOf(prev) ? "enter-r" : "enter-l"); }
-  window.scrollTo(0, scrollPos[t] || 0);
+  scrollToY(scrollPos[t] || 0);
   onScroll(); pagersFit();
   if (t === "more") storageLine().then(s => { const el = $("#storeLine"); if (el) el.textContent = s; });
   requestAnimationFrame(() => requestAnimationFrame(() => fillIn(v)));
 }
 function go(t) {
   if (t === tab && t === "clients" && clientFocus) { clientFocus = null; renderClients(); fillIn($("#v-clients")); return; }
-  if (t === tab) { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); return; }
+  if (t === tab) { scrollToY(0, true); return; }
   try { history.pushState({ tab: t }, "", "#" + t); } catch (e) {}
   show(t);
 }
 /* jump to a page inside Money or Calendar */
-function goPage(t, k, i) { if (sheetClose) sheetClose(true); go(t); pageGo(k, i, false); window.scrollTo(0, 0); }
+function goPage(t, k, i) { if (sheetClose) sheetClose(true); go(t); pageGo(k, i, false); scrollToY(0); }
 function route() { show((location.hash || "").replace("#", "")); }
 window.addEventListener("popstate", route);
 window.addEventListener("hashchange", route);
@@ -4910,7 +5019,7 @@ document.addEventListener("click", e => {
   }
   else if (a === "nudge-x") { try { sessionStorage.setItem(KEY + "-nudge", "1"); } catch (er) {} renderNudge(); }
   else if (a === "load-sample") openSheet("Load Example", `<p class="lead">A made-up business with its own Home, words and look. It replaces what's on this phone, so back up first.</p><div class="packs">${Object.values(PACKS).map(pk => `<button type="button" class="pack press" data-act="sample-pack" data-id="${esc(pk.id)}"><span class="ic pk-dot" data-pk="${esc(pk.id)}" aria-hidden="true">${packIcon(pk.id)}</span><span class="tx"><b>${esc(pk.name)}</b><small>${esc(pk.who)}</small></span>${ICON.chev}</button>`).join("")}</div>`, null, { noSave: true, cancelLabel: "Close", focus: false });
-  else if (a === "sample-pack") { if (sheetClose) sheetClose(true); const theme = S.look && S.look.theme; const snap = JSON.stringify(S); S = sample(id); S.look = theme ? { theme } : undefined; clientFocus = null; askLast = null; askPending = null; invFilter = "open"; spendMode = "exp"; spendCat = "all"; commit(); go("home"); window.scrollTo(0, 0); toast("Example loaded", () => { S = JSON.parse(snap); commit("Undone"); }); }
+  else if (a === "sample-pack") { if (sheetClose) sheetClose(true); const theme = S.look && S.look.theme; const snap = JSON.stringify(S); S = sample(id); S.look = theme ? { theme } : undefined; clientFocus = null; askLast = null; askPending = null; invFilter = "open"; spendMode = "exp"; spendCat = "all"; commit(); go("home"); scrollToY(0); toast("Example loaded", () => { S = JSON.parse(snap); commit("Undone"); }); }
   else if (a === "wipe") {
     if (!t.classList.contains("armed")) { t.classList.add("armed"); const s = $("#wipeSub"); if (s) s.textContent = "Tap again to erase everything on this phone. This can't be undone."; t.querySelector("b").textContent = "Tap Again to Delete All"; clearTimeout(t._tm); t._tm = setTimeout(renderMore, 5000); return; }
     IMG.clear(); store.del(KEY); KEPT.forEach(k => store.del(k)); holdSave = false; S = blank(); S.look = undefined; askLast = null; askPending = null; clientFocus = null; commit(); go("home"); toast("All data deleted"); later(onboard);
@@ -4921,18 +5030,24 @@ $("#fab").onclick = () => addMenu();
 $("#menuBtn").onclick = () => go(tab === "more" ? menuFrom : "more");
 $("#backBtn").onclick = () => go(menuFrom);
 function onScroll() {
-  const y = window.scrollY, b = $("#topbar");
+  const y = getY(), b = $("#topbar");
   b.classList.toggle("scrolled", y > 6);
   /* the small title shows once the big one has scrolled under the bar */
   const h1 = $("#pageTitle"), ph = $("#pagehead"), sub = $("#pageSub"), bb = b.getBoundingClientRect().bottom;
-  b.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < bb - 4);
-  /* the big title and the gray line stay fully clear until they slide under the bar, then fade out there */
-  const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
-  if (ph && h1) ph.style.setProperty("--h1-fade", fade(h1).toFixed(2));
-  const sf = sub && !sub.hidden && sub.textContent ? fade(sub) : 1; if (ph) ph.style.setProperty("--sub-fade", sf.toFixed(2));
-  b.classList.toggle("dated", sf < .5);
+  /* the big title fades out over the first few points of scrolling and the bar title takes over, so the big
+     title never slides under the app name at the top left (a fast flick can outrun a slower fade) */
+  const hf = h1 && h1.getBoundingClientRect().height ? Math.max(0, Math.min(1, (h1.getBoundingClientRect().top - bb + 12) / 14)) : 1;
+  b.classList.toggle("titled", !!h1 && hf < .05);
+  if (ph) ph.style.setProperty("--h1-fade", hf.toFixed(2));
+  /* the gray line hands over to the small line under the bar title in one quick step, so the two never show at once */
+  const sr = sub && !sub.hidden && sub.textContent ? sub.getBoundingClientRect() : null;
+  const sf = sr && sr.height ? Math.max(0, Math.min(1, (sr.top - bb + 6) / 12)) : 1;
+  if (ph) ph.style.setProperty("--sub-fade", sf.toFixed(2));
+  b.classList.toggle("dated", !!sr && sf < .05);
 }
 window.addEventListener("scroll", onScroll, { passive: true });
+document.body.addEventListener("scroll", onScroll, { passive: true });
+try { [shellQ, railQ, railQf].forEach(q => { if (!q) return; if (q.addEventListener) q.addEventListener("change", onScroll); else if (q.addListener) q.addListener(onScroll); }); } catch (e) {}
 /* the running timer counts up on screen */
 setInterval(() => { if (!S || !S.timer) return; const m = timerMins(); document.querySelectorAll("[data-tick]").forEach(el => { el.textContent = tick(m); }); }, 1000);
 

@@ -13,8 +13,6 @@ const F = {
 };
 const numOr = (v, d) => { if (v === "" || v == null) return d; const n = parseFloat(v); return isFinite(n) ? n : NaN; };
 let sheetHide = null, sheetClosedAt = 0;
-/* Title Case for button labels, the way iOS writes them */
-function titleCase(s) { return String(s).replace(/(^|\s)([a-z])/g, (m, a, c, i) => i > 0 && /^(a|an|the|of|on|to|in|for|and|or|as|by)\b/.test(String(s).slice(i + a.length)) ? m : a + c.toUpperCase()); }
 /* form rows sit together in one rounded group, like the Settings app; two-up rows stack */
 function groupFields(form) {
   form.querySelectorAll(".row2, .row3").forEach(r => { if (r.querySelector(":scope > .field")) r.classList.add("stacked"); });
@@ -40,7 +38,7 @@ function openSheet(title, html, onSave, o) {
     <div class="grab" aria-hidden="true"></div>
     <div class="snav">${o.noCancel ? "<span></span>" : `<button type="button" class="sbtn" id="${skip ? "sheetX" : "sheetCancel"}" aria-label="${skip ? "Close" : esc(cl)}">${ICON.xmark}</button>`}<h3 id="sheetTitle">${title}</h3>${navOk ? `<button type="submit" class="sbtn ok" aria-label="${esc(lbl)}">${ICON.check}</button>` : navTxt ? `<button type="submit" class="sbtn txt">${esc(lbl)}</button>` : "<span></span>"}</div>
     ${o.dots || ""}${o.lead ? `<p class="lead">${o.lead}</p>` : ""}${html}<div class="err" id="sheetErr" role="alert"></div>
-    ${navOk || navTxt || o.noSave ? "" : `<div class="sheet-actions"><button type="submit" class="btn primary">${titleCase(lbl)}</button>${skip ? '<button type="button" class="btn plain" id="sheetCancel">Skip</button>' : ""}</div>`}${o.onDelete ? '<button type="button" class="delrow" id="sheetDel">Delete</button>' : ""}</form>`;
+    ${navOk || navTxt || o.noSave ? "" : `<div class="sheet-actions"><button type="submit" class="btn primary">${esc(lbl)}</button>${skip ? '<button type="button" class="btn plain" id="sheetCancel">Skip</button>' : ""}</div>`}${o.onDelete ? '<button type="button" class="delrow" id="sheetDel">Delete</button>' : ""}</form>`;
   let prevFocus = document.activeElement;
   if (reuse) {
     const old = $("#sheetForm"), oldH = old ? old.offsetHeight : 0;
@@ -60,7 +58,7 @@ function openSheet(title, html, onSave, o) {
   }
   sheetPrevFocus = prevFocus;
   const form = $("#sheetForm");
-  groupFields(form); tcPass(form); tcText($("#sheetTitle"));
+  groupFields(form);
   requestAnimationFrame(() => requestAnimationFrame(() => fillIn(form)));
   if (o.focus !== false) { const first = form.querySelector("input:not([type=checkbox]),select,textarea"); if (first && !("ontouchstart" in window)) setTimeout(() => first.focus({ preventScroll: true }), 80); }
   form.querySelectorAll(".seg").forEach(sg => sg.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; sg.querySelectorAll("button").forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); }); }));
@@ -89,7 +87,7 @@ function openSheet(title, html, onSave, o) {
     y0 = e.clientY; t0 = Date.now(); dy = 0; form.classList.add("dragging");
     try { form.setPointerCapture(e.pointerId); } catch (x) {}
   });
-  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy < 0 ? 0 : dy}px)`; scrim.style.backgroundColor = `rgba(10,16,30,${Math.max(0, .4 - dy / 900)})`; });
+  form.addEventListener("pointermove", e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); form.style.transform = `translateY(${dy < 0 ? 0 : dy}px)`; scrim.style.backgroundColor = `rgba(0,0,0,${Math.max(0, .28 - dy / 1300).toFixed(3)})`; });
   const endDrag = () => {
     if (y0 == null) return; const v = dy / Math.max(1, Date.now() - t0); y0 = null;
     form.classList.remove("dragging"); scrim.style.backgroundColor = "";
@@ -514,7 +512,7 @@ const ADD = [
 function addMenu(only) {
   const groups = only === "creds" ? [["Credentials", ADD[1][1].concat([["file", () => "File or photo", "info", ICON.note, () => addDoc()]])]] : ADD;
   const html = `<div class="addask">
-      <div class="ask"><label class="sr" for="addAskIn">What to add</label><input id="addAskIn" type="text" enterkeyhint="go" autocomplete="off" placeholder="Quick Add"><button type="button" id="addAskGo" aria-label="Go">${ICON.send}</button></div>
+      <div class="ask"><label class="sr" for="addAskIn">What to add</label><input id="addAskIn" type="text" enterkeyhint="go" autocomplete="off" placeholder="Quick add"><button type="button" id="addAskGo" aria-label="Go">${ICON.send}</button></div>
       <small>For example: ${esc(only === "creds" ? P.addEx.creds : P.addEx.all)}</small>
       <div class="ask-inline" id="addAskOut"></div></div>
     ` +

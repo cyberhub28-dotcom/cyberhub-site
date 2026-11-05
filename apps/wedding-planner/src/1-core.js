@@ -8,6 +8,8 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 /* Ids from storage or a backup file: only letters, digits, - and _, kept short. Anything else gets a new id. */
 const cleanId = v => typeof v === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(v) && !(v in Object.prototype) && v !== '__proto__' ? v : '';
+// Running inside a preview frame (not Safari or the Home Screen)? A few spacing tweaks use this.
+try { if (window.self !== window.top) document.documentElement.classList.add('framed'); } catch (e) { document.documentElement.classList.add('framed'); }
 /* Does a fixed list (a plain object) really have this key? Built-in words like "constructor" don't count. */
 const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);
 const objs = v => Array.isArray(v) ? v.filter(x => x && typeof x === 'object' && !Array.isArray(x)) : [];

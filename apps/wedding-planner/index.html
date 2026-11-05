@@ -325,7 +325,7 @@ const STYLES = `
    Look: "stationery meets mission control" — pearl paper, ink-and-gold hero card, Bodoni numerals, small caps labels. */
 
 :root{
-  --accent-l:#8A6A38; --accent-d:#D6B47C;
+  --accent-l:#846431; --accent-d:#D6B47C;
   --bg:color-mix(in srgb,var(--accent-l) 5%,#F7F6F4); --surface:#FFFFFF; --surface-2:color-mix(in srgb,var(--accent-l) 6%,#F1EFEE); --surface-3:color-mix(in srgb,var(--accent-l) 9%,#E7E4E2);
   --ink:#1A1A24; --ink-2:#5D5D6B; --ink-3:#8A8A98; --line:rgba(26,26,36,.09); --line-2:rgba(26,26,36,.16);
   --good:#25804F; --warn:#A66A0B; --bad:#C0392F; --good-bg:rgba(37,128,79,.11); --warn-bg:rgba(166,106,11,.12); --bad-bg:rgba(192,57,47,.10);
@@ -679,8 +679,6 @@ body.dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}
 .dialog h3{margin:0 0 6px;font:600 20px/1.2 var(--f-display)}
 .dialog p{margin:0 0 18px;color:var(--ink-2)}
 .dialog .actions{justify-content:flex-end}
-.scrim.center{align-items:center}
-@media (min-width:700px){.scrim{align-items:center}.sheet{border-radius:22px;max-height:min(86vh,calc(100% - 48px))}.sheet-head::before{display:none}.sheet-head h3,.sheet-head .btn{margin-top:0}}
 @keyframes fade{from{opacity:0}}
 @keyframes up{from{transform:translateY(40px);opacity:.4}}
 @keyframes pop{from{transform:scale(.94);opacity:0}}
@@ -1512,7 +1510,6 @@ button.li:active,a.li:active,label.li:active{background:var(--surface-2)}
 .sheet.dragging{transition:none}
 .sheet.swap>*:not(.grab){animation:swapIn .32s cubic-bezier(.32,.72,0,1) both}
 @keyframes swapIn{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
-@media (min-width:640px){.scrim{align-items:center}.sheet{border-radius:24px;padding-bottom:20px;transform:translateY(30px) scale(.98)}}
 .grab{width:36px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 14px;position:relative}
 .grab::after{content:"";position:absolute;inset:-14px -60px}
 .sheet .sheet-body{display:grid;gap:12px;padding:0;overflow:visible;flex:none;min-height:0}
@@ -1742,7 +1739,6 @@ details.keep[open] summary{margin-bottom:2px}
 .navitem[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
 .brand-name{font:600 .98rem/1.2 var(--f-ui)}
 @media (min-width:900px){.topbar,.tabbar{display:none}main{padding-top:34px;padding-bottom:60px}.toast{bottom:28px}}
-.scrim.center{animation:fade .2s ease}
 @media (prefers-reduced-motion:reduce){.scrim,.sheet,.dialog,main.slide-l,main.slide-r{transition:none!important;animation:none!important}}
 .list>.row{padding-left:14px;padding-right:14px}
 .card .list>.row{padding-left:4px;padding-right:4px}
@@ -1880,11 +1876,11 @@ details.morepick>summary::-webkit-details-marker{display:none}
   /* iOS system colors. The -t ones are Apple's darker versions, for text on white. */
   --sys-red: #FF383C; --sys-orange: #FF9500; --sys-yellow: #FFCC00; --sys-green: #34C759; --sys-mint: #00C7BE;
   --sys-teal: #30B0C7; --sys-cyan: #32ADE6; --sys-blue: #0088FF; --sys-indigo: #5856D6; --sys-purple: #AF52DE; --sys-pink: #FF2D55;
-  --sys-red-t: #D70015; --sys-orange-t: #C93400; --sys-green-t: #248A3D; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
+  --sys-red-t: #D70015; --sys-orange-t: #B83000; --sys-green-t: #1F7F37; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
   --sys-indigo-t: #3634A3; --sys-purple-t: #8944AB; --sys-pink-t: #D30F45;
   /* grouped backgrounds, labels, fills and separators */
   --bg: #F2F2F7; --surface: #FFFFFF; --surface-2: #EEEEF2; --sheet-bg: #F2F2F7; --sheet-cell: #FFFFFF;
-  --ink: #000000; --ink-2: #3C3C43; --ink-3: #6E6E73; --ink-4: #C4C4C7;
+  --ink: #000000; --ink-2: #3C3C43; --ink-3: #69696E; --ink-4: #C4C4C7;
   --fill: rgba(118,118,128,.12); --fill-2: rgba(118,118,128,.2); --hl: #E5E5EA; --seg-on: #FFFFFF; --switch-off: #E9E9EA;
   --line: #C6C6C8;
   --glass: color-mix(in srgb, #FFFFFF 74%, transparent);
@@ -1896,7 +1892,7 @@ details.morepick>summary::-webkit-details-marker{display:none}
   --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --t-large: 2rem; --t-title1: 1.647rem; --t-title2: 1.294rem; --t-title3: 1.176rem; --t-body: 1rem; --t-callout: .941rem;
   --t-sub: .882rem; --t-foot: .765rem; --t-cap: .706rem; --t-cap2: .647rem;
-  --r-lg: 26px; --r-md: 12px; --r-sheet: 28px;
+  --r-lg: 26px; --r-md: 12px; --r-sheet: 32px;
   --spring: cubic-bezier(.32,.72,0,1);
   --f-serif: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
   --card-edge: rgba(0,0,0,.05);
@@ -2082,7 +2078,6 @@ main .phead~.sample-bar,main .phead~.backup-nudge{margin-top:12px}
 /* sheets: a grabber, then X on the left, the title, and a check on the right to save */
 .scrim{background:var(--scrim)}
 .sheet{background:var(--sheet-bg);border-radius:var(--r-sheet) var(--r-sheet) 0 0;padding:6px 16px calc(24px + env(safe-area-inset-bottom,0px));box-shadow:0 -2px 20px rgba(0,0,0,.12)}
-@media (min-width:640px){.sheet{border-radius:var(--r-sheet);padding-bottom:20px}}
 .sheet .grab{width:36px;height:5px;border-radius:3px;background:var(--ink-4);margin:0 auto 4px}
 .sheet .sheet-body{gap:14px}
 .snav{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:8px;min-height:52px;margin:0 0 2px}
@@ -2183,6 +2178,44 @@ main{padding-bottom:calc(62px + max(14px,env(safe-area-inset-bottom,0px)) + 40px
 .chips{padding-top:4px}
 @media (max-width:359px){.segc a,.segc button{font-size:.76rem;padding-left:3px;padding-right:3px}}
 
+/* Tap sizes, round 3 (Budget's polish pass): the Ask box and its arrow, and the filter chips */
+.ask,.addask .ask{min-height:52px}
+.ask input{min-height:44px}
+.ask button{width:44px;min-width:44px;height:44px}
+.chipfilter{position:relative}
+.chipfilter::after{content:"";position:absolute;left:0;right:0;top:50%;height:max(100%,44px);transform:translateY(-50%)}
+
+/* ---------- every window is a frosted glass card (iOS 26 sheet), like Budget ----------
+   It floats 8 points in from the edges and rises from the bottom of the screen you're looking at, wherever you've
+   scrolled; the page behind stays where it was. Same on every screen size: no centered pop-up windows. */
+:root{--glass-line:rgba(0,0,0,.06)}
+:root[data-theme="dark"]{--glass-line:rgba(255,255,255,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--glass-line:rgba(255,255,255,.12)}}
+.scrim{align-items:flex-end;justify-content:center;touch-action:none;
+  padding:max(12px,env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) 8px max(8px,env(safe-area-inset-left,0px))}
+.sheet{width:100%;max-width:520px;max-height:100%;box-sizing:border-box;margin:0;border-radius:var(--r-sheet);touch-action:pan-y;
+  padding:6px 16px calc(max(0px,env(safe-area-inset-bottom,0px) - 8px) + 18px);
+  background:color-mix(in srgb,var(--sheet-bg) 80%,transparent);-webkit-backdrop-filter:blur(30px) saturate(1.8);backdrop-filter:blur(30px) saturate(1.8);
+  box-shadow:0 0 0 .5px var(--glass-line),0 10px 40px rgba(0,0,0,.18);
+  transform:translateY(calc(100% + 40px));transition:transform .5s var(--spring)}
+.scrim.show .sheet{transform:none}
+.sheet.dragging{transition:none}
+/* the top of a window is its handle: the browser must not scroll it, or the pull-down gets cancelled on phones */
+.sheet .grab,.sheet .snav{touch-action:none}
+/* a question ("Delete this file?") is the same card, with its answers at the bottom */
+.sheet.dialog{max-width:520px;width:100%;margin:0;padding:22px 16px calc(max(0px,env(safe-area-inset-bottom,0px) - 8px) + 16px);text-align:center;animation:none}
+.sheet.dialog h3{margin:0 8px 6px;font:600 var(--t-title3)/1.25 var(--f-body);color:var(--ink);text-align:center;text-wrap:balance}
+.sheet.dialog p{margin:0 8px 18px;font-size:var(--t-sub);line-height:1.35;color:var(--ink-2);text-wrap:pretty}
+.sheet.dialog .actions{display:grid;gap:10px;justify-content:stretch}
+.sheet.dialog .actions .btn{width:100%;min-height:50px;border-radius:999px;font-size:var(--t-body)}
+.sheet.dialog .actions .btn:not(.primary):not(.danger){background:var(--sheet-cell)}
+/* delete: red text first, a red row only on the second tap */
+.delrow{transition:background-color .2s,color .2s}
+.delrow.armed{background:var(--sys-red);color:#fff}
+@media (prefers-reduced-transparency:reduce){.sheet{background:var(--sheet-bg);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-contrast:more){.sheet{box-shadow:0 0 0 1px var(--line),0 10px 40px rgba(0,0,0,.18)}}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim{transition:none!important}}
+
 /* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
    because both need a screen at least 600 wide and 500 tall. From 900 wide the side menu takes over, as before. ---------- */
 @media (min-width:600px) and (max-width:899px) and (min-height:500px){
@@ -2192,17 +2225,74 @@ main{padding-bottom:calc(62px + max(14px,env(safe-area-inset-bottom,0px)) + 40px
   main{padding-bottom:calc(62px + max(14px,calc(env(safe-area-inset-bottom,0px) - 13px)) + 48px)}
   .toast{bottom:calc(62px + max(14px,calc(env(safe-area-inset-bottom,0px) - 13px)) + 16px)}
 }
-/* cards side by side once each column gets about 300 wide (before, this started at 780) */
-@media (min-width:680px) and (min-height:500px){
+@media (min-width:600px) and (min-height:500px){
+  /* the page scrolls inside the app instead of the whole screen moving. On the open iPhone Duo the whole
+     screen moving let the tab bar and top bar slide away with the page; this keeps them put */
+  html{height:100%;overflow:hidden}
+  body{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;
+    /* one plain background, so the iPhone Duo's side strip (which Safari fills with the page color) matches the page */
+    background:var(--bg)}
+  /* lists and cards in one roomy column while the screen is held upright; two columns only from 860 wide */
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .cols>.card+.card,.cols>section+section{margin-top:16px}
+  /* windows float a little further in from the edges */
+  .scrim{padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 14px max(14px,env(safe-area-inset-left,0px))}
+}
+@media (min-width:860px) and (min-height:500px){
   .cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
   .cols>.card+.card,.cols>section+section{margin-top:0}
 }
-@media (min-width:600px) and (min-height:500px){
-  /* forms open as a centered card instead of a sheet from the bottom */
-  .scrim{align-items:center}
-  .sheet{border-radius:var(--r-sheet);max-height:min(86vh,calc(100% - 48px));padding-bottom:20px}
-  .sheet-head::before{display:none}
-  .sheet-head h3,.sheet-head .btn{margin-top:0}
+
+/* ---------- iPhone Duo / foldable (see apps/budget/DESIGN-RULES.md, "Duo / foldable") ----------
+   Safari 27.1 on the Duo gives a page 382 wide folded, 669 x ~867 open upright and 951 x ~585
+   open sideways (less inside a frame). Safari's 100vh is the tallest size (toolbars hidden), so
+   anything sized to the screen uses 100dvh, and anything taller than a short screen scrolls itself. */
+@media (min-width:900px){
+  .side{height:100vh;height:100dvh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:max(18px,env(safe-area-inset-bottom,0px))}
+  .side::-webkit-scrollbar{display:none}
+  .navitem{min-height:44px}
+  .tray{max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px)}
+}
+/* Short and wide (open Duo sideways): a tighter menu so it all fits; Back up stays in the Menu. */
+@media (min-width:900px) and (max-height:760px){
+  .side{gap:2px;padding-top:14px}
+  .side .brand{padding:2px 8px 10px}
+  .side-card{display:none}
+  main{padding-top:22px}
+}
+/* Inside a preview frame (claude.ai) on a touch screen, the frame can run past the bottom of
+   what Safari shows, so lift the tab bar clear of it. Home Screen and Safari never get this. */
+@media (min-width:600px) and (max-width:899px) and (min-height:500px) and (pointer:coarse){
+  html.framed .tabbar{padding-bottom:48px}
+  html.framed main{padding-bottom:calc(62px + 48px + 48px)}
+  html.framed .toast{bottom:calc(62px + 48px + 16px)}
+}
+html.framed,html.framed body{overscroll-behavior-y:none}
+
+/* ---------- Landscape = side rail (touch screens 900 wide and up: open Duo sideways, iPad) ----------
+   Like an iPhone app on the open Duo: no left menu and no bottom tab bar. The tabs become a
+   Liquid Glass rail of icons down the right edge (current one lit), and the ... and + buttons
+   sit in their own glass pill at the top of that edge. A mouse-and-keyboard screen keeps the menu. */
+@media (min-width:900px) and (pointer:coarse){
+  :root{--rail-w:64px;--rail-gap:max(12px,env(safe-area-inset-right,0px))}
+  .app{display:block}
+  .side{display:none}
+  body::before{display:block}
+  .topbar{display:block}
+  .topbar .wrap{padding-right:calc(var(--rail-gap) + var(--rail-w) + 16px)}
+  .tb-group{position:fixed;z-index:31;top:max(12px,env(safe-area-inset-top,0px));right:var(--rail-gap);
+    flex-direction:column;width:var(--rail-w);height:auto;padding:6px 0;gap:6px}
+  .tb-group .gbtn{width:52px;height:52px}
+  .tabbar{display:block;left:auto;right:var(--rail-gap);top:auto;bottom:max(12px,env(safe-area-inset-bottom,0px));
+    width:var(--rail-w);padding:0;transform:none}
+  .tabbar::before{display:none}
+  .tabbar .in{flex-direction:column;height:auto;padding:6px;gap:6px}
+  .tabbar .tab{flex:none;width:52px;height:52px}
+  .tabbar .tab .ic{width:26px;height:26px}
+  .tabbar .tab span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  main{max-width:1180px;padding:8px calc(var(--rail-gap) + var(--rail-w) + 24px) 40px max(28px,env(safe-area-inset-left,0px))}
+  .pageseg{display:flex}
+  .toast{bottom:max(20px,env(safe-area-inset-bottom,0px))}
 }
 
 </style>
@@ -2221,6 +2311,8 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 /* Ids from storage or a backup file: only letters, digits, - and _, kept short. Anything else gets a new id. */
 const cleanId = v => typeof v === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(v) && !(v in Object.prototype) && v !== '__proto__' ? v : '';
+// Running inside a preview frame (not Safari or the Home Screen)? A few spacing tweaks use this.
+try { if (window.self !== window.top) document.documentElement.classList.add('framed'); } catch (e) { document.documentElement.classList.add('framed'); }
 /* Does a fixed list (a plain object) really have this key? Built-in words like "constructor" don't count. */
 const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);
 const objs = v => Array.isArray(v) ? v.filter(x => x && typeof x === 'object' && !Array.isArray(x)) : [];
@@ -2652,16 +2744,28 @@ function toast(msg, undo) {
 }
 function lock(on) { document.documentElement.classList.toggle('locked', !!($('.scrim') || on)); }
 
+/* A question ("Delete this file?", "Replace your plan?") opens the same frosted glass card as every other window:
+   it rises from the bottom of the screen you're looking at, with the answer buttons at the bottom. */
 function askConfirm(title, message, okLabel, danger) {
   return new Promise(res => {
-    const sc = document.createElement('div'); sc.className = 'scrim center show'; sc.style.zIndex = 120;
-    sc.innerHTML = '<div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="dlg-t"><h3 id="dlg-t">' + esc(title) + '</h3><p>' + esc(message) + '</p><div class="actions"><button class="btn" type="button" data-r="0">Cancel</button><button class="btn ' + (danger ? 'danger solid' : 'primary') + '" type="button" data-r="1">' + esc(okLabel || 'OK') + '</button></div></div>';
-    const done = v => { sc.remove(); lock(); document.removeEventListener('keydown', key); res(v); };
+    const opener = document.activeElement;
+    const sc = document.createElement('div'); sc.className = 'scrim confirm'; sc.style.zIndex = 120;
+    sc.innerHTML = '<div class="sheet dialog" role="alertdialog" aria-modal="true" aria-labelledby="dlg-t" aria-describedby="dlg-m"><h3 id="dlg-t">' + esc(title) + '</h3><p id="dlg-m">' + esc(message) + '</p><div class="actions"><button class="btn ' + (danger ? 'danger solid' : 'primary') + '" type="button" data-r="1">' + esc(okLabel || 'OK') + '</button><button class="btn" type="button" data-r="0">Cancel</button></div></div>';
+    let over = false;
+    const done = v => {
+      if (over) return; over = true;
+      document.removeEventListener('keydown', key);
+      sc.className = 'scrim-gone confirm show'; lock();
+      if (reduceMotion()) sc.remove(); else { requestAnimationFrame(() => sc.classList.remove('show')); setTimeout(() => sc.remove(), 460); }
+      try { if (opener && opener.isConnected && opener.focus) opener.focus({ preventScroll: true }); } catch (e) {}
+      res(v);
+    };
     const key = e => { if (e.key === 'Escape') done(false); };
     sc.addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (b) done(b.dataset.r === '1'); else if (e.target === sc) done(false); });
     document.addEventListener('keydown', key);
     document.body.appendChild(sc); lock(true);
-    sc.querySelector('[data-r="1"]').focus();
+    if (reduceMotion()) sc.classList.add('show'); else requestAnimationFrame(() => requestAnimationFrame(() => sc.classList.add('show')));
+    sc.querySelector('[data-r="1"]').focus({ preventScroll: true });
   });
 }
 
@@ -2718,6 +2822,7 @@ function openSheet(opts) {
   const sheet = $('.sheet', sc);
   const flat = []; fields.forEach(f => f.row ? flat.push(...f.row) : flat.push(f));
   let closed = false;
+  const opener = document.activeElement;
   const close = () => {
     if (closed) return; closed = true;
     document.removeEventListener('keydown', onKey);
@@ -2725,6 +2830,8 @@ function openSheet(opts) {
     sc.className = 'scrim-gone show'; sheetGoneAt = Date.now(); lock();
     setTimeout(() => { if (!sc.parentNode) return; if (reduceMotion()) { sc.remove(); return; } sc.classList.remove('show'); sheet.style.transform = ''; setTimeout(() => sc.remove(), 460); }, 90);
     if (opts.onClose) opts.onClose();
+    /* focus goes back to the button that opened the window */
+    setTimeout(() => { try { if (!$('.scrim') && opener && opener.isConnected && opener.focus && opener !== document.body) opener.focus({ preventScroll: true }); } catch (e) {} }, 0);
   };
   const values = () => readFields(flat, sc);
   const refreshShow = () => { const v = values(); flat.forEach(f => { if (f.showIf) { const el = $('.field[data-k="' + f.k + '"]', sc); if (el) el.hidden = !f.showIf(v); } }); };
@@ -2733,11 +2840,18 @@ function openSheet(opts) {
     for (const f of flat) if (f.required && !v[f.k]) { const el = $('#f-' + f.k, sc); el.focus(); el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 400); return; }
     if (opts.onSave(v, sc) !== false) close();
   };
-  const onKey = e => { if (e.key === 'Escape' && !$('.scrim.center')) close(); };
+  const onKey = e => { if (e.key === 'Escape' && !$('.scrim.confirm')) close(); };
   sc.addEventListener('click', e => {
     if (e.target === sc || e.target.closest('[data-x]')) return close();
     if (e.target.closest('[data-save]')) return save();
-    if (e.target.closest('[data-del]')) { opts.onDelete(close); return; }
+    const dr = e.target.closest('[data-del]');
+    if (dr) {
+      /* delete takes two taps: the first turns the row red and asks again, the second deletes (then a toast offers Undo) */
+      if (opts.deleteAsks || dr.classList.contains('armed')) { clearTimeout(dr._t); opts.onDelete(close); return; }
+      dr.classList.add('armed'); dr.textContent = tcaseText('Tap again to ' + ((opts.deleteLabel || 'Delete').split(' ')[0].toLowerCase() === 'remove' ? 'remove' : 'delete'));
+      dr._t = setTimeout(() => { dr.classList.remove('armed'); dr.textContent = tcaseText(opts.deleteLabel || 'Delete'); }, 4000);
+      return;
+    }
     const sb = e.target.closest('.seg button');
     if (sb) { const seg = sb.parentElement; seg.dataset.value = sb.dataset.v; $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(b === sb))); refreshShow(); }
   });
@@ -2794,22 +2908,35 @@ const VIEWS = [
 const EXTRA = ['more', 'help', 'style'];
 const EXTRA_TITLES = { more: 'Menu', help: 'How to use', style: 'Look & style' };
 function go(k) { route = k; try { if (location.hash !== '#' + k) { skipHash = '#' + k; location.hash = k; } } catch (e) { skipHash = ''; } $$('.scrim').forEach(s => s.remove()); lock(); render(); toTop(); }
+/* On big screens (the open foldable iPhone, iPad) the page scrolls inside the body, so the top bar and tab bar stay put.
+   Phones never match, because both need a screen at least 600 wide and 500 tall. getY and scrollToY pick the right scroller. */
+const shellQ = window.matchMedia ? matchMedia('(min-width:600px) and (min-height:500px)') : null;
+const inShell = () => !!(shellQ && shellQ.matches);
+const getY = () => inShell() ? document.body.scrollTop : (window.scrollY || 0);
+function scrollToY(y) { try { if (inShell()) document.body.scrollTop = y; else window.scrollTo(0, y); } catch (e) {} }
 /* Some phone frames ignore window.scrollTo, so set every scroller we know about. */
 function toTop() { try { window.scrollTo(0, 0); } catch (e) {} const se = document.scrollingElement || document.documentElement; if (se) se.scrollTop = 0; if (document.body) document.body.scrollTop = 0; }
 let skipHash = '', menuFrom = 'home';
 /* Like the Credentials Tracker: a thin line under the top bar once you scroll, and the page name after a bit more. */
 function onScroll() {
-  const b = $('#topbar'); if (!b) return; const y = window.scrollY; b.classList.toggle('scrolled', y > 6);
+  const b = $('#topbar'); if (!b) return; const y = getY(); b.classList.toggle('scrolled', y > 6);
   const h1 = $('#main .phead h1'), ph = h1 && h1.closest('.phead'), bb = b.getBoundingClientRect().bottom;
-  b.classList.toggle('titled', h1 ? h1.getBoundingClientRect().bottom < bb - 4 : y > 70);
-  /* the big title, the gray line and the page buttons stay fully clear until they slide under the bar, then fade there */
-  const fade = el => { if (!el) return 1; const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
-  const p = ph && $('p', ph), pf = p && p.textContent.trim() ? fade(p) : 1;
-  if (ph) { ph.style.setProperty('--h1-fade', fade(h1).toFixed(2)); ph.style.setProperty('--p-fade', pf.toFixed(2)); ph.style.setProperty('--act-fade', fade($('.actions', ph)).toFixed(2)); }
-  const sub = $('#barSub'); if (sub) sub.textContent = p ? p.textContent.trim() : '';
-  b.classList.toggle('dated', !!p && !!p.textContent.trim() && pf < .5);
+  /* the big title fades out over the first few points as it reaches the bar and the small bar title takes over,
+     so the two never show at once (a fast flick on iPhone can outrun a slower fade) */
+  const hf = h1 ? Math.max(0, Math.min(1, (h1.getBoundingClientRect().top - bb + 12) / 14)) : 1;
+  b.classList.toggle('titled', h1 ? hf < .05 : y > 70);
+  /* the gray line ("230 days to go") hands over to the small line under the bar title in one quick step, so it never shows twice */
+  const p = ph && $('p', ph), hasP = !!(p && p.textContent.trim());
+  const pf = hasP ? Math.max(0, Math.min(1, (p.getBoundingClientRect().top - bb + 6) / 12)) : 1;
+  const act = ph && $('.actions', ph), r = act && act.getBoundingClientRect();
+  const af = r && r.height ? Math.max(0, Math.min(1, (r.top - bb + 6) / 12)) : 1;
+  if (ph) { ph.style.setProperty('--h1-fade', hf.toFixed(2)); ph.style.setProperty('--p-fade', pf.toFixed(2)); ph.style.setProperty('--act-fade', af.toFixed(2)); }
+  const sub = $('#barSub'); if (sub) sub.textContent = hasP ? p.textContent.trim() : '';
+  b.classList.toggle('dated', hasP && pf < .05);
 }
 window.addEventListener('scroll', onScroll, { passive: true });
+document.body.addEventListener('scroll', onScroll, { passive: true });
+if (shellQ) { if (shellQ.addEventListener) shellQ.addEventListener('change', onScroll); else if (shellQ.addListener) shellQ.addListener(onScroll); }
 function readRoute() { const h = (location.hash || '').replace('#', ''); route = VIEWS.some(v => v.k === h) || EXTRA.includes(h) ? h : 'home'; }
 
 /* Phone: four tabs and a + in the middle. Guests holds the list and seating; Vendors holds the wallet and budget. */
@@ -2889,7 +3016,7 @@ function liftHeads(main) {
 }
 function render() {
   if (!S) { renderWelcome(); return; }
-  const y = window.scrollY;
+  const y = getY();
   const keepScroll = render.last === route;
   shell();
   const main = $('#main');
@@ -2913,7 +3040,7 @@ function render() {
   try { const ph = $('.phead', main); if (ph && ph.parentNode === main) { let at = ph; [...main.children].filter(c => c !== ph && (c.compareDocumentPosition(ph) & Node.DOCUMENT_POSITION_FOLLOWING)).forEach(c => { at.after(c); at = c; }); } } catch (e) {}
   try { tcase(main); } catch (e) {}
   document.title = (route === 'home' ? '' : ((VIEWS.find(v => v.k === route) || {}).label || EXTRA_TITLES[route] || 'Menu') + ' · ') + 'Wedding Command Center';
-  if (keepScroll) window.scrollTo(0, y);
+  if (keepScroll) scrollToY(y);
   render.last = route;
   onScroll();
   lock();
@@ -3219,7 +3346,7 @@ function autoScroll() {
   let dy = 0;
   if (drag.y < edge + 50) dy = -Math.ceil((edge + 50 - drag.y) / 6);
   else if (drag.y > h - edge - 70) dy = Math.ceil((drag.y - (h - edge - 70)) / 6);
-  if (dy) { window.scrollBy(0, dy); moveGhost(); }
+  if (dy) { scrollToY(getY() + dy); moveGhost(); }
   requestAnimationFrame(autoScroll);
 }
 function dragMove(e) {
@@ -3341,7 +3468,7 @@ function editCat(id) {
         if (!ok) return; const snap = snapshot(); S.budget.items = S.budget.items.filter(i => i.cat !== c.id); S.budget.cats = S.budget.cats.filter(x => x !== c); close(); commit(); toast('Category deleted', () => restoreSnapshot(snap));
       });
     } : null,
-    deleteLabel: 'Delete category'
+    deleteLabel: 'Delete category', deleteAsks: true
   });
 }
 function editTotal() {
@@ -3869,7 +3996,7 @@ function vendorFiles(v) {
 }
 function openVendorCard(id) {
   walletFocus = id;
-  if (route !== 'vendors') go('vendors'); else { render(); window.scrollTo(0, 0); }
+  if (route !== 'vendors') go('vendors'); else { render(); toTop(); }
 }
 function payVendor(v, what) {
   const snap = snapshot();
@@ -3978,7 +4105,7 @@ function docForm(d, url, isNew) {
       commit(); toast(isNew ? 'Saved to your files' : 'Saved');
     },
     onDelete: isNew ? null : close => { askConfirm('Delete this file?', 'It will be removed from this device. A backup you saved earlier still has it.', 'Delete', true).then(ok => { if (!ok) return; S.docs = S.docs.filter(x => x !== d); IMG.del('doc:' + d.id); delete THUMB[d.id]; close(); commit(); toast('File deleted'); }); },
-    deleteLabel: 'Delete file'
+    deleteLabel: 'Delete file', deleteAsks: true
   });
 }
 async function shareDoc(d) {
@@ -4496,14 +4623,14 @@ function wireAskBox(main) {
 }
 /* ================= Look & style: wedding styles, then any color, font or decoration ================= */
 const VIBES = [
-  { k: 'classic', name: 'Classic gold', sub: 'Navy, ivory and gold', l: '#8A6A38', d: '#D6B47C', h1: '#1B2042', h2: '#2C2454', g: '#E3C690', font: 'classic', motif: 'sprig' },
+  { k: 'classic', name: 'Classic gold', sub: 'Navy, ivory and gold', l: '#846431', d: '#D6B47C', h1: '#1B2042', h2: '#2C2454', g: '#E3C690', font: 'classic', motif: 'sprig' },
   { k: 'garden', name: 'Garden blush', sub: 'Soft pink and rose', l: '#A94962', d: '#EC97AA', h1: '#3E1C29', h2: '#6A3045', g: '#F6CFC8', font: 'script', motif: 'florals' },
   { k: 'sage', name: 'Sage greenery', sub: 'Eucalyptus and cream', l: '#4A7558', d: '#95C5A1', h1: '#1A2C22', h2: '#2E4A3A', g: '#E6D6A6', font: 'soft', motif: 'sprig' },
   { k: 'dusty', name: 'Dusty blue', sub: 'Something blue', l: '#3C6091', d: '#94B5E0', h1: '#18273E', h2: '#2A4266', g: '#EBD8B2', font: 'classic', motif: 'florals' },
   { k: 'boho', name: 'Terracotta boho', sub: 'Desert, rust and sand', l: '#A4532F', d: '#E7A07C', h1: '#3A2117', h2: '#6B3A24', g: '#F2D2B6', font: 'soft', motif: 'sprig' },
   { k: 'fall', name: 'Burgundy & gold', sub: 'Rich fall romance', l: '#8A2A3D', d: '#E0899A', h1: '#2A0F16', h2: '#4E1A27', g: '#E6C27A', font: 'classic', motif: 'florals' },
   { k: 'lavender', name: 'Lavender fields', sub: 'Lilac and plum', l: '#6E4A8B', d: '#BCA0D8', h1: '#261836', h2: '#45295C', g: '#EBC9A2', font: 'script', motif: 'florals' },
-  { k: 'coastal', name: 'Coastal', sub: 'Sea glass and sand', l: '#1E7A86', d: '#7FD0D8', h1: '#0E2F3A', h2: '#1C5363', g: '#F3E3C3', font: 'soft', motif: 'rings' },
+  { k: 'coastal', name: 'Coastal', sub: 'Sea glass and sand', l: '#1B7480', d: '#7FD0D8', h1: '#0E2F3A', h2: '#1C5363', g: '#F3E3C3', font: 'soft', motif: 'rings' },
   { k: 'winter', name: 'Winter silver', sub: 'Frost and silver', l: '#4F5D73', d: '#B8C4D6', h1: '#1C2230', h2: '#33405A', g: '#DDE3EC', font: 'classic', motif: 'rings' },
   { k: 'rustic', name: 'Rustic barn', sub: 'Wood, linen and lights', l: '#7A5530', d: '#D2A877', h1: '#2B1E14', h2: '#4A3422', g: '#E8CFA4', font: 'soft', motif: 'sprig' },
   { k: 'blacktie', name: 'Black tie', sub: 'Black, white and champagne', l: '#2A2A31', d: '#E7E3DA', h1: '#0F0F12', h2: '#26262D', g: '#E9E2D2', font: 'classic', motif: 'rings' },
@@ -4590,7 +4717,7 @@ R.style = function () {
           colorRow('hero2', 'Countdown card glow', 'The second color it fades into', s.hero2) +
           colorRow('gold', 'Detail color', 'Names, lines and decorations', s.gold) +
         '</div>' +
-        '<div class="flabel" style="margin:14px 0 8px">Quick main colors</div><div class="quickc">' + [['#8A6A38', 'Antique gold'], ['#A94962', 'Rose'], ['#C0627C', 'Blush pink'], ['#4A7558', 'Sage green'], ['#3C6091', 'Dusty blue'], ['#1E7A86', 'Teal'], ['#6E4A8B', 'Lavender'], ['#8A2A3D', 'Burgundy'], ['#A4532F', 'Terracotta'], ['#2A2A31', 'Charcoal']].map(([x, n]) => '<button type="button" data-act="quick-accent" data-c="' + x + '" style="background:' + x + '" aria-label="' + n + '" title="' + n + '" aria-pressed="' + (s.accent.toLowerCase() === x.toLowerCase()) + '"></button>').join('') + '</div>' +
+        '<div class="flabel" style="margin:14px 0 8px">Quick main colors</div><div class="quickc">' + [['#846431', 'Antique gold'], ['#A94962', 'Rose'], ['#A84E69', 'Blush pink'], ['#4A7558', 'Sage green'], ['#3C6091', 'Dusty blue'], ['#1B7480', 'Teal'], ['#6E4A8B', 'Lavender'], ['#8A2A3D', 'Burgundy'], ['#A4532F', 'Terracotta'], ['#2A2A31', 'Charcoal']].map(([x, n]) => '<button type="button" data-act="quick-accent" data-c="' + x + '" style="background:' + x + '" aria-label="' + n + '" title="' + n + '" aria-pressed="' + (s.accent.toLowerCase() === x.toLowerCase()) + '"></button>').join('') + '</div>' +
       '</section>' +
       '<section class="card"><div class="card-head"><h2>Font for your names</h2></div>' +
         '<div class="fontpick">' + FONTS.map(f => '<button type="button" data-act="font" data-k="' + f.k + '" aria-pressed="' + (s.font === f.k) + '"><span style="font-family:' + esc(f.css) + '" class="fp-' + f.k + '">' + esc(coupleNames(false) === 'Our wedding' ? 'Olivia & James' : coupleNames(false)) + '</span><small>' + f.name + '</small></button>').join('') + '</div>' +
@@ -4858,8 +4985,8 @@ function pdfInfo() {
 }
 
 Object.assign(EXTRA_ACTS, {
-  'bd-open': el => { bdOpen = el.dataset.k; if (route !== 'bigday') go('bigday'); else { render(); window.scrollTo(0, 0); } },
-  'bd-close': () => { bdOpen = null; render(); window.scrollTo(0, 0); },
+  'bd-open': el => { bdOpen = el.dataset.k; if (route !== 'bigday') go('bigday'); else { render(); toTop(); } },
+  'bd-close': () => { bdOpen = null; render(); toTop(); },
   'day-add': () => editDay(null), 'day-edit': el => editDay(el.dataset.id), 'pdf-day': pdfDay,
   'party-add': () => editParty(null), 'party-edit': el => editParty(el.dataset.id),
   'song-add': el => editSong(null, el.dataset.m), 'song-edit': el => editSong(el.dataset.id), 'share-music': () => shareText('Our wedding music', musicText()),
@@ -5832,7 +5959,7 @@ function renderWelcome(step) {
     e.preventDefault();
     const d = $('#w-d').value;
     kitDraft = { a: $('#w-a').value.trim().slice(0, 60), b: $('#w-b').value.trim().slice(0, 60), date: parseDay(d) ? d : '', size: 'm', budget: 0, vendors: KIT_ON.slice(), vibe: 'classic' };
-    renderWelcome(2); window.scrollTo(0, 0);
+    renderWelcome(2); toTop();
   });
   $('#w-sample').onclick = () => { S = samplePlan(); persist(); applyTheme(); go('home'); };
   $('#w-restore').onclick = () => restoreSheet(true);

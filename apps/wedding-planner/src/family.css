@@ -311,7 +311,6 @@ button.li:active,a.li:active,label.li:active{background:var(--surface-2)}
 .sheet.dragging{transition:none}
 .sheet.swap>*:not(.grab){animation:swapIn .32s cubic-bezier(.32,.72,0,1) both}
 @keyframes swapIn{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
-@media (min-width:640px){.scrim{align-items:center}.sheet{border-radius:24px;padding-bottom:20px;transform:translateY(30px) scale(.98)}}
 .grab{width:36px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 14px;position:relative}
 .grab::after{content:"";position:absolute;inset:-14px -60px}
 .sheet .sheet-body{display:grid;gap:12px;padding:0;overflow:visible;flex:none;min-height:0}
@@ -541,7 +540,6 @@ details.keep[open] summary{margin-bottom:2px}
 .navitem[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
 .brand-name{font:600 .98rem/1.2 var(--f-ui)}
 @media (min-width:900px){.topbar,.tabbar{display:none}main{padding-top:34px;padding-bottom:60px}.toast{bottom:28px}}
-.scrim.center{animation:fade .2s ease}
 @media (prefers-reduced-motion:reduce){.scrim,.sheet,.dialog,main.slide-l,main.slide-r{transition:none!important;animation:none!important}}
 .list>.row{padding-left:14px;padding-right:14px}
 .card .list>.row{padding-left:4px;padding-right:4px}

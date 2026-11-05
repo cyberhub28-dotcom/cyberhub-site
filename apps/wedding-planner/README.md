@@ -2,6 +2,10 @@
 
 The app is `index.html`, built from `src/` with `python3 src/build.py`.
 
+## Design
+
+It follows Budget's iPhone design rules (`apps/budget/DESIGN-RULES.md`). Every window, including questions like "Delete this file?", is a frosted glass card that rises from the bottom of the screen you're on (`openSheet` and `askConfirm` in `src/2-ui.js`). On big screens (600 wide and 500 tall and up: the open foldable iPhone and iPad) the page scrolls inside the body so the top bar and tab bar stay put; scripts use `getY()` and `scrollToY()` in `src/3-shell.js`. Phones never match those big-screen styles.
+
 ## Publishing it
 
 Copy the whole folder, not just `index.html`. The app needs these files beside it:

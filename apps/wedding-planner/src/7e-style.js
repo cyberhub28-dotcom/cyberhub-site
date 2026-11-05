@@ -1,13 +1,13 @@
 /* ================= Look & style: wedding styles, then any color, font or decoration ================= */
 const VIBES = [
-  { k: 'classic', name: 'Classic gold', sub: 'Navy, ivory and gold', l: '#8A6A38', d: '#D6B47C', h1: '#1B2042', h2: '#2C2454', g: '#E3C690', font: 'classic', motif: 'sprig' },
+  { k: 'classic', name: 'Classic gold', sub: 'Navy, ivory and gold', l: '#846431', d: '#D6B47C', h1: '#1B2042', h2: '#2C2454', g: '#E3C690', font: 'classic', motif: 'sprig' },
   { k: 'garden', name: 'Garden blush', sub: 'Soft pink and rose', l: '#A94962', d: '#EC97AA', h1: '#3E1C29', h2: '#6A3045', g: '#F6CFC8', font: 'script', motif: 'florals' },
   { k: 'sage', name: 'Sage greenery', sub: 'Eucalyptus and cream', l: '#4A7558', d: '#95C5A1', h1: '#1A2C22', h2: '#2E4A3A', g: '#E6D6A6', font: 'soft', motif: 'sprig' },
   { k: 'dusty', name: 'Dusty blue', sub: 'Something blue', l: '#3C6091', d: '#94B5E0', h1: '#18273E', h2: '#2A4266', g: '#EBD8B2', font: 'classic', motif: 'florals' },
   { k: 'boho', name: 'Terracotta boho', sub: 'Desert, rust and sand', l: '#A4532F', d: '#E7A07C', h1: '#3A2117', h2: '#6B3A24', g: '#F2D2B6', font: 'soft', motif: 'sprig' },
   { k: 'fall', name: 'Burgundy & gold', sub: 'Rich fall romance', l: '#8A2A3D', d: '#E0899A', h1: '#2A0F16', h2: '#4E1A27', g: '#E6C27A', font: 'classic', motif: 'florals' },
   { k: 'lavender', name: 'Lavender fields', sub: 'Lilac and plum', l: '#6E4A8B', d: '#BCA0D8', h1: '#261836', h2: '#45295C', g: '#EBC9A2', font: 'script', motif: 'florals' },
-  { k: 'coastal', name: 'Coastal', sub: 'Sea glass and sand', l: '#1E7A86', d: '#7FD0D8', h1: '#0E2F3A', h2: '#1C5363', g: '#F3E3C3', font: 'soft', motif: 'rings' },
+  { k: 'coastal', name: 'Coastal', sub: 'Sea glass and sand', l: '#1B7480', d: '#7FD0D8', h1: '#0E2F3A', h2: '#1C5363', g: '#F3E3C3', font: 'soft', motif: 'rings' },
   { k: 'winter', name: 'Winter silver', sub: 'Frost and silver', l: '#4F5D73', d: '#B8C4D6', h1: '#1C2230', h2: '#33405A', g: '#DDE3EC', font: 'classic', motif: 'rings' },
   { k: 'rustic', name: 'Rustic barn', sub: 'Wood, linen and lights', l: '#7A5530', d: '#D2A877', h1: '#2B1E14', h2: '#4A3422', g: '#E8CFA4', font: 'soft', motif: 'sprig' },
   { k: 'blacktie', name: 'Black tie', sub: 'Black, white and champagne', l: '#2A2A31', d: '#E7E3DA', h1: '#0F0F12', h2: '#26262D', g: '#E9E2D2', font: 'classic', motif: 'rings' },
@@ -94,7 +94,7 @@ R.style = function () {
           colorRow('hero2', 'Countdown card glow', 'The second color it fades into', s.hero2) +
           colorRow('gold', 'Detail color', 'Names, lines and decorations', s.gold) +
         '</div>' +
-        '<div class="flabel" style="margin:14px 0 8px">Quick main colors</div><div class="quickc">' + [['#8A6A38', 'Antique gold'], ['#A94962', 'Rose'], ['#C0627C', 'Blush pink'], ['#4A7558', 'Sage green'], ['#3C6091', 'Dusty blue'], ['#1E7A86', 'Teal'], ['#6E4A8B', 'Lavender'], ['#8A2A3D', 'Burgundy'], ['#A4532F', 'Terracotta'], ['#2A2A31', 'Charcoal']].map(([x, n]) => '<button type="button" data-act="quick-accent" data-c="' + x + '" style="background:' + x + '" aria-label="' + n + '" title="' + n + '" aria-pressed="' + (s.accent.toLowerCase() === x.toLowerCase()) + '"></button>').join('') + '</div>' +
+        '<div class="flabel" style="margin:14px 0 8px">Quick main colors</div><div class="quickc">' + [['#846431', 'Antique gold'], ['#A94962', 'Rose'], ['#A84E69', 'Blush pink'], ['#4A7558', 'Sage green'], ['#3C6091', 'Dusty blue'], ['#1B7480', 'Teal'], ['#6E4A8B', 'Lavender'], ['#8A2A3D', 'Burgundy'], ['#A4532F', 'Terracotta'], ['#2A2A31', 'Charcoal']].map(([x, n]) => '<button type="button" data-act="quick-accent" data-c="' + x + '" style="background:' + x + '" aria-label="' + n + '" title="' + n + '" aria-pressed="' + (s.accent.toLowerCase() === x.toLowerCase()) + '"></button>').join('') + '</div>' +
       '</section>' +
       '<section class="card"><div class="card-head"><h2>Font for your names</h2></div>' +
         '<div class="fontpick">' + FONTS.map(f => '<button type="button" data-act="font" data-k="' + f.k + '" aria-pressed="' + (s.font === f.k) + '"><span style="font-family:' + esc(f.css) + '" class="fp-' + f.k + '">' + esc(coupleNames(false) === 'Our wedding' ? 'Olivia & James' : coupleNames(false)) + '</span><small>' + f.name + '</small></button>').join('') + '</div>' +

@@ -6,7 +6,7 @@ let tab = null, menuFrom = "home"; const scrollPos = {};
 function show(t) {
   if (!TABS.includes(t)) t = "home";
   if (t === tab) return;
-  const prev = tab; if (prev) scrollPos[prev] = window.scrollY;
+  const prev = tab; if (prev) scrollPos[prev] = getY();
   if (prev === "clients" && clientFocus) { clientFocus = null; renderClients(); }
   if (sheetClose) sheetClose(true);
   TABS.forEach(x => { document.getElementById("v-" + x).hidden = x !== t; });
@@ -18,19 +18,19 @@ function show(t) {
   setTitles();
   const v = $("#v-" + t);
   if (prev && !reduce) { v.classList.remove("enter-l", "enter-r"); void v.offsetWidth; v.classList.add(TABS.indexOf(t) > TABS.indexOf(prev) ? "enter-r" : "enter-l"); }
-  window.scrollTo(0, scrollPos[t] || 0);
+  scrollToY(scrollPos[t] || 0);
   onScroll(); pagersFit();
   if (t === "more") storageLine().then(s => { const el = $("#storeLine"); if (el) el.textContent = s; });
   requestAnimationFrame(() => requestAnimationFrame(() => fillIn(v)));
 }
 function go(t) {
   if (t === tab && t === "clients" && clientFocus) { clientFocus = null; renderClients(); fillIn($("#v-clients")); return; }
-  if (t === tab) { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); return; }
+  if (t === tab) { scrollToY(0, true); return; }
   try { history.pushState({ tab: t }, "", "#" + t); } catch (e) {}
   show(t);
 }
 /* jump to a page inside Money or Calendar */
-function goPage(t, k, i) { if (sheetClose) sheetClose(true); go(t); pageGo(k, i, false); window.scrollTo(0, 0); }
+function goPage(t, k, i) { if (sheetClose) sheetClose(true); go(t); pageGo(k, i, false); scrollToY(0); }
 function route() { show((location.hash || "").replace("#", "")); }
 window.addEventListener("popstate", route);
 window.addEventListener("hashchange", route);
@@ -136,7 +136,7 @@ document.addEventListener("click", e => {
   }
   else if (a === "nudge-x") { try { sessionStorage.setItem(KEY + "-nudge", "1"); } catch (er) {} renderNudge(); }
   else if (a === "load-sample") openSheet("Load Example", `<p class="lead">A made-up business with its own Home, words and look. It replaces what's on this phone, so back up first.</p><div class="packs">${Object.values(PACKS).map(pk => `<button type="button" class="pack press" data-act="sample-pack" data-id="${esc(pk.id)}"><span class="ic pk-dot" data-pk="${esc(pk.id)}" aria-hidden="true">${packIcon(pk.id)}</span><span class="tx"><b>${esc(pk.name)}</b><small>${esc(pk.who)}</small></span>${ICON.chev}</button>`).join("")}</div>`, null, { noSave: true, cancelLabel: "Close", focus: false });
-  else if (a === "sample-pack") { if (sheetClose) sheetClose(true); const theme = S.look && S.look.theme; const snap = JSON.stringify(S); S = sample(id); S.look = theme ? { theme } : undefined; clientFocus = null; askLast = null; askPending = null; invFilter = "open"; spendMode = "exp"; spendCat = "all"; commit(); go("home"); window.scrollTo(0, 0); toast("Example loaded", () => { S = JSON.parse(snap); commit("Undone"); }); }
+  else if (a === "sample-pack") { if (sheetClose) sheetClose(true); const theme = S.look && S.look.theme; const snap = JSON.stringify(S); S = sample(id); S.look = theme ? { theme } : undefined; clientFocus = null; askLast = null; askPending = null; invFilter = "open"; spendMode = "exp"; spendCat = "all"; commit(); go("home"); scrollToY(0); toast("Example loaded", () => { S = JSON.parse(snap); commit("Undone"); }); }
   else if (a === "wipe") {
     if (!t.classList.contains("armed")) { t.classList.add("armed"); const s = $("#wipeSub"); if (s) s.textContent = "Tap again to erase everything on this phone. This can't be undone."; t.querySelector("b").textContent = "Tap Again to Delete All"; clearTimeout(t._tm); t._tm = setTimeout(renderMore, 5000); return; }
     IMG.clear(); store.del(KEY); KEPT.forEach(k => store.del(k)); holdSave = false; S = blank(); S.look = undefined; askLast = null; askPending = null; clientFocus = null; commit(); go("home"); toast("All data deleted"); later(onboard);
@@ -147,18 +147,24 @@ $("#fab").onclick = () => addMenu();
 $("#menuBtn").onclick = () => go(tab === "more" ? menuFrom : "more");
 $("#backBtn").onclick = () => go(menuFrom);
 function onScroll() {
-  const y = window.scrollY, b = $("#topbar");
+  const y = getY(), b = $("#topbar");
   b.classList.toggle("scrolled", y > 6);
   /* the small title shows once the big one has scrolled under the bar */
   const h1 = $("#pageTitle"), ph = $("#pagehead"), sub = $("#pageSub"), bb = b.getBoundingClientRect().bottom;
-  b.classList.toggle("titled", !!h1 && h1.getBoundingClientRect().bottom < bb - 4);
-  /* the big title and the gray line stay fully clear until they slide under the bar, then fade out there */
-  const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb - 10) / r.height)) : 1; };
-  if (ph && h1) ph.style.setProperty("--h1-fade", fade(h1).toFixed(2));
-  const sf = sub && !sub.hidden && sub.textContent ? fade(sub) : 1; if (ph) ph.style.setProperty("--sub-fade", sf.toFixed(2));
-  b.classList.toggle("dated", sf < .5);
+  /* the big title fades out over the first few points of scrolling and the bar title takes over, so the big
+     title never slides under the app name at the top left (a fast flick can outrun a slower fade) */
+  const hf = h1 && h1.getBoundingClientRect().height ? Math.max(0, Math.min(1, (h1.getBoundingClientRect().top - bb + 12) / 14)) : 1;
+  b.classList.toggle("titled", !!h1 && hf < .05);
+  if (ph) ph.style.setProperty("--h1-fade", hf.toFixed(2));
+  /* the gray line hands over to the small line under the bar title in one quick step, so the two never show at once */
+  const sr = sub && !sub.hidden && sub.textContent ? sub.getBoundingClientRect() : null;
+  const sf = sr && sr.height ? Math.max(0, Math.min(1, (sr.top - bb + 6) / 12)) : 1;
+  if (ph) ph.style.setProperty("--sub-fade", sf.toFixed(2));
+  b.classList.toggle("dated", !!sr && sf < .05);
 }
 window.addEventListener("scroll", onScroll, { passive: true });
+document.body.addEventListener("scroll", onScroll, { passive: true });
+try { [shellQ, railQ, railQf].forEach(q => { if (!q) return; if (q.addEventListener) q.addEventListener("change", onScroll); else if (q.addListener) q.addListener(onScroll); }); } catch (e) {}
 /* the running timer counts up on screen */
 setInterval(() => { if (!S || !S.timer) return; const m = timerMins(); document.querySelectorAll("[data-tick]").forEach(el => { el.textContent = tick(m); }); }, 1000);
 

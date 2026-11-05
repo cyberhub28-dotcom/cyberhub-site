@@ -7,11 +7,11 @@
   /* iOS system colors. The -t ones are Apple's darker versions, for text on white. */
   --sys-red: #FF383C; --sys-orange: #FF9500; --sys-yellow: #FFCC00; --sys-green: #34C759; --sys-mint: #00C7BE;
   --sys-teal: #30B0C7; --sys-cyan: #32ADE6; --sys-blue: #0088FF; --sys-indigo: #5856D6; --sys-purple: #AF52DE; --sys-pink: #FF2D55;
-  --sys-red-t: #D70015; --sys-orange-t: #C93400; --sys-green-t: #248A3D; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
+  --sys-red-t: #D70015; --sys-orange-t: #B83000; --sys-green-t: #1F7F37; --sys-teal-t: #0071A4; --sys-blue-t: #0062CC;
   --sys-indigo-t: #3634A3; --sys-purple-t: #8944AB; --sys-pink-t: #D30F45;
   /* grouped backgrounds, labels, fills and separators */
   --bg: #F2F2F7; --surface: #FFFFFF; --surface-2: #EEEEF2; --sheet-bg: #F2F2F7; --sheet-cell: #FFFFFF;
-  --ink: #000000; --ink-2: #3C3C43; --ink-3: #6E6E73; --ink-4: #C4C4C7;
+  --ink: #000000; --ink-2: #3C3C43; --ink-3: #69696E; --ink-4: #C4C4C7;
   --fill: rgba(118,118,128,.12); --fill-2: rgba(118,118,128,.2); --hl: #E5E5EA; --seg-on: #FFFFFF; --switch-off: #E9E9EA;
   --line: #C6C6C8;
   --glass: color-mix(in srgb, #FFFFFF 74%, transparent);
@@ -23,7 +23,7 @@
   --f-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --t-large: 2rem; --t-title1: 1.647rem; --t-title2: 1.294rem; --t-title3: 1.176rem; --t-body: 1rem; --t-callout: .941rem;
   --t-sub: .882rem; --t-foot: .765rem; --t-cap: .706rem; --t-cap2: .647rem;
-  --r-lg: 26px; --r-md: 12px; --r-sheet: 28px;
+  --r-lg: 26px; --r-md: 12px; --r-sheet: 32px;
   --spring: cubic-bezier(.32,.72,0,1);
   --f-serif: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
   --card-edge: rgba(0,0,0,.05);
@@ -209,7 +209,6 @@ main .phead~.sample-bar,main .phead~.backup-nudge{margin-top:12px}
 /* sheets: a grabber, then X on the left, the title, and a check on the right to save */
 .scrim{background:var(--scrim)}
 .sheet{background:var(--sheet-bg);border-radius:var(--r-sheet) var(--r-sheet) 0 0;padding:6px 16px calc(24px + env(safe-area-inset-bottom,0px));box-shadow:0 -2px 20px rgba(0,0,0,.12)}
-@media (min-width:640px){.sheet{border-radius:var(--r-sheet);padding-bottom:20px}}
 .sheet .grab{width:36px;height:5px;border-radius:3px;background:var(--ink-4);margin:0 auto 4px}
 .sheet .sheet-body{gap:14px}
 .snav{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:8px;min-height:52px;margin:0 0 2px}
@@ -310,6 +309,44 @@ main{padding-bottom:calc(62px + max(14px,env(safe-area-inset-bottom,0px)) + 40px
 .chips{padding-top:4px}
 @media (max-width:359px){.segc a,.segc button{font-size:.76rem;padding-left:3px;padding-right:3px}}
 
+/* Tap sizes, round 3 (Budget's polish pass): the Ask box and its arrow, and the filter chips */
+.ask,.addask .ask{min-height:52px}
+.ask input{min-height:44px}
+.ask button{width:44px;min-width:44px;height:44px}
+.chipfilter{position:relative}
+.chipfilter::after{content:"";position:absolute;left:0;right:0;top:50%;height:max(100%,44px);transform:translateY(-50%)}
+
+/* ---------- every window is a frosted glass card (iOS 26 sheet), like Budget ----------
+   It floats 8 points in from the edges and rises from the bottom of the screen you're looking at, wherever you've
+   scrolled; the page behind stays where it was. Same on every screen size: no centered pop-up windows. */
+:root{--glass-line:rgba(0,0,0,.06)}
+:root[data-theme="dark"]{--glass-line:rgba(255,255,255,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--glass-line:rgba(255,255,255,.12)}}
+.scrim{align-items:flex-end;justify-content:center;touch-action:none;
+  padding:max(12px,env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) 8px max(8px,env(safe-area-inset-left,0px))}
+.sheet{width:100%;max-width:520px;max-height:100%;box-sizing:border-box;margin:0;border-radius:var(--r-sheet);touch-action:pan-y;
+  padding:6px 16px calc(max(0px,env(safe-area-inset-bottom,0px) - 8px) + 18px);
+  background:color-mix(in srgb,var(--sheet-bg) 80%,transparent);-webkit-backdrop-filter:blur(30px) saturate(1.8);backdrop-filter:blur(30px) saturate(1.8);
+  box-shadow:0 0 0 .5px var(--glass-line),0 10px 40px rgba(0,0,0,.18);
+  transform:translateY(calc(100% + 40px));transition:transform .5s var(--spring)}
+.scrim.show .sheet{transform:none}
+.sheet.dragging{transition:none}
+/* the top of a window is its handle: the browser must not scroll it, or the pull-down gets cancelled on phones */
+.sheet .grab,.sheet .snav{touch-action:none}
+/* a question ("Delete this file?") is the same card, with its answers at the bottom */
+.sheet.dialog{max-width:520px;width:100%;margin:0;padding:22px 16px calc(max(0px,env(safe-area-inset-bottom,0px) - 8px) + 16px);text-align:center;animation:none}
+.sheet.dialog h3{margin:0 8px 6px;font:600 var(--t-title3)/1.25 var(--f-body);color:var(--ink);text-align:center;text-wrap:balance}
+.sheet.dialog p{margin:0 8px 18px;font-size:var(--t-sub);line-height:1.35;color:var(--ink-2);text-wrap:pretty}
+.sheet.dialog .actions{display:grid;gap:10px;justify-content:stretch}
+.sheet.dialog .actions .btn{width:100%;min-height:50px;border-radius:999px;font-size:var(--t-body)}
+.sheet.dialog .actions .btn:not(.primary):not(.danger){background:var(--sheet-cell)}
+/* delete: red text first, a red row only on the second tap */
+.delrow{transition:background-color .2s,color .2s}
+.delrow.armed{background:var(--sys-red);color:#fff}
+@media (prefers-reduced-transparency:reduce){.sheet{background:var(--sheet-bg);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-contrast:more){.sheet{box-shadow:0 0 0 1px var(--line),0 10px 40px rgba(0,0,0,.18)}}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim{transition:none!important}}
+
 /* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
    because both need a screen at least 600 wide and 500 tall. From 900 wide the side menu takes over, as before. ---------- */
 @media (min-width:600px) and (max-width:899px) and (min-height:500px){
@@ -319,15 +356,72 @@ main{padding-bottom:calc(62px + max(14px,env(safe-area-inset-bottom,0px)) + 40px
   main{padding-bottom:calc(62px + max(14px,calc(env(safe-area-inset-bottom,0px) - 13px)) + 48px)}
   .toast{bottom:calc(62px + max(14px,calc(env(safe-area-inset-bottom,0px) - 13px)) + 16px)}
 }
-/* cards side by side once each column gets about 300 wide (before, this started at 780) */
-@media (min-width:680px) and (min-height:500px){
+@media (min-width:600px) and (min-height:500px){
+  /* the page scrolls inside the app instead of the whole screen moving. On the open iPhone Duo the whole
+     screen moving let the tab bar and top bar slide away with the page; this keeps them put */
+  html{height:100%;overflow:hidden}
+  body{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;
+    /* one plain background, so the iPhone Duo's side strip (which Safari fills with the page color) matches the page */
+    background:var(--bg)}
+  /* lists and cards in one roomy column while the screen is held upright; two columns only from 860 wide */
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .cols>.card+.card,.cols>section+section{margin-top:16px}
+  /* windows float a little further in from the edges */
+  .scrim{padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 14px max(14px,env(safe-area-inset-left,0px))}
+}
+@media (min-width:860px) and (min-height:500px){
   .cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
   .cols>.card+.card,.cols>section+section{margin-top:0}
 }
-@media (min-width:600px) and (min-height:500px){
-  /* forms open as a centered card instead of a sheet from the bottom */
-  .scrim{align-items:center}
-  .sheet{border-radius:var(--r-sheet);max-height:min(86vh,calc(100% - 48px));padding-bottom:20px}
-  .sheet-head::before{display:none}
-  .sheet-head h3,.sheet-head .btn{margin-top:0}
+
+/* ---------- iPhone Duo / foldable (see apps/budget/DESIGN-RULES.md, "Duo / foldable") ----------
+   Safari 27.1 on the Duo gives a page 382 wide folded, 669 x ~867 open upright and 951 x ~585
+   open sideways (less inside a frame). Safari's 100vh is the tallest size (toolbars hidden), so
+   anything sized to the screen uses 100dvh, and anything taller than a short screen scrolls itself. */
+@media (min-width:900px){
+  .side{height:100vh;height:100dvh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding-bottom:max(18px,env(safe-area-inset-bottom,0px))}
+  .side::-webkit-scrollbar{display:none}
+  .navitem{min-height:44px}
+  .tray{max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px)}
+}
+/* Short and wide (open Duo sideways): a tighter menu so it all fits; Back up stays in the Menu. */
+@media (min-width:900px) and (max-height:760px){
+  .side{gap:2px;padding-top:14px}
+  .side .brand{padding:2px 8px 10px}
+  .side-card{display:none}
+  main{padding-top:22px}
+}
+/* Inside a preview frame (claude.ai) on a touch screen, the frame can run past the bottom of
+   what Safari shows, so lift the tab bar clear of it. Home Screen and Safari never get this. */
+@media (min-width:600px) and (max-width:899px) and (min-height:500px) and (pointer:coarse){
+  html.framed .tabbar{padding-bottom:48px}
+  html.framed main{padding-bottom:calc(62px + 48px + 48px)}
+  html.framed .toast{bottom:calc(62px + 48px + 16px)}
+}
+html.framed,html.framed body{overscroll-behavior-y:none}
+
+/* ---------- Landscape = side rail (touch screens 900 wide and up: open Duo sideways, iPad) ----------
+   Like an iPhone app on the open Duo: no left menu and no bottom tab bar. The tabs become a
+   Liquid Glass rail of icons down the right edge (current one lit), and the ... and + buttons
+   sit in their own glass pill at the top of that edge. A mouse-and-keyboard screen keeps the menu. */
+@media (min-width:900px) and (pointer:coarse){
+  :root{--rail-w:64px;--rail-gap:max(12px,env(safe-area-inset-right,0px))}
+  .app{display:block}
+  .side{display:none}
+  body::before{display:block}
+  .topbar{display:block}
+  .topbar .wrap{padding-right:calc(var(--rail-gap) + var(--rail-w) + 16px)}
+  .tb-group{position:fixed;z-index:31;top:max(12px,env(safe-area-inset-top,0px));right:var(--rail-gap);
+    flex-direction:column;width:var(--rail-w);height:auto;padding:6px 0;gap:6px}
+  .tb-group .gbtn{width:52px;height:52px}
+  .tabbar{display:block;left:auto;right:var(--rail-gap);top:auto;bottom:max(12px,env(safe-area-inset-bottom,0px));
+    width:var(--rail-w);padding:0;transform:none}
+  .tabbar::before{display:none}
+  .tabbar .in{flex-direction:column;height:auto;padding:6px;gap:6px}
+  .tabbar .tab{flex:none;width:52px;height:52px}
+  .tabbar .tab .ic{width:26px;height:26px}
+  .tabbar .tab span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  main{max-width:1180px;padding:8px calc(var(--rail-gap) + var(--rail-w) + 24px) 40px max(28px,env(safe-area-inset-left,0px))}
+  .pageseg{display:flex}
+  .toast{bottom:max(20px,env(safe-area-inset-bottom,0px))}
 }

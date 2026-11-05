@@ -30,14 +30,6 @@ function applyLook(L) {
 }
 
 /* ---------- render ---------- */
-const TC_SEL = ".group-h h2, .group-h > a, .group-h > .lnk, .li.addrow .tx, #moreBody button.li:not([data-act=profile]) .tx > b, .btn, .addtile, .segc button, .seg.ctl button, .hero .lbl, .addhd, .lnk, .sample-bar b, .sbtn.txt";
-function tcText(el) { el.childNodes.forEach(n => { if (n.nodeType === 3 && /[a-z]/.test(n.nodeValue)) n.nodeValue = titleCase(n.nodeValue); }); }
-function tcPass(scope) {
-  scope.querySelectorAll(TC_SEL).forEach(tcText);
-  scope.querySelectorAll(".field > label, .field > .flabel").forEach(l => { const t = l.textContent.trim(); if (!/\?$/.test(t) && t.split(/\s+/).length <= 3) tcText(l); });
-}
-/* anything drawn later gets the same Title Case pass */
-new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => { const el = n.nodeType === 1 ? n : n.parentElement; if (!el) return; if (el.matches(TC_SEL)) tcText(el); if (n.nodeType === 1) tcPass(el); }))).observe(document.body, { childList: true, subtree: true });
 function render() {
   P = own(PACKS, S.profile.pack) ? PACKS[S.profile.pack] : PACKS.nursing;
   applyLook();
@@ -226,7 +218,7 @@ function renderCreds() {
   $("#credsBody").innerHTML = all.length ? `<div class="wallet one">${all.map(x => walletCard(x)).join("")}</div>` : `<div class="list">${empty("var(--info)", "No cards yet. Tap + at the top to add your first license.")}</div>`;
   renderVault();
 }
-function openCard(id) { walletFocus = id; if (sheetClose) sheetClose(true); if (tab === "creds") { renderCreds(); fillIn($("#v-creds")); window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); } else { scrollPos.creds = 0; go("creds"); renderCreds(); fillIn($("#v-creds")); } }
+function openCard(id) { walletFocus = id; if (sheetClose) sheetClose(true); if (tab === "creds") { renderCreds(); fillIn($("#v-creds")); scrollToY(0, !reduce); } else { scrollPos.creds = 0; go("creds"); renderCreds(); fillIn($("#v-creds")); } }
 /* --- CE log --- */
 let ceRule = "all", ceRange = "all", ceCat = "all", ceQ = "";
 function ceFiltered() {

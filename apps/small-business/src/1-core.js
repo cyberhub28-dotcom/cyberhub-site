@@ -10,6 +10,26 @@ const own = (o, k) => o != null && typeof k === "string" && Object.prototype.has
 const BUILTIN = k => k === "__proto__" || k in Object.prototype;
 const uid = () => Math.random().toString(36).slice(2, 9);
 const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* running inside a preview frame (not Safari or the Home Screen)? A few spacing tweaks use this */
+try { if (window.self !== window.top) document.documentElement.classList.add("framed"); } catch (e) { document.documentElement.classList.add("framed"); }
+/* on big screens (open foldable iPhone, iPad) the page scrolls inside the body so the top bar and tab bar stay put;
+   phones scroll the whole window as always. Read and set the scroll only through these two. */
+const shellQ = window.matchMedia ? matchMedia("(min-width: 600px) and (min-height: 500px)") : null;
+/* held sideways on a wide screen (the open iPhone Duo, iPad) the tabs move to a glass column of icons down the right side,
+   like the iPhone's own apps. Regular iPhones held sideways are under 500 tall, so they keep the bar at the bottom. In a
+   preview frame (claude.ai) the open Duo held sideways is only about 440 tall, so there 380 is enough */
+const railQ = window.matchMedia ? matchMedia("(min-width: 900px) and (min-height: 500px) and (orientation: landscape)") : null;
+const railQf = window.matchMedia ? matchMedia("(min-width: 900px) and (min-height: 380px) and (orientation: landscape)") : null;
+const isRail = () => !!((railQ && railQ.matches) || (document.documentElement.classList.contains("framed") && railQf && railQf.matches));
+function setRail() { document.documentElement.classList.toggle("rail", isRail()); }
+setRail();
+try { [railQ, railQf].forEach(q => { if (!q) return; if (q.addEventListener) q.addEventListener("change", setRail); else if (q.addListener) q.addListener(setRail); }); } catch (e) {}
+const inShell = () => !!(shellQ && shellQ.matches) || document.documentElement.classList.contains("rail");
+const getY = () => inShell() ? document.body.scrollTop : window.scrollY;
+function scrollToY(top, smooth) {
+  const s = inShell() ? document.body : window;
+  try { s.scrollTo(smooth && !reduce ? { top, behavior: "smooth" } : { top, left: 0 }); } catch (e) { if (s === window) window.scrollTo(0, top); else s.scrollTop = top; }
+}
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
 
 /* ---------- dates (local noon avoids daylight-saving drift) ---------- */

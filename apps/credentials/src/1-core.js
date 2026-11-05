@@ -6,6 +6,17 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uid = () => Math.random().toString(36).slice(2, 9);
 const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* on big screens (open foldable, iPad) the page scrolls inside the body, so the top bar and tab bar stay put;
+   phones scroll the window as always. Read and set the scroll only through these two. */
+/* Running inside a preview frame (the Claude app), not Safari or the Home Screen? The tab bar gets lifted there. */
+try { if (window.self !== window.top) document.documentElement.classList.add("framed"); } catch (e) { document.documentElement.classList.add("framed"); }
+const shellQ = window.matchMedia ? matchMedia("(min-width: 600px) and (min-height: 500px)") : null;
+const inShell = () => !!(shellQ && shellQ.matches);
+const getY = () => inShell() ? document.body.scrollTop : window.scrollY;
+function scrollToY(top, smooth) {
+  const s = inShell() ? document.body : window;
+  try { s.scrollTo(smooth ? { top, behavior: "smooth" } : { top, left: 0 }); } catch (e) { if (s === window) window.scrollTo(0, top); else s.scrollTop = top; }
+}
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
 
 /* ---------- dates (local noon avoids daylight-saving drift) ---------- */

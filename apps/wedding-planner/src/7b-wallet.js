@@ -77,7 +77,7 @@ function vendorFiles(v) {
 }
 function openVendorCard(id) {
   walletFocus = id;
-  if (route !== 'vendors') go('vendors'); else { render(); window.scrollTo(0, 0); }
+  if (route !== 'vendors') go('vendors'); else { render(); toTop(); }
 }
 function payVendor(v, what) {
   const snap = snapshot();

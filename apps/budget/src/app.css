@@ -1,3 +1,4 @@
+
 /* Paycheck Budget, in the same family look as the Credentials Tracker: the same neutrals, system font,
    weights, spacing, hairline dividers, sheets you pull down, wallet cards, single rings and Menu.
    Each money type keeps one color everywhere. */
@@ -274,7 +275,7 @@ button.li:active, a.li:active, .li-main:active { background: var(--surface-2) }
 .wcard.newcard { background: var(--surface); color: var(--brand); box-shadow: inset 0 0 0 1.5px var(--line); align-items: center; justify-content: center; gap: 8px; font-weight: 600; width: 150px }
 .wcard.newcard::before, .wcard.newcard::after { display: none }
 .wcard.newcard svg { width: 22px; height: 22px }
-.wscroll { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 8px max(16px, env(safe-area-inset-left, 0px)) 28px; margin: -8px calc(-1 * max(16px, env(safe-area-inset-left, 0px))) -16px; scroll-padding: 0 max(16px, env(safe-area-inset-left, 0px)) }
+.wscroll { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 28px max(16px, env(safe-area-inset-left, 0px)); margin: -8px calc(-1 * max(16px, env(safe-area-inset-right, 0px))) -16px calc(-1 * max(16px, env(safe-area-inset-left, 0px))); scroll-padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)) }
 .wscroll::-webkit-scrollbar { display: none }
 
 /* Quick add: type it like a text */
@@ -446,7 +447,7 @@ details.keep[open] summary { margin-bottom: 2px }
 .addbtn .ring svg { width: 24px; height: 24px; transform: none }
 .addbtn:active .ring { transform: translateY(-10px) scale(.9); transition-duration: .12s }
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--bar-bg); -webkit-backdrop-filter: saturate(1.6) blur(20px); backdrop-filter: saturate(1.6) blur(20px); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px) }
-.tabbar .in { display: flex; max-width: 640px; margin: 0 auto; padding: 0 max(4px, env(safe-area-inset-left, 0px)) }
+.tabbar .in { display: flex; max-width: 640px; margin: 0 auto; padding: 0 max(4px, env(safe-area-inset-right, 0px)) 0 max(4px, env(safe-area-inset-left, 0px)) }
 .tabbar a { flex: 1; min-width: 0; height: var(--tabh); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--ink-3); font-size: .66rem; font-weight: 500; transition: color .2s; position: relative }
 .tabbar a svg { width: 24px; height: 24px; transition: transform .3s cubic-bezier(.2,.9,.3,1) }
 .tabbar a.on { color: var(--brand) }
@@ -930,6 +931,16 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
 @media (prefers-reduced-transparency: reduce) { .sheet { background: var(--sheet-bg); -webkit-backdrop-filter: none; backdrop-filter: none } }
 @media (prefers-contrast: more) { .sheet { box-shadow: 0 0 0 1px var(--line), 0 10px 40px rgba(0,0,0,.18) } }
 
+/* Inside a preview frame (claude.ai) on a touch screen, the frame can run past the bottom of what Safari shows,
+   so on the open foldable the tab bar, cards and toast are lifted clear of it. Safari and the Home Screen never get "framed". */
+@media (min-width: 600px) and (max-width: 899px) and (min-height: 500px) and (pointer: coarse) {
+  html.framed .tabbar { bottom: calc(48px + max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
+  html.framed .tabbar::before { bottom: calc(-48px - max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px))) }
+  html.framed main { padding-bottom: calc(178px + env(safe-area-inset-bottom, 0px)) }
+  html.framed .toast { bottom: calc(148px + env(safe-area-inset-bottom, 0px)) }
+  html.framed .scrim { padding-bottom: 62px } }
+html.framed, html.framed body { overscroll-behavior-y: none }
+
 /* ---------- big screens: the open foldable iPhone and iPad. Phones (upright or sideways) never match these,
    because both need a screen at least 600 wide and 500 tall. ---------- */
 .hgrid, .hcol { display: contents }
@@ -937,6 +948,7 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
   /* the page scrolls inside the app instead of the whole screen moving. On the open iPhone Duo the whole
      screen moving let the tab bar and top bar slide away with the page; this keeps them put */
   html { height: 100%; overflow: hidden; padding: 0 }
+  main { position: relative } /* hidden labels for VoiceOver scroll with the page inside the body scroller */
   body { height: 100%; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
     padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); scroll-padding-top: env(safe-area-inset-top, 0px);
     /* one plain background, so the iPhone Duo's side strip (which takes the page color) matches the page */
@@ -962,3 +974,22 @@ details.keep summary .kp, .card.keep { font-size: var(--t-sub) }
   .hcol-a .hero-go { grid-column: auto }
   .hcol-a .wscroll { margin-right: 0; padding-right: 0; scroll-padding-right: 0 }
 }
+/* ---------- sideways on the open foldable (and iPad): an iOS side rail, like a native app ----------
+   A script sets the "rail" class when the screen is wide (900+) and held sideways, and tall enough to be the open
+   foldable (500+, or 400+ inside the Claude preview frame). Regular iPhones held sideways are never that tall, so
+   they keep the bottom tab bar. The tabs become a Liquid Glass column on the right and the top buttons a glass pill
+   above it. The page layouts themselves don't change; they only leave room for the rail. */
+html.rail { --rail-w: 86px }
+html.rail .tabbar { left: auto; right: max(12px, env(safe-area-inset-right, 0px)); top: auto; bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) - 6px));
+  width: 62px; margin: 0; padding: 0; transform: none; background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none }
+html.rail .tabbar::before { display: none }
+html.rail .tabbar .in { flex-direction: column; width: 62px; height: auto; max-width: none; margin: 0; padding: 4px; gap: 2px; border-radius: 31px }
+html.rail .tabbar a { flex: none; width: 54px; height: 54px; gap: 0; font-size: 0; line-height: 0 }
+html.rail .tabbar a svg { width: 26px; height: 26px }
+html.rail .tb-group { position: fixed; top: max(12px, env(safe-area-inset-top, 0px)); right: max(17px, calc(env(safe-area-inset-right, 0px) + 5px)); z-index: 31;
+  flex-direction: column; width: 52px; height: auto; padding: 4px 0; gap: 2px; border-radius: 26px }
+html.rail .wrap, html.rail .topbar .wrap { padding-right: calc(var(--rail-w) + env(safe-area-inset-right, 0px)) }
+html.rail main { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)) }
+html.rail .toast { left: calc(50% - var(--rail-w) / 2); bottom: calc(24px + env(safe-area-inset-bottom, 0px)) }
+html.rail .scrim { padding-right: calc(var(--rail-w) + env(safe-area-inset-right, 0px)) }
+html.rail .scrim, html.rail.framed .scrim { padding-bottom: 14px }

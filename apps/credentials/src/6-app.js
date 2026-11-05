@@ -3,10 +3,11 @@
 const TABS = ["home", "creds", "ce", "due", "more"];
 const TITLES = { home: "Home", creds: "Credentials", ce: "CE Log", due: "Calendar", more: "Menu" };
 let tab = null, menuFrom = "home"; const scrollPos = {};
+let lastY = 0, lastShell = inShell();
 function show(t) {
   if (!TABS.includes(t)) t = "home";
   if (t === tab) return;
-  const prev = tab; if (prev) scrollPos[prev] = window.scrollY;
+  const prev = tab; if (prev) scrollPos[prev] = getY();
   if (prev === "creds" && walletFocus) { walletFocus = null; renderCreds(); }
   if (sheetClose) sheetClose(true);
   TABS.forEach(x => { document.getElementById("v-" + x).hidden = x !== t; });
@@ -16,14 +17,14 @@ function show(t) {
   const mb = $("#menuBtn"); mb.classList.toggle("on", t === "more"); $("#brandmark").hidden = t === "more"; $("#backBtn").hidden = t !== "more"; $("#backBtn").setAttribute("aria-label", "Back to " + (menuFrom === "ce" ? P.ceTab : TITLES[menuFrom]));
   const v = $("#v-" + t);
   if (prev && !reduce) { v.classList.remove("enter-l", "enter-r"); void v.offsetWidth; v.classList.add(TABS.indexOf(t) > TABS.indexOf(prev) ? "enter-r" : "enter-l"); }
-  window.scrollTo(0, scrollPos[t] || 0);
+  scrollToY(scrollPos[t] || 0); lastY = getY();
   onScroll();
   if (t === "more") storageLine().then(s => { const el = $("#storeLine"); if (el) el.textContent = s; });
   requestAnimationFrame(() => requestAnimationFrame(() => fillIn(v)));
 }
 function go(t) {
   if (t === tab && t === "creds" && walletFocus) { walletFocus = null; renderCreds(); fillIn($("#v-creds")); return; }
-  if (t === tab) { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); return; }
+  if (t === tab) { scrollToY(0, !reduce); return; }
   try { history.pushState({ tab: t }, "", "#" + t); } catch (e) {}
   show(t);
 }
@@ -90,7 +91,7 @@ document.addEventListener("click", e => {
   else if (a === "nudge-x") { try { sessionStorage.setItem(KEY + "-nudge", "1"); } catch (er) {} renderNudge(); }
   else if (a === "pace-x") { try { sessionStorage.setItem(KEY + "-pace", "1"); } catch (er) {} renderNudge(); }
   else if (a === "load-sample") openSheet("See an example", `<p class="lead" style="margin-top:-2px">Each one is a made-up person, with that profession's own cards, words and look. It replaces what's on this phone, so back up first if you need to.</p><div class="packs">${Object.values(PACKS).map(pk => `<button type="button" class="pack press" data-act="sample-pack" data-id="${esc(pk.id)}"><span class="ic pk-dot" data-pk="${esc(pk.id)}" aria-hidden="true">${ICON.license}</span><span class="tx"><b>${esc(pk.name)}</b><small>${esc(pk.who)}</small></span>${ICON.chev}</button>`).join("")}</div>`, null, { noSave: true, cancelLabel: "Close", focus: false });
-  else if (a === "sample-pack") { if (sheetClose) sheetClose(true); const theme = S.look && S.look.theme; const snap = JSON.stringify(S); S = sample(id); S.look = theme ? { theme } : undefined; walletFocus = null; askLast = null; askPending = null; commit(); go("home"); window.scrollTo(0, 0); toast("Example loaded", () => { S = JSON.parse(snap); commit("Undone"); }); }
+  else if (a === "sample-pack") { if (sheetClose) sheetClose(true); const theme = S.look && S.look.theme; const snap = JSON.stringify(S); S = sample(id); S.look = theme ? { theme } : undefined; walletFocus = null; askLast = null; askPending = null; commit(); go("home"); scrollToY(0); toast("Example loaded", () => { S = JSON.parse(snap); commit("Undone"); }); }
   else if (a === "wipe") {
     if (!t.classList.contains("armed")) { t.classList.add("armed"); const s = $("#wipeSub"); if (s) s.textContent = "Tap again to erase everything on this device. This can't be undone."; t.querySelector("b").textContent = "Tap again to delete all"; clearTimeout(t._tm); t._tm = setTimeout(renderMore, 5000); return; }
     IMG.clear(); store.del(KEY); S = blank(); S.look = undefined; askLast = null; commit(); go("home"); toast("All data deleted"); later(onboard);
@@ -102,24 +103,30 @@ $("#menuBtn").onclick = () => go(tab === "more" ? menuFrom : "more");
 $("#backBtn").onclick = () => go(menuFrom);
 $("#q").addEventListener("input", e => { ceQ = e.target.value; $("#qClear").hidden = !ceQ; renderCE(); fillIn($("#v-ce")); });
 $("#qClear").onclick = e => { e.preventDefault(); ceQ = ""; $("#q").value = ""; $("#qClear").hidden = true; renderCE(); fillIn($("#v-ce")); $("#q").focus(); };
+/* Folding or unfolding the Duo switches which part of the page scrolls (see 1-core.js). Carry the scroll
+   position across so the page doesn't jump back to the top. */
 function onScroll() {
-  const y = window.scrollY, b = $("#topbar");
+  const sh = inShell(); if (sh !== lastShell) { lastShell = sh; if (lastY) scrollToY(lastY); }
+  const y = getY(), b = $("#topbar"); lastY = y;
   b.classList.toggle("scrolled", y > 6);
-  /* the big centered title slides under the bar, then a small one fades into the bar.
-     The title and the line under it stay fully clear until they slide under the bar, then fade out there,
-     and that line then shows small under the bar title. */
+  /* the big title fades out over the first few points of scrolling and the small bar title takes over, so the big
+     title never slides under the app name (a fast flick can outrun a slower fade). The line under it then hands
+     over to the small line under the bar title in one quick step, so the two never show at once. */
   const v = tab && document.getElementById("v-" + tab), lt = v && v.querySelector(".lt"), h1 = lt && lt.querySelector("h1");
   if (h1) { const bb = b.getBoundingClientRect().bottom, bt = $("#barTitleT"), bs = $("#barSub");
-    const fade = el => { const r = el.getBoundingClientRect(); return r.height ? Math.max(0, Math.min(1, (r.bottom - bb) / r.height)) : 1; };
     if (bt.textContent !== h1.textContent) bt.textContent = h1.textContent;
-    b.classList.toggle("titled", h1.getBoundingClientRect().bottom < bb - 4);
-    lt.style.setProperty("--h1-fade", fade(h1).toFixed(2));
+    const hf = Math.max(0, Math.min(1, (h1.getBoundingClientRect().top - bb + 12) / 14));
+    b.classList.toggle("titled", hf < .05);
+    lt.style.setProperty("--h1-fade", hf.toFixed(2));
     const sub = [...lt.querySelectorAll("small, p")].find(el => el.getClientRects().length && el.textContent.trim());
-    const sf = sub ? fade(sub) : 1; lt.style.setProperty("--sub-fade", sf.toFixed(2));
+    const sf = sub ? Math.max(0, Math.min(1, (sub.getBoundingClientRect().top - bb + 6) / 12)) : 1;
+    lt.style.setProperty("--sub-fade", sf.toFixed(2));
     const st = sub ? sub.textContent.trim() : ""; if (bs.textContent !== st) bs.textContent = st;
-    b.classList.toggle("dated", !!sub && sf < .5); }
+    b.classList.toggle("dated", !!sub && sf < .05); }
 }
 window.addEventListener("scroll", onScroll, { passive: true });
+document.body.addEventListener("scroll", onScroll, { passive: true });
+if (shellQ) { if (shellQ.addEventListener) shellQ.addEventListener("change", onScroll); else if (shellQ.addListener) shellQ.addListener(onScroll); }
 
 /* ---------- boot ---------- */
 /* If the saved data can't be read or drawn, the app still opens: the original copy is kept aside on this phone,
